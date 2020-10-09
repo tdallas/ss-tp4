@@ -25,7 +25,7 @@ public class OscillatorFileGenerator {
         }
     }
 
-    public void addToFile(OscillatorParticle oscillatorParticle, double time){
+    public void addToFile(OscillatorParticle oscillatorParticle, double time) {
         try {
             bw.write(oscillatorParticle.getPosition() + "," + oscillatorParticle.getVelocity() + "," + time + "\n");
         } catch (IOException e) {

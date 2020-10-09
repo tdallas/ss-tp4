@@ -2,7 +2,7 @@ package oscillator.integrators;
 
 import oscillator.OscillatorParticle;
 
-public class OscillatorVerletIntegrator extends OscillatorIntegrator{
+public class OscillatorVerletIntegrator extends OscillatorIntegrator {
     public OscillatorVerletIntegrator(double spring, double viscosity) {
         super(spring, viscosity);
     }

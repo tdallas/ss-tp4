@@ -24,7 +24,7 @@ public class Main {
 
         //Solucion analitica
         OscillatorParticle oscillatorParticle = new OscillatorParticle(1, 0, 70);
-        OscillatorIntegrator oscillatorIntegrator = new OscillatorAnalyticalSolutionIntegrator(Math.pow(10,4), 100, 1);
+        OscillatorIntegrator oscillatorIntegrator = new OscillatorAnalyticalSolutionIntegrator(Math.pow(10, 4), 100, 1);
         OscillatorFileGenerator oscillatorFileGenerator = new OscillatorFileGenerator("oscillator-analytic");
         OscillatorCutCondition oscillatorCutCondition = new OscillatorTimeCutCondition(5);
         OscillatorSimulator oscillatorSimulator = new OscillatorSimulator(0.0001, 0.01, oscillatorCutCondition, oscillatorIntegrator, oscillatorFileGenerator, oscillatorParticle);
@@ -32,7 +32,7 @@ public class Main {
 
         //Solucion VERLET
         oscillatorParticle = new OscillatorParticle(1, 0, 70);
-        oscillatorIntegrator = new OscillatorVerletIntegrator(Math.pow(10,4), 100);
+        oscillatorIntegrator = new OscillatorVerletIntegrator(Math.pow(10, 4), 100);
         oscillatorFileGenerator = new OscillatorFileGenerator("oscillator-verlet");
         oscillatorCutCondition = new OscillatorTimeCutCondition(5);
         oscillatorSimulator = new OscillatorSimulator(0.0001, 0.01, oscillatorCutCondition, oscillatorIntegrator, oscillatorFileGenerator, oscillatorParticle);
@@ -40,7 +40,7 @@ public class Main {
 
         //Solucion BEEMAN
         oscillatorParticle = new OscillatorParticle(1, 0, 70);
-        oscillatorIntegrator = new OscillatorBeemanIntegrator(Math.pow(10,4), 100);
+        oscillatorIntegrator = new OscillatorBeemanIntegrator(Math.pow(10, 4), 100);
         oscillatorFileGenerator = new OscillatorFileGenerator("oscillator-beeman");
         oscillatorCutCondition = new OscillatorTimeCutCondition(5);
         oscillatorSimulator = new OscillatorSimulator(0.0001, 0.01, oscillatorCutCondition, oscillatorIntegrator, oscillatorFileGenerator, oscillatorParticle);
@@ -48,7 +48,7 @@ public class Main {
 
         //Solucion GEAR
         oscillatorParticle = new OscillatorParticle(1, 0, 70);
-        oscillatorIntegrator = new OscillatorGearIntegrator(Math.pow(10,4), 100);
+        oscillatorIntegrator = new OscillatorGearIntegrator(Math.pow(10, 4), 100);
         oscillatorFileGenerator = new OscillatorFileGenerator("oscillator-gear");
         oscillatorCutCondition = new OscillatorTimeCutCondition(5);
         oscillatorSimulator = new OscillatorSimulator(0.0001, 0.01, oscillatorCutCondition, oscillatorIntegrator, oscillatorFileGenerator, oscillatorParticle);

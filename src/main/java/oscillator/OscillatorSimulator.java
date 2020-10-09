@@ -25,7 +25,6 @@ public class OscillatorSimulator {
     }
 
     public void simulate() {
-
         oscillatorFileGenerator.addToFile(oscillatorParticle, time);
         while (!oscillatorCutCondition.isFinished(time)) {
             oscillatorIntegrator.applyIntegrator(oscillatorParticle, timeDelta);

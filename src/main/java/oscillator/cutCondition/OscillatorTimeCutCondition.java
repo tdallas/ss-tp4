@@ -1,6 +1,6 @@
 package oscillator.cutCondition;
 
-public class OscillatorTimeCutCondition implements OscillatorCutCondition{
+public class OscillatorTimeCutCondition implements OscillatorCutCondition {
     private final double timeToCut;
 
     public OscillatorTimeCutCondition(double timeToCut) {
