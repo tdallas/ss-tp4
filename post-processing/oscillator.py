@@ -10,6 +10,9 @@ plt.plot(verlet['time'], verlet['position'], label='Verlet')
 beeman = pd.read_csv('out/oscillator-beeman.csv')
 plt.plot(beeman['time'], beeman['position'], label='Beeman')
 
+gear = pd.read_csv('out/oscillator-gear.csv')
+plt.plot(gear['time'], gear['position'], label='GearPC')
+
 plt.xlabel('Tiempo [S]', fontsize=16)
 plt.ylabel('Posición', fontsize=16)
 plt.legend(title='Tipo de Integrador')

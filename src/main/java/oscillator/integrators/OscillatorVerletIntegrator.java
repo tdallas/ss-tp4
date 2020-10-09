@@ -3,9 +3,13 @@ package oscillator.integrators;
 import oscillator.OscillatorParticle;
 
 public class OscillatorVerletIntegrator extends OscillatorIntegrator{
-    public void applyIntegrator(OscillatorParticle oscillatorParticle, double deltaT, double elasticConstant, double damping) {
-        double forces = getForces(elasticConstant, damping, oscillatorParticle.getPosition(), oscillatorParticle.getVelocity());
-        oscillatorParticle.setVelocity(oscillatorParticle.getVelocity() + (deltaT / oscillatorParticle.getMass()) * forces);
-        oscillatorParticle.setPosition(oscillatorParticle.getPosition() + deltaT * oscillatorParticle.getVelocity() + deltaT * deltaT * forces / (2 * oscillatorParticle.getMass()));
+    public OscillatorVerletIntegrator(double spring, double viscosity) {
+        super(spring, viscosity);
+    }
+
+    public void applyIntegrator(OscillatorParticle oscillatorParticle, double timeDelta) {
+        double forces = getForces(oscillatorParticle.getPosition(), oscillatorParticle.getVelocity());
+        oscillatorParticle.setVelocity(oscillatorParticle.getVelocity() + (timeDelta / oscillatorParticle.getMass()) * forces);
+        oscillatorParticle.setPosition(oscillatorParticle.getPosition() + timeDelta * oscillatorParticle.getVelocity() + timeDelta * timeDelta * forces / (2 * oscillatorParticle.getMass()));
     }
 }

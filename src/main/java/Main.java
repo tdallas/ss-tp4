@@ -9,7 +9,7 @@ import oscillator.integrators.*;
 public class Main {
     private static String filename;
     private static double deltaTime;
-
+    private static double saveDeltaTime;
 
     public static void main(String[] args) {
         //parseArguments(args);
@@ -18,39 +18,41 @@ public class Main {
 //        System.out.println("--------------------------");
 //        System.out.println("Input: ");
 //        System.out.println("Time delta: " + deltaTime);
+//        System.out.println("Save time delta: " + saveDeltaTime);
+//        System.out.println("File name: " + deltaTime);
 //        System.out.println("--------------------------");
 
         //Solucion analitica
         OscillatorParticle oscillatorParticle = new OscillatorParticle(1, 0, 70);
-        OscillatorIntegrator oscillatorIntegrator = new OscillatorSolutionIntegrator(1);
+        OscillatorIntegrator oscillatorIntegrator = new OscillatorAnalyticalSolutionIntegrator(Math.pow(10,4), 100, 1);
         OscillatorFileGenerator oscillatorFileGenerator = new OscillatorFileGenerator("oscillator-analytic");
         OscillatorCutCondition oscillatorCutCondition = new OscillatorTimeCutCondition(5);
-        OscillatorSimulator oscillatorSimulator = new OscillatorSimulator(0.0001, 0.01, oscillatorCutCondition, oscillatorIntegrator, oscillatorFileGenerator, Math.pow(10,4), 100, oscillatorParticle);
+        OscillatorSimulator oscillatorSimulator = new OscillatorSimulator(0.0001, 0.01, oscillatorCutCondition, oscillatorIntegrator, oscillatorFileGenerator, oscillatorParticle);
         oscillatorSimulator.simulate();
 
         //Solucion VERLET
         oscillatorParticle = new OscillatorParticle(1, 0, 70);
-        oscillatorIntegrator = new OscillatorVerletIntegrator();
+        oscillatorIntegrator = new OscillatorVerletIntegrator(Math.pow(10,4), 100);
         oscillatorFileGenerator = new OscillatorFileGenerator("oscillator-verlet");
         oscillatorCutCondition = new OscillatorTimeCutCondition(5);
-        oscillatorSimulator = new OscillatorSimulator(0.0001, 0.01, oscillatorCutCondition, oscillatorIntegrator, oscillatorFileGenerator, Math.pow(10,4), 100, oscillatorParticle);
+        oscillatorSimulator = new OscillatorSimulator(0.0001, 0.01, oscillatorCutCondition, oscillatorIntegrator, oscillatorFileGenerator, oscillatorParticle);
         oscillatorSimulator.simulate();
 
         //Solucion BEEMAN
         oscillatorParticle = new OscillatorParticle(1, 0, 70);
-        oscillatorIntegrator = new OscillatorBeemanIntegrator();
+        oscillatorIntegrator = new OscillatorBeemanIntegrator(Math.pow(10,4), 100);
         oscillatorFileGenerator = new OscillatorFileGenerator("oscillator-beeman");
         oscillatorCutCondition = new OscillatorTimeCutCondition(5);
-        oscillatorSimulator = new OscillatorSimulator(0.0001, 0.01, oscillatorCutCondition, oscillatorIntegrator, oscillatorFileGenerator, Math.pow(10,4), 100, oscillatorParticle);
+        oscillatorSimulator = new OscillatorSimulator(0.0001, 0.01, oscillatorCutCondition, oscillatorIntegrator, oscillatorFileGenerator, oscillatorParticle);
         oscillatorSimulator.simulate();
 
         //Solucion GEAR
-//        oscillatorParticle = new OscillatorParticle(1, 0, 70);
-//        oscillatorIntegrator = new OscillatorGearIntegrator();
-//        oscillatorFileGenerator = new OscillatorFileGenerator("oscillator-gear");
-//        oscillatorCutCondition = new OscillatorTimeCutCondition(5);
-//        oscillatorSimulator = new OscillatorSimulator(0.0001, 0.01, oscillatorCutCondition, oscillatorIntegrator, oscillatorFileGenerator, Math.pow(10,4), 100, oscillatorParticle);
-//        oscillatorSimulator.simulate();
+        oscillatorParticle = new OscillatorParticle(1, 0, 70);
+        oscillatorIntegrator = new OscillatorGearIntegrator(Math.pow(10,4), 100);
+        oscillatorFileGenerator = new OscillatorFileGenerator("oscillator-gear");
+        oscillatorCutCondition = new OscillatorTimeCutCondition(5);
+        oscillatorSimulator = new OscillatorSimulator(0.0001, 0.01, oscillatorCutCondition, oscillatorIntegrator, oscillatorFileGenerator, oscillatorParticle);
+        oscillatorSimulator.simulate();
     }
 
     private static void parseArguments(String[] args) {
@@ -63,6 +65,10 @@ public class Main {
         Option deltaTimeOption = new Option("dt", "time-delta", true, "time delta for animations");
         deltaTimeOption.setRequired(true);
         options.addOption(deltaTimeOption);
+
+        Option saveDeltaTimeOption = new Option("sdt", "save-time-delta", true, "time delta for saving");
+        saveDeltaTimeOption.setRequired(true);
+        options.addOption(saveDeltaTimeOption);
 
         CommandLineParser parser = new DefaultParser();
         HelpFormatter formatter = new HelpFormatter();
@@ -88,11 +94,18 @@ public class Main {
             System.exit(1);
         }
 
-        filename = cmd.getOptionValue("output");
-        if (filename.equals("walls")) {
-            System.out.println("Invalid filename, cannot be named: walls");
+        try {
+            saveDeltaTime = Double.parseDouble(cmd.getOptionValue("save-time-delta"));
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid argument number of particles, must be double");
             System.exit(1);
         }
+        if (saveDeltaTime < 0) {
+            System.out.println("Invalid save time delta, must be positive");
+            System.exit(1);
+        }
+
+        filename = cmd.getOptionValue("output");
 
     }
 }

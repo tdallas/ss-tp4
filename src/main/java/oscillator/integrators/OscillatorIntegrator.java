@@ -1,12 +1,21 @@
 package oscillator.integrators;
 
+import lombok.Getter;
 import oscillator.OscillatorParticle;
 
+@Getter
 public abstract class OscillatorIntegrator {
+    private final double spring;
+    private final double viscosity;
 
-    double getForces(double elasticConstant, double damping, double position, double velocity) {
-        return -1 * position * elasticConstant - (damping * velocity);
+    public OscillatorIntegrator(double spring, double viscosity) {
+        this.spring = spring;
+        this.viscosity = viscosity;
     }
 
-    public abstract void applyIntegrator(OscillatorParticle oscillatorParticle, double deltaT, double elasticConstant, double damping);
+    double getForces(double position, double velocity) {
+        return -1 * position * spring - (viscosity * velocity);
+    }
+
+    public abstract void applyIntegrator(OscillatorParticle oscillatorParticle, double timeDelta);
 }
