@@ -1,15 +1,15 @@
-package system;
+package oscillator;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class CsvFileGenerator {
+public class OscillatorFileGenerator {
     private BufferedWriter bw;
     private FileWriter fw;
 
-    public CsvFileGenerator(String filename) {
+    public OscillatorFileGenerator(String filename) {
         try {
             File directory = new File("out/");
             if (!directory.exists()) {
@@ -19,15 +19,15 @@ public class CsvFileGenerator {
             pw.close();
             this.fw = new FileWriter("out/" + filename + ".csv", true);
             this.bw = new BufferedWriter(fw);
-            bw.write("doorSize,time\n");
+            bw.write("position,velocity,time\n");
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void addToFile(double doorSize, double time) {
+    public void addToFile(OscillatorParticle oscillatorParticle, double time){
         try {
-            bw.write(doorSize + "," + time + "\n");
+            bw.write(oscillatorParticle.getPosition() + "," + oscillatorParticle.getVelocity() + "," + time + "\n");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -40,4 +40,5 @@ public class CsvFileGenerator {
             e.printStackTrace();
         }
     }
+
 }

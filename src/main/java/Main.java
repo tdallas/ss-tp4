@@ -1,44 +1,51 @@
-import engine.CutCondition;
-import engine.EventDrivenSimulation;
 import org.apache.commons.cli.*;
-import system.CsvFileGenerator;
-import system.EquilibriumCutCondition;
-import system.GasesLawEquilibriumCutCondition;
-import system.SystemGenerator;
-
-import java.util.Random;
+import oscillator.OscillatorFileGenerator;
+import oscillator.OscillatorParticle;
+import oscillator.OscillatorSimulator;
+import oscillator.cutCondition.OscillatorCutCondition;
+import oscillator.cutCondition.OscillatorTimeCutCondition;
+import oscillator.integrators.OscillatorBeemanIntegrator;
+import oscillator.integrators.OscillatorIntegrator;
+import oscillator.integrators.OscillatorSolutionIntegrator;
+import oscillator.integrators.OscillatorVerletIntegrator;
 
 public class Main {
-    private static int numberOfParticles;
     private static String filename;
-    private static Long seed = null;
     private static double deltaTime;
 
 
     public static void main(String[] args) {
-        long time;
-        parseArguments(args);
-
-        Random random;
-        if (seed == null) {
-            random = new Random();
-            seed = random.nextLong();
-            random.setSeed(seed);
-        } else {
-            random = new Random(seed);
-        }
+        //parseArguments(args);
 
         //Print input
-        System.out.println("--------------------------");
-        System.out.println("Input: ");
-        System.out.println("Seed: " + seed);
-        System.out.println("Time delta: " + deltaTime);
-        System.out.println("--------------------------");
+//        System.out.println("--------------------------");
+//        System.out.println("Input: ");
+//        System.out.println("Time delta: " + deltaTime);
+//        System.out.println("--------------------------");
 
-        SystemGenerator systemGenerator;
-        CutCondition equilibriumCutCondition;
-        EventDrivenSimulation eventDrivenSimulation;
+        //Solucion analitica
+        OscillatorParticle oscillatorParticle = new OscillatorParticle(1, 0, 70);
+        OscillatorIntegrator oscillatorIntegrator = new OscillatorSolutionIntegrator(1);
+        OscillatorFileGenerator oscillatorFileGenerator = new OscillatorFileGenerator("oscillator-analytic");
+        OscillatorCutCondition oscillatorCutCondition = new OscillatorTimeCutCondition(5);
+        OscillatorSimulator oscillatorSimulator = new OscillatorSimulator(0.0001, 0.01, oscillatorCutCondition, oscillatorIntegrator, oscillatorFileGenerator, Math.pow(10,4), 100, oscillatorParticle);
+        oscillatorSimulator.simulate();
 
+        //Solucion VERLET
+        oscillatorParticle = new OscillatorParticle(1, 0, 70);
+        oscillatorIntegrator = new OscillatorVerletIntegrator();
+        oscillatorFileGenerator = new OscillatorFileGenerator("oscillator-verlet");
+        oscillatorCutCondition = new OscillatorTimeCutCondition(5);
+        oscillatorSimulator = new OscillatorSimulator(0.0001, 0.01, oscillatorCutCondition, oscillatorIntegrator, oscillatorFileGenerator, Math.pow(10,4), 100, oscillatorParticle);
+        oscillatorSimulator.simulate();
+
+        //Solucion BEEMAN
+        oscillatorParticle = new OscillatorParticle(1, 0, 70);
+        oscillatorIntegrator = new OscillatorBeemanIntegrator();
+        oscillatorFileGenerator = new OscillatorFileGenerator("oscillator-beeman");
+        oscillatorCutCondition = new OscillatorTimeCutCondition(5);
+        oscillatorSimulator = new OscillatorSimulator(0.0001, 0.01, oscillatorCutCondition, oscillatorIntegrator, oscillatorFileGenerator, Math.pow(10,4), 100, oscillatorParticle);
+        oscillatorSimulator.simulate();
     }
 
     private static void parseArguments(String[] args) {
@@ -51,10 +58,6 @@ public class Main {
         Option deltaTimeOption = new Option("dt", "time-delta", true, "time delta for animations");
         deltaTimeOption.setRequired(true);
         options.addOption(deltaTimeOption);
-
-        Option seedOption = new Option("s", "seed", true, "seed for randomizer (optional)");
-        seedOption.setRequired(false);
-        options.addOption(seedOption);
 
         CommandLineParser parser = new DefaultParser();
         HelpFormatter formatter = new HelpFormatter();
@@ -84,16 +87,6 @@ public class Main {
         if (filename.equals("walls")) {
             System.out.println("Invalid filename, cannot be named: walls");
             System.exit(1);
-        }
-
-        String aux = cmd.getOptionValue("seed");
-        if (aux != null) {
-            try {
-                seed = Long.parseLong(aux);
-            } catch (NumberFormatException e) {
-                System.out.println("Invalid argument seed, must be long");
-                System.exit(1);
-            }
         }
 
     }
