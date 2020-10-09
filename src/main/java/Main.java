@@ -4,10 +4,7 @@ import oscillator.OscillatorParticle;
 import oscillator.OscillatorSimulator;
 import oscillator.cutCondition.OscillatorCutCondition;
 import oscillator.cutCondition.OscillatorTimeCutCondition;
-import oscillator.integrators.OscillatorBeemanIntegrator;
-import oscillator.integrators.OscillatorIntegrator;
-import oscillator.integrators.OscillatorSolutionIntegrator;
-import oscillator.integrators.OscillatorVerletIntegrator;
+import oscillator.integrators.*;
 
 public class Main {
     private static String filename;
@@ -46,6 +43,14 @@ public class Main {
         oscillatorCutCondition = new OscillatorTimeCutCondition(5);
         oscillatorSimulator = new OscillatorSimulator(0.0001, 0.01, oscillatorCutCondition, oscillatorIntegrator, oscillatorFileGenerator, Math.pow(10,4), 100, oscillatorParticle);
         oscillatorSimulator.simulate();
+
+        //Solucion GEAR
+//        oscillatorParticle = new OscillatorParticle(1, 0, 70);
+//        oscillatorIntegrator = new OscillatorGearIntegrator();
+//        oscillatorFileGenerator = new OscillatorFileGenerator("oscillator-gear");
+//        oscillatorCutCondition = new OscillatorTimeCutCondition(5);
+//        oscillatorSimulator = new OscillatorSimulator(0.0001, 0.01, oscillatorCutCondition, oscillatorIntegrator, oscillatorFileGenerator, Math.pow(10,4), 100, oscillatorParticle);
+//        oscillatorSimulator.simulate();
     }
 
     private static void parseArguments(String[] args) {

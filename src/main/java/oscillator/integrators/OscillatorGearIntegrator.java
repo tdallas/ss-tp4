@@ -1,8 +1,12 @@
 package oscillator.integrators;
 
-public class OscillatorGearIntegrator {
+import oscillator.OscillatorParticle;
 
-//    private void applyGearPC(double deltaT, double elasticConstant, double damping) {
+public class OscillatorGearIntegrator extends OscillatorIntegrator{
+    private double previousRVector[];
+
+    @Override
+    public void applyIntegrator(OscillatorParticle oscillatorParticle, double deltaT, double elasticConstant, double damping) {
 //        if(this.previousRVector == null) {
 //            initializeRVector(elasticConstant, damping);
 //        }
@@ -38,7 +42,7 @@ public class OscillatorGearIntegrator {
 //        for(int i=0; i<6; i++) {
 //            previousRVector[i] = RPredictedVector[i] + c[i]*deltaR2 * i / Math.pow(deltaT, i);
 //        }
-//    }
+    }
 //
 //    private double[][] multiplier(double deltaT) {
 //        double matrix[][] = {
