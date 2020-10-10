@@ -27,25 +27,32 @@ public class PlanetSystemGenerator {
     private static final double SUN_X_VELOCITY = 0;                                     // m/s
     private static final double SUN_Y_VELOCITY = 0;                                     // m/s
 
+    private static final double SPACESHIP_MASS = 1988500 * Math.pow(10,5);                   // Kg
+    private static final double SPACESHIP_RADIUS = 696000 * Math.pow(10,3);                   // m
+    private static final double SPACESHIP_X_POSITION = 0;                                     // m
+    private static final double SPACESHIP_Y_POSITION = 0;                                     // m
+    private static final double SPACESHIP_X_VELOCITY = 0;                                     // m/s
+    private static final double SPACESHIP_Y_VELOCITY = 0;                                     // m/s
+
     private final List<Planet> planets;
 
     public PlanetSystemGenerator() {
         this.planets = new ArrayList<>();
         planets.add(new Planet(0,
-                new Vector(SUN_X_POSITION, SUN_Y_POSITION),
-                new Vector(SUN_X_VELOCITY, SUN_Y_VELOCITY),
+                new PlanetVector(SUN_X_POSITION, SUN_Y_POSITION),
+                new PlanetVector(SUN_X_VELOCITY, SUN_Y_VELOCITY),
                 SUN_MASS, SUN_RADIUS,
                 1, 1, 0,
-                SUN_RADIUS*100));
+                SUN_RADIUS*50));
         planets.add(new Planet(1,
-                new Vector(EARTH_X_POSITION, EARTH_Y_POSITION),
-                new Vector(EARTH_X_VELOCITY, EARTH_Y_VELOCITY),
+                new PlanetVector(EARTH_X_POSITION, EARTH_Y_POSITION),
+                new PlanetVector(EARTH_X_VELOCITY, EARTH_Y_VELOCITY),
                 EARTH_MASS, EARTH_RADIUS,
                 0, 1, 0,
                 EARTH_RADIUS*2000));
         planets.add(new Planet(2,
-                new Vector(MARS_X_POSITION, MARS_Y_POSITION),
-                new Vector(MARS_X_VELOCITY, MARS_Y_VELOCITY),
+                new PlanetVector(MARS_X_POSITION, MARS_Y_POSITION),
+                new PlanetVector(MARS_X_VELOCITY, MARS_Y_VELOCITY),
                 MARS_MASS, MARS_RADIUS,
                 1, 0, 0,
                 MARS_RADIUS*2000));

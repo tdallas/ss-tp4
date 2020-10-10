@@ -1,9 +1,8 @@
 package planets.integrators;
 
 import planets.Planet;
-import planets.PlanetSimulator;
 import planets.PlanetSystemGenerator;
-import planets.Vector;
+import planets.PlanetVector;
 
 import java.util.List;
 
@@ -11,7 +10,7 @@ public abstract class PlanetIntegrator {
 
     public abstract void applyIntegrator(double timeDelta, Planet planet, List<Planet> planets);
 
-    Vector getForces(Planet planet, Vector position, List<Planet> planets) {
+    PlanetVector getForces(Planet planet, PlanetVector position, List<Planet> planets) {
         double xForces = 0;
         double yForces = 0;
 
@@ -19,13 +18,13 @@ public abstract class PlanetIntegrator {
             if(!planet.equals(aux)) {
                 double f = PlanetSystemGenerator.GRAVITATIONAL_CONSTANT * planet.getMass() * aux.getMass() / position.distanceSquare(aux.getPosition());
 
-                Vector e = aux.getPosition().sub(position).mul(1 / position.distance(aux.getPosition()));
-                Vector projectedForces = e.mul(f);
+                PlanetVector e = aux.getPosition().sub(position).mul(1 / position.distance(aux.getPosition()));
+                PlanetVector projectedForces = e.mul(f);
                 xForces += projectedForces.getX();
                 yForces += projectedForces.getY();
             }
         }
 
-        return new Vector(xForces, yForces);
+        return new PlanetVector(xForces, yForces);
     }
 }

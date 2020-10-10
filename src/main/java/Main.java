@@ -10,6 +10,7 @@ import planets.PlanetSimulator;
 import planets.PlanetSystemGenerator;
 import planets.cutCondition.PlanetCutCondition;
 import planets.cutCondition.PlanetTimeCutCondition;
+import planets.integrators.PlanetGearIntegrator;
 import planets.integrators.PlanetIntegrator;
 import planets.integrators.PlanetVerletIntegrator;
 
@@ -37,10 +38,16 @@ public class Main {
     private static void simulatePlanets(){
         PlanetSystemGenerator planetSystemGenerator = new PlanetSystemGenerator();
 
-        PlanetIntegrator planetIntegrator = new PlanetVerletIntegrator();
-        PlanetFileGenerator planetFileGenerator = new PlanetFileGenerator("planet-verlet");
-        PlanetCutCondition planetCutCondition = new PlanetTimeCutCondition(500000000);
-        PlanetSimulator planetSimulator = new PlanetSimulator(1000, 100000, planetCutCondition, planetIntegrator, planetFileGenerator, planetSystemGenerator.getPlanets());
+//        PlanetIntegrator planetIntegrator = new PlanetVerletIntegrator();
+//        PlanetFileGenerator planetFileGenerator = new PlanetFileGenerator("planet-verlet");
+//        PlanetCutCondition planetCutCondition = new PlanetTimeCutCondition(31536000*10);
+//        PlanetSimulator planetSimulator = new PlanetSimulator(900, 86400, planetCutCondition, planetIntegrator, planetFileGenerator, planetSystemGenerator.getPlanets());
+//        planetSimulator.simulate();
+
+        PlanetIntegrator planetIntegrator = new PlanetGearIntegrator(planetSystemGenerator.getPlanets());
+        PlanetFileGenerator planetFileGenerator = new PlanetFileGenerator("planet-gear");
+        PlanetCutCondition planetCutCondition = new PlanetTimeCutCondition(31536000*10);
+        PlanetSimulator planetSimulator = new PlanetSimulator(900, 86400, planetCutCondition, planetIntegrator, planetFileGenerator, planetSystemGenerator.getPlanets());
         planetSimulator.simulate();
     }
 

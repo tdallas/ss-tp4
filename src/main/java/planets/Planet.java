@@ -11,8 +11,8 @@ import java.util.Objects;
 @Setter
 public class Planet {
     private final int id;
-    private Vector position;
-    private Vector velocity;
+    private PlanetVector position;
+    private PlanetVector velocity;
     private final double mass;
     private final double radius;
     private final double redColor;
