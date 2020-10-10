@@ -3,8 +3,8 @@ package oscillator.integrators;
 import oscillator.OscillatorParticle;
 
 public class OscillatorVerletIntegrator extends OscillatorIntegrator {
-    public OscillatorVerletIntegrator(double spring, double viscosity) {
-        super(spring, viscosity);
+    public OscillatorVerletIntegrator(double springConstant, double viscosity) {
+        super(springConstant, viscosity);
     }
 
     public void applyIntegrator(OscillatorParticle oscillatorParticle, double timeDelta) {

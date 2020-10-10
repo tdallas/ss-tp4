@@ -1,62 +1,76 @@
 package oscillator.integrators;
 
+import org.apache.commons.math3.util.CombinatoricsUtils;
 import oscillator.OscillatorParticle;
 
 public class OscillatorGearIntegrator extends OscillatorIntegrator {
-    private double[] previousRVector;
+    private double[] previousPredictions;
 
-    public OscillatorGearIntegrator(double spring, double viscosity) {
-        super(spring, viscosity);
+    private static final double[] corrector = {3.0 / 16, 251.0 / 360, 1.0, 11.0 / 18, 1.0 / 6, 1.0 / 60};
+
+    public OscillatorGearIntegrator(double springConstant, double viscosity) {
+        super(springConstant, viscosity);
+        previousPredictions = null;
     }
 
     @Override
     public void applyIntegrator(OscillatorParticle oscillatorParticle, double timeDelta) {
-        if (this.previousRVector == null) {
-            this.previousRVector = new double[6];
-            this.previousRVector[0] = oscillatorParticle.getPosition();
-            this.previousRVector[1] = oscillatorParticle.getVelocity();
-            this.previousRVector[2] = getForces(oscillatorParticle.getPosition(), oscillatorParticle.getVelocity()) / oscillatorParticle.getMass();
-            this.previousRVector[3] = 0;
-            this.previousRVector[4] = 0;
-            this.previousRVector[5] = 0;
+        if (this.previousPredictions == null) {
+            this.previousPredictions = new double[6];
+            this.previousPredictions[0] = oscillatorParticle.getPosition();
+            this.previousPredictions[1] = oscillatorParticle.getVelocity();
+            this.previousPredictions[2] = getForces(oscillatorParticle.getPosition(), oscillatorParticle.getVelocity()) / oscillatorParticle.getMass();
+            this.previousPredictions[3] = 0;
+            this.previousPredictions[4] = 0;
+            this.previousPredictions[5] = 0;
         }
 
-        // multiplier
-        double[][] matrix = {
-                {1, timeDelta, Math.pow(timeDelta, 2) / 2, Math.pow(timeDelta, 3) / 6, Math.pow(timeDelta, 4) / 24, Math.pow(timeDelta, 5) / 120},
-                {0, 1, timeDelta, Math.pow(timeDelta, 2) / 2, Math.pow(timeDelta, 3) / 6, Math.pow(timeDelta, 4) / 24},
-                {0, 0, 1, timeDelta, Math.pow(timeDelta, 2) / 2, Math.pow(timeDelta, 3) / 6},
-                {0, 0, 0, 1, timeDelta, Math.pow(timeDelta, 2) / 2},
-                {0, 0, 0, 0, 1, timeDelta},
-                {0, 0, 0, 0, 0, 1}};
+        // predict
+        double firstDegree = timeDelta;
+        double secondDegree = Math.pow(timeDelta, 2) / 2;
+        double thirdDegree = Math.pow(timeDelta, 3) / 6;
+        double fourthDegree = Math.pow(timeDelta, 4) / 24;
+        double fifthDegree = Math.pow(timeDelta, 5) / 120;
 
-        // initialize predicted r
-        double[] RPredictedVector = new double[6];
+        double[] predictions = new double[6];
 
-        // calculates predicted r
-        for (int i = 0; i < 6; i++) {
-            for (int j = 0; j < 6; j++) {
-                RPredictedVector[i] += matrix[i][j] * previousRVector[j];
-            }
-        }
+        predictions[0] = previousPredictions[0]
+                + previousPredictions[1] * firstDegree
+                + previousPredictions[2] * secondDegree
+                + previousPredictions[3] * thirdDegree
+                + previousPredictions[4] * fourthDegree
+                + previousPredictions[5] * fifthDegree;
 
-        double r2tdeltaT = getForces(RPredictedVector[0], RPredictedVector[1]) / oscillatorParticle.getMass();
-        double r2ptdeltaT = RPredictedVector[2];
-        double deltaA = r2tdeltaT - r2ptdeltaT; // TODO: check if this should be abs
+        predictions[1] = previousPredictions[1]
+                + previousPredictions[2] * firstDegree
+                + previousPredictions[3] * secondDegree
+                + previousPredictions[4] * thirdDegree
+                + previousPredictions[5] * fourthDegree;
 
-        // correction
+        predictions[2] = previousPredictions[2]
+                + previousPredictions[3] * firstDegree
+                + previousPredictions[4] * secondDegree
+                + previousPredictions[5] * thirdDegree;
+
+        predictions[3] = previousPredictions[3]
+                + previousPredictions[4] * firstDegree
+                + previousPredictions[5] * secondDegree;
+
+        predictions[4] = previousPredictions[4]
+                + previousPredictions[5] * firstDegree;
+
+        predictions[5] = previousPredictions[5];
+
+        // evaluate
+        double deltaA = getForces(predictions[0], predictions[1]) / oscillatorParticle.getMass() - predictions[2];
         double deltaR2 = deltaA * timeDelta * timeDelta / 2;
 
-        // alphas to correct predicted values
-        double[] corrector = {3.0 / 16, 251.0 / 360, 1.0, 11.0 / 18, 1.0 / 6, 1.0 / 60};
-
-        // updates x and v
-        oscillatorParticle.setPosition(RPredictedVector[0] + corrector[0] * deltaR2 * 0 / Math.pow(timeDelta, 0));
-        oscillatorParticle.setVelocity(RPredictedVector[1] + corrector[1] * deltaR2 * 1 / Math.pow(timeDelta, 1));
-
-        // apply corrections and save them
+        // correct
         for (int i = 0; i < 6; i++) {
-            previousRVector[i] = RPredictedVector[i] + corrector[i] * deltaR2 * i / Math.pow(timeDelta, i);
+            previousPredictions[i] = predictions[i] + corrector[i] * deltaR2 * CombinatoricsUtils.factorial(i) / Math.pow(timeDelta, i);
         }
+
+        oscillatorParticle.setPosition(previousPredictions[0]);
+        oscillatorParticle.setVelocity(previousPredictions[1]);
     }
 }
