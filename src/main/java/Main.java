@@ -5,8 +5,16 @@ import oscillator.OscillatorSimulator;
 import oscillator.cutCondition.OscillatorCutCondition;
 import oscillator.cutCondition.OscillatorTimeCutCondition;
 import oscillator.integrators.*;
+import planets.PlanetFileGenerator;
+import planets.PlanetSimulator;
+import planets.PlanetSystemGenerator;
+import planets.cutCondition.PlanetCutCondition;
+import planets.cutCondition.PlanetTimeCutCondition;
+import planets.integrators.PlanetIntegrator;
+import planets.integrators.PlanetVerletIntegrator;
 
 public class Main {
+    private static int system;
     private static String filename;
     private static double deltaTime;
     private static double saveDeltaTime;
@@ -22,6 +30,21 @@ public class Main {
 //        System.out.println("File name: " + deltaTime);
 //        System.out.println("--------------------------");
 
+        //simulateOscillator();
+        simulatePlanets();
+    }
+
+    private static void simulatePlanets(){
+        PlanetSystemGenerator planetSystemGenerator = new PlanetSystemGenerator();
+
+        PlanetIntegrator planetIntegrator = new PlanetVerletIntegrator();
+        PlanetFileGenerator planetFileGenerator = new PlanetFileGenerator("planet-verlet");
+        PlanetCutCondition planetCutCondition = new PlanetTimeCutCondition(500000000);
+        PlanetSimulator planetSimulator = new PlanetSimulator(1000, 100000, planetCutCondition, planetIntegrator, planetFileGenerator, planetSystemGenerator.getPlanets());
+        planetSimulator.simulate();
+    }
+
+    private static void simulateOscillator(){
         //Solucion analitica
         OscillatorParticle oscillatorParticle = new OscillatorParticle(1, 0, 70);
         OscillatorIntegrator oscillatorIntegrator = new OscillatorAnalyticalSolutionIntegrator(Math.pow(10, 4), 100, 1);
@@ -70,6 +93,10 @@ public class Main {
         saveDeltaTimeOption.setRequired(true);
         options.addOption(saveDeltaTimeOption);
 
+        Option systemOption = new Option("s", "system", true, "system to simulate");
+        systemOption.setRequired(true);
+        options.addOption(systemOption);
+
         CommandLineParser parser = new DefaultParser();
         HelpFormatter formatter = new HelpFormatter();
         CommandLine cmd = null;
@@ -105,7 +132,17 @@ public class Main {
             System.exit(1);
         }
 
-        filename = cmd.getOptionValue("output");
+        try {
+            system = Integer.parseInt(cmd.getOptionValue("system"));
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid argument system, must be integer between 1 and 5");
+            System.exit(1);
+        }
+        if (system < 1 || system > 5) {
+            System.out.println("Invalid argument system, must be integer between 1 and 5");
+            System.exit(1);
+        }
 
+        filename = cmd.getOptionValue("output");
     }
 }

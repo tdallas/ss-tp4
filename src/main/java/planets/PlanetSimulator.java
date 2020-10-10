@@ -6,8 +6,6 @@ import planets.integrators.PlanetIntegrator;
 import java.util.List;
 
 public class PlanetSimulator {
-    public static final double GRAVITATIONAL_CONSTANT = 6.693 * Math.pow(10,-11);
-
     private final double timeDelta;
     private final double saveTimeDelta;
     private final PlanetCutCondition planetCutCondition;

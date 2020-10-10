@@ -28,15 +28,16 @@ public class PlanetFileGenerator {
     public void addToFile(List<Planet> planets, double timePassed) {
         try {
             bw.write(planets.size() + "\n");
-            bw.write("id xPosition yPosition xVelocity yVelocity radius mass redColor greenColor blueColor timePassed\n");
+            bw.write("id xPosition yPosition xVelocity yVelocity radius mass animationRadius redColor greenColor blueColor timePassed\n");
             for (Planet planet : planets) {
-                bw.write(planet.getName() + " " +
+                bw.write(planet.getId() + " " +
                         planet.getPosition().getX() + " " +
                         planet.getPosition().getY() + " " +
                         planet.getVelocity().getX() + " " +
                         planet.getVelocity().getY() + " " +
                         planet.getRadius() + " " +
                         planet.getMass() + " " +
+                        planet.getAnimationRadius() + " " +
                         planet.getRedColor() + " " +
                         planet.getGreenColor() + " " +
                         planet.getBlueColor() + " " +

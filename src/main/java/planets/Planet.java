@@ -10,7 +10,7 @@ import java.util.Objects;
 @Getter
 @Setter
 public class Planet {
-    private final String name;
+    private final int id;
     private Vector position;
     private Vector velocity;
     private final double mass;
@@ -18,17 +18,18 @@ public class Planet {
     private final double redColor;
     private final double greenColor;
     private final double blueColor;
+    private final double animationRadius;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Planet planet = (Planet) o;
-        return Objects.equals(name, planet.name);
+        return Objects.equals(id, planet.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name);
+        return Objects.hash(id);
     }
 }

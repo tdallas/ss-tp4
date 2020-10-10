@@ -2,6 +2,7 @@ package planets.integrators;
 
 import planets.Planet;
 import planets.PlanetSimulator;
+import planets.PlanetSystemGenerator;
 import planets.Vector;
 
 import java.util.List;
@@ -16,7 +17,7 @@ public abstract class PlanetIntegrator {
 
         for (Planet aux: planets) {
             if(!planet.equals(aux)) {
-                double f = PlanetSimulator.GRAVITATIONAL_CONSTANT * planet.getMass() * aux.getMass() / position.distanceSquare(aux.getPosition());
+                double f = PlanetSystemGenerator.GRAVITATIONAL_CONSTANT * planet.getMass() * aux.getMass() / position.distanceSquare(aux.getPosition());
 
                 Vector e = aux.getPosition().sub(position).mul(1 / position.distance(aux.getPosition()));
                 Vector projectedForces = e.mul(f);
