@@ -29,7 +29,7 @@ public class PlanetSimulator {
     public void simulate() {
         planetFileGenerator.addToFile(planets, time);
         while (!planetCutCondition.isFinished(time)) {
-            for(Planet planet: planets){
+            for (Planet planet : planets) {
                 planetIntegrator.applyIntegrator(timeDelta, planet, planets);
             }
             time += timeDelta;

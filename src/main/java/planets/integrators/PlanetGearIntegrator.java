@@ -1,7 +1,6 @@
 package planets.integrators;
 
 import org.apache.commons.math3.util.CombinatoricsUtils;
-import oscillator.OscillatorParticle;
 import planets.Planet;
 import planets.PlanetVector;
 
@@ -9,14 +8,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class PlanetGearIntegrator extends PlanetIntegrator{
+public class PlanetGearIntegrator extends PlanetIntegrator {
     private final Map<Planet, PlanetVector[]> previousPredictions;
 
     private static final double[] corrector = {3.0 / 16, 251.0 / 360, 1.0, 11.0 / 18, 1.0 / 6, 1.0 / 60};
 
-    public PlanetGearIntegrator(List<Planet> planets) {
+    public PlanetGearIntegrator(double gravitationalConstant, List<Planet> planets) {
+        super(gravitationalConstant);
         previousPredictions = new HashMap<>();
-        for(Planet planet: planets){
+        for (Planet planet : planets) {
             PlanetVector[] previousPrediction = new PlanetVector[6];
             previousPrediction[0] = planet.getPosition();
             previousPrediction[1] = planet.getVelocity();

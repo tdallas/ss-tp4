@@ -12,7 +12,6 @@ import planets.cutCondition.PlanetCutCondition;
 import planets.cutCondition.PlanetTimeCutCondition;
 import planets.integrators.PlanetGearIntegrator;
 import planets.integrators.PlanetIntegrator;
-import planets.integrators.PlanetVerletIntegrator;
 
 public class Main {
     private static int system;
@@ -35,23 +34,23 @@ public class Main {
         simulatePlanets();
     }
 
-    private static void simulatePlanets(){
+    private static void simulatePlanets() {
         PlanetSystemGenerator planetSystemGenerator = new PlanetSystemGenerator();
 
-//        PlanetIntegrator planetIntegrator = new PlanetVerletIntegrator();
+//        PlanetIntegrator planetIntegrator = new PlanetVerletIntegrator(planetSystemGenerator.getGravitationalConstant());
 //        PlanetFileGenerator planetFileGenerator = new PlanetFileGenerator("planet-verlet");
 //        PlanetCutCondition planetCutCondition = new PlanetTimeCutCondition(31536000*10);
 //        PlanetSimulator planetSimulator = new PlanetSimulator(900, 86400, planetCutCondition, planetIntegrator, planetFileGenerator, planetSystemGenerator.getPlanets());
 //        planetSimulator.simulate();
 
-        PlanetIntegrator planetIntegrator = new PlanetGearIntegrator(planetSystemGenerator.getPlanets());
+        PlanetIntegrator planetIntegrator = new PlanetGearIntegrator(planetSystemGenerator.getGravitationalConstant(), planetSystemGenerator.getPlanets());
         PlanetFileGenerator planetFileGenerator = new PlanetFileGenerator("planet-gear");
-        PlanetCutCondition planetCutCondition = new PlanetTimeCutCondition(31536000*10);
+        PlanetCutCondition planetCutCondition = new PlanetTimeCutCondition(31536000 * 10);
         PlanetSimulator planetSimulator = new PlanetSimulator(900, 86400, planetCutCondition, planetIntegrator, planetFileGenerator, planetSystemGenerator.getPlanets());
         planetSimulator.simulate();
     }
 
-    private static void simulateOscillator(){
+    private static void simulateOscillator() {
         //Solucion analitica
         OscillatorParticle oscillatorParticle = new OscillatorParticle(1, 0, 70);
         OscillatorIntegrator oscillatorIntegrator = new OscillatorAnalyticalSolutionIntegrator(Math.pow(10, 4), 100, 1);
