@@ -20,10 +20,11 @@ public class OscillatorBeemanIntegrator extends OscillatorIntegrator {
         }
         double acceleration = forces / oscillatorParticle.getMass();
         oscillatorParticle.setPosition(oscillatorParticle.getPosition() + oscillatorParticle.getVelocity() * timeDelta + (2.0 / 3) * acceleration * timeDelta * timeDelta - (1.0 / 6) * previousAcceleration * timeDelta * timeDelta);
+        //predict velocity with position
         double velocityPrediction = oscillatorParticle.getVelocity() + (3.0 / 2) * acceleration * timeDelta - (1.0 / 2) * previousAcceleration * timeDelta;
-        double newForces = getForces(oscillatorParticle.getPosition(), velocityPrediction);
-        double newAcceleration = newForces / oscillatorParticle.getMass();
-        oscillatorParticle.setVelocity(oscillatorParticle.getVelocity() + (1.0 / 3) * newAcceleration * timeDelta + (5.0 / 6) * acceleration * timeDelta - (1.0 / 6) * previousAcceleration * timeDelta);
+        double nextAcceleration = getForces(oscillatorParticle.getPosition(), velocityPrediction) / oscillatorParticle.getMass();
+        //corrected velocity
+        oscillatorParticle.setVelocity(oscillatorParticle.getVelocity() + (1.0 / 3) * nextAcceleration * timeDelta + (5.0 / 6) * acceleration * timeDelta - (1.0 / 6) * previousAcceleration * timeDelta);
         previousAcceleration = acceleration;
     }
 }

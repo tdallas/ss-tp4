@@ -2,7 +2,6 @@ package oscillator.integrators;
 
 import oscillator.OscillatorParticle;
 
-//Solucion analitica
 public class OscillatorAnalyticalSolutionIntegrator extends OscillatorIntegrator {
     private double time;
     private final double amplitude;
