@@ -120,8 +120,8 @@ public class Main {
                 new PlanetVector(xPosition, yPosition),
                 new PlanetVector(xVelocity, yVelocity),
                 mass, radius,
-                0, 0, 1,
-                radius * 50000000));
+                1, 1, 1,
+                radius * 100000000));
     }
 
     private static void simulatePlanets() {
