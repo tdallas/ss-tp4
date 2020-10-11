@@ -6,12 +6,6 @@ import planets.integrators.PlanetIntegrator;
 import java.util.List;
 
 public class PlanetSimulator {
-    private static final double SPACESHIP_MASS = 5 * Math.pow(10, 5);                    // kg
-    private static final double SPACESHIP_RADIUS = 50;                                   // m
-    private static final double SPACESHIP_HEIGHT = 1500 * Math.pow(10, 3);               // m
-    private static final double SPACESHIP_ORBITAL_VELOCITY = 7.12 * Math.pow(10, 3);     // m/s
-    private static final double SPACESHIP_LAUNCH_SPEED = 8 * Math.pow(10, 3);            // m/s
-
     private final double timeDelta;
     private final double saveTimeDelta;
     private final PlanetCutCondition planetCutCondition;
@@ -50,24 +44,5 @@ public class PlanetSimulator {
         if(closeFile) {
             planetFileGenerator.closeFile();
         }
-    }
-
-    private void addSpaceship(List<Planet> planets){
-        Planet sun = planets.get(0);
-        Planet earth = planets.get(1);
-        double angle = Math.atan2(earth.getPosition().getX() - sun.getPosition().getX(), earth.getPosition().getY() - sun.getPosition().getY());
-        double distanceToEarthCenter = SPACESHIP_HEIGHT + earth.getRadius();
-        double xpos = earth.getPosition().getX() + Math.cos(angle) * distanceToEarthCenter;
-        double ypos = earth.getPosition().getY() + Math.sin(angle) * distanceToEarthCenter;
-        double vx = earth.getVelocity().getX() + Math.cos(angle) * (SPACESHIP_LAUNCH_SPEED + SPACESHIP_ORBITAL_VELOCITY);
-        double vy = earth.getVelocity().getY() + Math.sin(angle) * (SPACESHIP_LAUNCH_SPEED + SPACESHIP_ORBITAL_VELOCITY);
-        double radius = SPACESHIP_RADIUS;
-        double mass = SPACESHIP_MASS;
-        planets.add(new Planet(3,
-                new PlanetVector(xpos, ypos),
-                new PlanetVector(vx, vy),
-                mass, radius,
-                0, 0, 1,
-                radius * 50000000));
     }
 }

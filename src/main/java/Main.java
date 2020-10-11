@@ -5,17 +5,24 @@ import oscillator.OscillatorSimulator;
 import oscillator.cutCondition.OscillatorCutCondition;
 import oscillator.cutCondition.OscillatorTimeCutCondition;
 import oscillator.integrators.*;
-import planets.PlanetFileGenerator;
-import planets.PlanetSimulator;
-import planets.PlanetSystemGenerator;
+import planets.*;
 import planets.cutCondition.PlanetCutCondition;
+import planets.cutCondition.PlanetSpaceshipCutCondition;
 import planets.cutCondition.PlanetTimeCutCondition;
 import planets.integrators.PlanetBeemanIntegrator;
 import planets.integrators.PlanetEulerIntegrator;
 import planets.integrators.PlanetGearIntegrator;
 import planets.integrators.PlanetIntegrator;
 
+import java.util.List;
+
 public class Main {
+    private static final double SPACESHIP_MASS = 5 * Math.pow(10, 5);                    // kg
+    private static final double SPACESHIP_RADIUS = 50;                                   // m
+    private static final double SPACESHIP_HEIGHT = 1500 * Math.pow(10, 3);               // m
+    private static final double SPACESHIP_ORBITAL_VELOCITY = 7.12 * Math.pow(10, 3);     // m/s
+    private static final double SPACESHIP_LAUNCH_SPEED = 8 * Math.pow(10, 3);            // m/s
+
     private static int system;
     private static String filename;
     private static double deltaTime;
@@ -33,17 +40,88 @@ public class Main {
 //        System.out.println("--------------------------");
 
         //simulateOscillators();
-        simulatePlanets();
-        //simulateSpaceShipToMars();
+
+        //simulatePlanets();
+
+        //TARDA MUCHO PERO ENCUENTRA EL MEJOR DIA QUE SERIA 723 dias despues del 28/09/2020
+        //int bestDayToSendSpaceship = searchBestDayToSendSpaceship(750);
+        //System.out.println("Best day: " + bestDayToSendSpaceship);
+
+        //Mejor dia es 723
+        simulateSpaceShipToMars(723);
     }
 
-    private static void simulateSpaceShipToMars(){
+    private static int searchBestDayToSendSpaceship(int days){
+        int day;
+        double bestDistance = Double.MAX_VALUE;
+        int bestDay = 0;
+        for(day = 1; day < days; day++){
+            System.out.println("Day " + day);
+            PlanetSystemGenerator planetSystemGenerator = new PlanetSystemGenerator();
+            List<Planet> planets = planetSystemGenerator.getPlanets();
+            //uso la misma lista
+
+            PlanetIntegrator planetIntegrator = new PlanetGearIntegrator(planetSystemGenerator.getGravitationalConstant(), planetSystemGenerator.getPlanets());
+            PlanetFileGenerator planetFileGenerator = new PlanetFileGenerator("spaceship-" + day + "-day");
+            //dias hasta lanzar nave espacial
+            PlanetCutCondition planetCutCondition = new PlanetTimeCutCondition(86400 * day);
+            PlanetSimulator planetSimulator = new PlanetSimulator(60, 86400, planetCutCondition, planetIntegrator, planetFileGenerator, planets);
+            planetSimulator.simulate(false);
+
+            //agrego nave y simulamos hasta condicion de nave espacial
+            planetCutCondition = new PlanetSpaceshipCutCondition();
+            addSpaceship(planets);
+            planetIntegrator = new PlanetGearIntegrator(planetSystemGenerator.getGravitationalConstant(), planetSystemGenerator.getPlanets());
+            planetSimulator = new PlanetSimulator(60, 86400, planetCutCondition, planetIntegrator, planetFileGenerator, planets);
+            planetSimulator.simulate(true);
+            Planet mars = planets.get(2);
+            Planet spaceship = planets.get(3);
+            double distance = mars.getPosition().distance(spaceship.getPosition());
+            if(bestDistance > distance){
+                bestDistance = distance;
+                bestDay = day;
+            }
+        }
+        return bestDay;
+    }
+
+    private static void simulateSpaceShipToMars(double daysToSendSpaceship){
         PlanetSystemGenerator planetSystemGenerator = new PlanetSystemGenerator();
+        List<Planet> planets = planetSystemGenerator.getPlanets();
+        //uso la misma lista
+
         PlanetIntegrator planetIntegrator = new PlanetGearIntegrator(planetSystemGenerator.getGravitationalConstant(), planetSystemGenerator.getPlanets());
         PlanetFileGenerator planetFileGenerator = new PlanetFileGenerator("spaceship-to-mars");
-        PlanetCutCondition planetCutCondition = new PlanetTimeCutCondition(31536000);
-        PlanetSimulator planetSimulator = new PlanetSimulator(60, 86400, planetCutCondition, planetIntegrator, planetFileGenerator, planetSystemGenerator.getPlanets());
+        //dias hasta lanzar nave espacial
+        PlanetCutCondition planetCutCondition = new PlanetTimeCutCondition(86400 * daysToSendSpaceship);
+        PlanetSimulator planetSimulator = new PlanetSimulator(60, 86400, planetCutCondition, planetIntegrator, planetFileGenerator, planets);
+        planetSimulator.simulate(false);
+
+        //agrego nave y simulamos hasta condicion de nave espacial
+        planetCutCondition = new PlanetSpaceshipCutCondition();
+        addSpaceship(planets);
+        planetIntegrator = new PlanetGearIntegrator(planetSystemGenerator.getGravitationalConstant(), planetSystemGenerator.getPlanets());
+        planetSimulator = new PlanetSimulator(60, 86400, planetCutCondition, planetIntegrator, planetFileGenerator, planets);
         planetSimulator.simulate(true);
+    }
+
+    private static void addSpaceship(List<Planet> planets){
+        Planet sun = planets.get(0);
+        Planet earth = planets.get(1);
+        double angle = Math.atan2(earth.getPosition().getX() - sun.getPosition().getX(), earth.getPosition().getY() - sun.getPosition().getY());
+        double distanceToEarthCenter = SPACESHIP_HEIGHT + earth.getRadius();
+        double xPosition = earth.getPosition().getX() + Math.cos(angle) * distanceToEarthCenter;
+        double yPosition = earth.getPosition().getY() + Math.sin(angle) * distanceToEarthCenter;
+        double xVelocity = earth.getVelocity().getX() + Math.cos(angle) * (SPACESHIP_LAUNCH_SPEED + SPACESHIP_ORBITAL_VELOCITY);
+        double yVelocity = earth.getVelocity().getY() + Math.sin(angle) * (SPACESHIP_LAUNCH_SPEED + SPACESHIP_ORBITAL_VELOCITY);
+        double radius = SPACESHIP_RADIUS;
+        double mass = SPACESHIP_MASS;
+        planets.add(new Planet(3,
+                new PlanetVector(xPosition, yPosition),
+                new PlanetVector(xVelocity, yVelocity),
+                mass, radius,
+                0, 0, 1,
+                radius * 50000000));
     }
 
     private static void simulatePlanets() {

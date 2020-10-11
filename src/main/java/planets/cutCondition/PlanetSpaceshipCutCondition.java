@@ -20,6 +20,11 @@ public class PlanetSpaceshipCutCondition implements PlanetCutCondition {
             lastDistance = distance;
             return false;
         }
-        return lastDistance < distance;
+
+        if(lastDistance < distance){
+            return true;
+        }
+        lastDistance = distance;
+        return false;
     }
 }
