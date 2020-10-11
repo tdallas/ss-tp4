@@ -32,9 +32,9 @@ public class PlanetSimulator {
         this.time = 0;
     }
 
-    public void simulate() {
+    public void simulate(boolean closeFile) {
         planetFileGenerator.addToFile(planets, time);
-        while (!planetCutCondition.isFinished(time)) {
+        while (!planetCutCondition.isFinished(planets, time)) {
             for (Planet planet : planets) {
                 if(planet.getId() != 0) {
                     planetIntegrator.applyIntegrator(timeDelta, planet, planets);
@@ -47,7 +47,9 @@ public class PlanetSimulator {
                 timeToSave += saveTimeDelta;
             }
         }
-        planetFileGenerator.closeFile();
+        if(closeFile) {
+            planetFileGenerator.closeFile();
+        }
     }
 
     private void addSpaceship(List<Planet> planets){

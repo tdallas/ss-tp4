@@ -1,5 +1,9 @@
 package planets.cutCondition;
 
+import planets.Planet;
+
+import java.util.List;
+
 public class PlanetTimeCutCondition implements PlanetCutCondition {
     private final double timeToCut;
 
@@ -8,7 +12,7 @@ public class PlanetTimeCutCondition implements PlanetCutCondition {
     }
 
     @Override
-    public boolean isFinished(double time) {
+    public boolean isFinished(List<Planet> planets, double time) {
         return time >= timeToCut;
     }
 }

@@ -43,7 +43,7 @@ public class Main {
         PlanetFileGenerator planetFileGenerator = new PlanetFileGenerator("spaceship-to-mars");
         PlanetCutCondition planetCutCondition = new PlanetTimeCutCondition(31536000);
         PlanetSimulator planetSimulator = new PlanetSimulator(60, 86400, planetCutCondition, planetIntegrator, planetFileGenerator, planetSystemGenerator.getPlanets());
-        planetSimulator.simulate();
+        planetSimulator.simulate(true);
     }
 
     private static void simulatePlanets() {
@@ -54,7 +54,7 @@ public class Main {
         PlanetFileGenerator planetFileGenerator = new PlanetFileGenerator("planet-euler");
         PlanetCutCondition planetCutCondition = new PlanetTimeCutCondition(31536000);
         PlanetSimulator planetSimulator = new PlanetSimulator(60, 86400, planetCutCondition, planetIntegrator, planetFileGenerator, planetSystemGenerator.getPlanets());
-        planetSimulator.simulate();
+        planetSimulator.simulate(true);
 
         //Integrador BEEMAN
         planetSystemGenerator = new PlanetSystemGenerator();
@@ -62,7 +62,7 @@ public class Main {
         planetFileGenerator = new PlanetFileGenerator("planet-beeman");
         planetCutCondition = new PlanetTimeCutCondition(31536000);
         planetSimulator = new PlanetSimulator(60, 86400, planetCutCondition, planetIntegrator, planetFileGenerator, planetSystemGenerator.getPlanets());
-        planetSimulator.simulate();
+        planetSimulator.simulate(true);
 
         //Integrador GEAR PREDICTOR CORRECTOR
         planetSystemGenerator = new PlanetSystemGenerator();
@@ -70,7 +70,7 @@ public class Main {
         planetFileGenerator = new PlanetFileGenerator("planet-gear");
         planetCutCondition = new PlanetTimeCutCondition(31536000);
         planetSimulator = new PlanetSimulator(60, 86400, planetCutCondition, planetIntegrator, planetFileGenerator, planetSystemGenerator.getPlanets());
-        planetSimulator.simulate();
+        planetSimulator.simulate(true);
     }
 
     private static void simulateOscillators() {

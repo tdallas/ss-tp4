@@ -2,7 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 analytic = pd.read_csv('out/oscillator-analytic.csv')
-plt.plot(analytic['time'], analytic['position'], label='Analítica')
+plt.plot(analytic['time'], analytic['position'], label='Solución Analítica')
 
 euler = pd.read_csv('out/oscillator-euler.csv')
 plt.plot(euler['time'], euler['position'], label='Euler Modificado')
