@@ -9,27 +9,23 @@ public class PlanetVector {
     private final double x;
     private final double y;
 
-    public PlanetVector add(PlanetVector other) {
-        return new PlanetVector(x + other.x, y + other.y);
+    public PlanetVector add(PlanetVector planetVector) {
+        return new PlanetVector(this.x + planetVector.x, this.y + planetVector.y);
     }
 
-    public PlanetVector sub(PlanetVector other) {
-        return new PlanetVector(x - other.x, y - other.y);
+    public PlanetVector subtract(PlanetVector planetVector) {
+        return new PlanetVector(this.x - planetVector.x, this.y - planetVector.y);
     }
 
-    public PlanetVector mul(double scalar) {
-        return new PlanetVector(x * scalar, y * scalar);
+    public PlanetVector multiply(double number) {
+        return new PlanetVector(this.x * number, this.y * number);
     }
 
-    public PlanetVector div(double scalar) {
-        return new PlanetVector(x / scalar, y / scalar);
+    public PlanetVector divide(double number) {
+        return new PlanetVector(this.x / number, this.y / number);
     }
 
-    public double distance(PlanetVector other) {
-        return Math.sqrt(distanceSquare(other));
-    }
-
-    public double distanceSquare(PlanetVector other) {
-        return Math.pow(x - other.x, 2) + Math.pow(y - other.y, 2);
+    public double distance(PlanetVector planetVector) {
+        return Math.hypot(this.x - planetVector.x, this.y - planetVector.y);
     }
 }

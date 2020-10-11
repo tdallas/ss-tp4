@@ -20,7 +20,7 @@ public class PlanetGearIntegrator extends PlanetIntegrator {
             PlanetVector[] previousPrediction = new PlanetVector[6];
             previousPrediction[0] = planet.getPosition();
             previousPrediction[1] = planet.getVelocity();
-            previousPrediction[2] = getForces(planet, planet.getPosition(), planets).div(planet.getMass());
+            previousPrediction[2] = getForces(planet, planet.getPosition(), planets).divide(planet.getMass());
             previousPrediction[3] = new PlanetVector(0, 0);
             previousPrediction[4] = new PlanetVector(0, 0);
             previousPrediction[5] = new PlanetVector(0, 0);
@@ -42,39 +42,39 @@ public class PlanetGearIntegrator extends PlanetIntegrator {
         PlanetVector[] prediction = new PlanetVector[6];
 
         prediction[0] = previousPrediction[0].add(
-                previousPrediction[1].mul(firstDegree)).add(
-                previousPrediction[2].mul(secondDegree)).add(
-                previousPrediction[3].mul(thirdDegree)).add(
-                previousPrediction[4].mul(fourthDegree)).add(
-                previousPrediction[5].mul(fifthDegree));
+                previousPrediction[1].multiply(firstDegree)).add(
+                previousPrediction[2].multiply(secondDegree)).add(
+                previousPrediction[3].multiply(thirdDegree)).add(
+                previousPrediction[4].multiply(fourthDegree)).add(
+                previousPrediction[5].multiply(fifthDegree));
 
         prediction[1] = previousPrediction[1].add(
-                previousPrediction[2].mul(firstDegree)).add(
-                previousPrediction[3].mul(secondDegree)).add(
-                previousPrediction[4].mul(thirdDegree)).add(
-                previousPrediction[5].mul(fourthDegree));
+                previousPrediction[2].multiply(firstDegree)).add(
+                previousPrediction[3].multiply(secondDegree)).add(
+                previousPrediction[4].multiply(thirdDegree)).add(
+                previousPrediction[5].multiply(fourthDegree));
 
         prediction[2] = previousPrediction[2].add(
-                previousPrediction[3].mul(firstDegree)).add(
-                previousPrediction[4].mul(secondDegree)).add(
-                previousPrediction[5].mul(thirdDegree));
+                previousPrediction[3].multiply(firstDegree)).add(
+                previousPrediction[4].multiply(secondDegree)).add(
+                previousPrediction[5].multiply(thirdDegree));
 
         prediction[3] = previousPrediction[3].add(
-                previousPrediction[4].mul(firstDegree)).add(
-                previousPrediction[5].mul(secondDegree));
+                previousPrediction[4].multiply(firstDegree)).add(
+                previousPrediction[5].multiply(secondDegree));
 
         prediction[4] = previousPrediction[4].add(
-                previousPrediction[5].mul(firstDegree));
+                previousPrediction[5].multiply(firstDegree));
 
         prediction[5] = previousPrediction[5];
 
         // evaluate
-        PlanetVector deltaA = getForces(planet, prediction[0], planets).div(planet.getMass()).sub(prediction[2]);
-        PlanetVector deltaR2 = deltaA.mul(timeDelta * timeDelta).div(2);
+        PlanetVector deltaA = getForces(planet, prediction[0], planets).divide(planet.getMass()).subtract(prediction[2]);
+        PlanetVector deltaR2 = deltaA.multiply(timeDelta * timeDelta).divide(2);
 
         // correct
         for (int i = 0; i < 6; i++) {
-            previousPrediction[i] = prediction[i].add(deltaR2.mul(corrector[i] * CombinatoricsUtils.factorial(i) / Math.pow(timeDelta, i)));
+            previousPrediction[i] = prediction[i].add(deltaR2.multiply(corrector[i] * CombinatoricsUtils.factorial(i) / Math.pow(timeDelta, i)));
         }
 
         planet.setPosition(previousPrediction[0]);
