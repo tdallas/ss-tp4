@@ -18,10 +18,10 @@ public abstract class PlanetIntegrator {
     PlanetVector getForces(Planet planet, PlanetVector position, List<Planet> planets) {
         PlanetVector forces = new PlanetVector(0, 0);
 
-        for (Planet aux : planets) {
-            if (!planet.equals(aux)) {
-                double gravitationalForce = gravitationalConstant * planet.getMass() * aux.getMass() / Math.pow(position.distance(aux.getPosition()), 2);
-                forces = forces.add(aux.getPosition().subtract(position).multiply(1 / position.distance(aux.getPosition())).multiply(gravitationalForce));
+        for (Planet p : planets) {
+            if (!planet.equals(p)) {
+                double gravitationalForce = gravitationalConstant * planet.getMass() * p.getMass() / Math.pow(position.distance(p.getPosition()), 2);
+                forces = forces.add(p.getPosition().subtract(position).multiply(1 / position.distance(p.getPosition())).multiply(gravitationalForce));
             }
         }
 

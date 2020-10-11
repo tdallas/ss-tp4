@@ -35,14 +35,15 @@ public class Main {
     }
 
     private static void simulatePlanets() {
-        PlanetSystemGenerator planetSystemGenerator = new PlanetSystemGenerator();
 
+//        PlanetSystemGenerator planetSystemGenerator = new PlanetSystemGenerator();
 //        PlanetIntegrator planetIntegrator = new PlanetVerletIntegrator(planetSystemGenerator.getGravitationalConstant());
 //        PlanetFileGenerator planetFileGenerator = new PlanetFileGenerator("planet-verlet");
 //        PlanetCutCondition planetCutCondition = new PlanetTimeCutCondition(31536000*10);
 //        PlanetSimulator planetSimulator = new PlanetSimulator(900, 86400, planetCutCondition, planetIntegrator, planetFileGenerator, planetSystemGenerator.getPlanets());
 //        planetSimulator.simulate();
 
+        PlanetSystemGenerator planetSystemGenerator = new PlanetSystemGenerator();
         PlanetIntegrator planetIntegrator = new PlanetGearIntegrator(planetSystemGenerator.getGravitationalConstant(), planetSystemGenerator.getPlanets());
         PlanetFileGenerator planetFileGenerator = new PlanetFileGenerator("planet-gear");
         PlanetCutCondition planetCutCondition = new PlanetTimeCutCondition(31536000 * 10);
