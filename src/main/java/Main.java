@@ -10,8 +10,10 @@ import planets.PlanetSimulator;
 import planets.PlanetSystemGenerator;
 import planets.cutCondition.PlanetCutCondition;
 import planets.cutCondition.PlanetTimeCutCondition;
+import planets.integrators.PlanetBeemanIntegrator;
 import planets.integrators.PlanetGearIntegrator;
 import planets.integrators.PlanetIntegrator;
+import planets.integrators.PlanetVerletIntegrator;
 
 public class Main {
     private static int system;
@@ -44,11 +46,18 @@ public class Main {
 //        planetSimulator.simulate();
 
         PlanetSystemGenerator planetSystemGenerator = new PlanetSystemGenerator();
-        PlanetIntegrator planetIntegrator = new PlanetGearIntegrator(planetSystemGenerator.getGravitationalConstant(), planetSystemGenerator.getPlanets());
-        PlanetFileGenerator planetFileGenerator = new PlanetFileGenerator("planet-gear");
+        PlanetIntegrator planetIntegrator = new PlanetBeemanIntegrator(planetSystemGenerator.getGravitationalConstant());
+        PlanetFileGenerator planetFileGenerator = new PlanetFileGenerator("planet-beeman");
         PlanetCutCondition planetCutCondition = new PlanetTimeCutCondition(31536000 * 10);
         PlanetSimulator planetSimulator = new PlanetSimulator(900, 86400, planetCutCondition, planetIntegrator, planetFileGenerator, planetSystemGenerator.getPlanets());
         planetSimulator.simulate();
+
+//        PlanetSystemGenerator planetSystemGenerator = new PlanetSystemGenerator();
+//        PlanetIntegrator planetIntegrator = new PlanetGearIntegrator(planetSystemGenerator.getGravitationalConstant(), planetSystemGenerator.getPlanets());
+//        PlanetFileGenerator planetFileGenerator = new PlanetFileGenerator("planet-gear");
+//        PlanetCutCondition planetCutCondition = new PlanetTimeCutCondition(31536000 * 10);
+//        PlanetSimulator planetSimulator = new PlanetSimulator(900, 86400, planetCutCondition, planetIntegrator, planetFileGenerator, planetSystemGenerator.getPlanets());
+//        planetSimulator.simulate();
     }
 
     private static void simulateOscillator() {
