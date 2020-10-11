@@ -6,6 +6,13 @@ import java.util.List;
 public class PlanetSystemGenerator {
     private static final double GRAVITATIONAL_CONSTANT = 6.67408 * Math.pow(10, -11);    // m^3 kg^-1 s^-2
 
+    private static final double SUN_MASS = 1988500 * Math.pow(10, 24);                   // kg
+    private static final double SUN_RADIUS = 696000 * Math.pow(10, 3);                   // m
+    private static final double SUN_X_POSITION = 0;                                      // m
+    private static final double SUN_Y_POSITION = 0;                                      // m
+    private static final double SUN_X_VELOCITY = 0;                                      // m/s
+    private static final double SUN_Y_VELOCITY = 0;                                      // m/s
+
     private static final double EARTH_MASS = 5.97219 * Math.pow(10, 24);                 // kg
     private static final double EARTH_RADIUS = 6378.137 * Math.pow(10, 3);               // m
     private static final double EARTH_X_POSITION = 1.493188929636662 * Math.pow(10, 11); // m
@@ -19,20 +26,6 @@ public class PlanetSystemGenerator {
     private static final double MARS_Y_POSITION = 4.023977946528339 * Math.pow(10, 10);  // m
     private static final double MARS_X_VELOCITY = -3.717406842095575 * Math.pow(10, 3);  // m/s
     private static final double MARS_Y_VELOCITY = 2.584914078301731 * Math.pow(10, 4);   // m/s
-
-    private static final double SUN_MASS = 1988500 * Math.pow(10, 24);                   // kg
-    private static final double SUN_RADIUS = 696000 * Math.pow(10, 3);                   // m
-    private static final double SUN_X_POSITION = 0;                                      // m
-    private static final double SUN_Y_POSITION = 0;                                      // m
-    private static final double SUN_X_VELOCITY = 0;                                      // m/s
-    private static final double SUN_Y_VELOCITY = 0;                                      // m/s
-
-    private static final double SPACESHIP_MASS = 1988500 * Math.pow(10, 5);              // kg
-    private static final double SPACESHIP_RADIUS = 696000 * Math.pow(10, 3);             // m
-    private static final double SPACESHIP_X_POSITION = 0;                                // m
-    private static final double SPACESHIP_Y_POSITION = 0;                                // m
-    private static final double SPACESHIP_X_VELOCITY = 0;                                // m/s
-    private static final double SPACESHIP_Y_VELOCITY = 0;                                // m/s
 
     private final List<Planet> planets;
 

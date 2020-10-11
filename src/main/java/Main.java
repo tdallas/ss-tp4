@@ -32,35 +32,48 @@ public class Main {
 //        System.out.println("File name: " + deltaTime);
 //        System.out.println("--------------------------");
 
-        simulateOscillator();
+        //simulateOscillators();
         simulatePlanets();
+        //simulateSpaceShipToMars();
+    }
+
+    private static void simulateSpaceShipToMars(){
+        PlanetSystemGenerator planetSystemGenerator = new PlanetSystemGenerator();
+        PlanetIntegrator planetIntegrator = new PlanetGearIntegrator(planetSystemGenerator.getGravitationalConstant(), planetSystemGenerator.getPlanets());
+        PlanetFileGenerator planetFileGenerator = new PlanetFileGenerator("spaceship-to-mars");
+        PlanetCutCondition planetCutCondition = new PlanetTimeCutCondition(31536000);
+        PlanetSimulator planetSimulator = new PlanetSimulator(60, 86400, planetCutCondition, planetIntegrator, planetFileGenerator, planetSystemGenerator.getPlanets());
+        planetSimulator.simulate();
     }
 
     private static void simulatePlanets() {
 
+        //Integrador EULER MODIFICADO
         PlanetSystemGenerator planetSystemGenerator = new PlanetSystemGenerator();
         PlanetIntegrator planetIntegrator = new PlanetEulerIntegrator(planetSystemGenerator.getGravitationalConstant());
         PlanetFileGenerator planetFileGenerator = new PlanetFileGenerator("planet-euler");
-        PlanetCutCondition planetCutCondition = new PlanetTimeCutCondition(31536000 * 10);
-        PlanetSimulator planetSimulator = new PlanetSimulator(900, 86400, planetCutCondition, planetIntegrator, planetFileGenerator, planetSystemGenerator.getPlanets());
+        PlanetCutCondition planetCutCondition = new PlanetTimeCutCondition(31536000);
+        PlanetSimulator planetSimulator = new PlanetSimulator(60, 86400, planetCutCondition, planetIntegrator, planetFileGenerator, planetSystemGenerator.getPlanets());
         planetSimulator.simulate();
 
+        //Integrador BEEMAN
         planetSystemGenerator = new PlanetSystemGenerator();
         planetIntegrator = new PlanetBeemanIntegrator(planetSystemGenerator.getGravitationalConstant());
         planetFileGenerator = new PlanetFileGenerator("planet-beeman");
-        planetCutCondition = new PlanetTimeCutCondition(31536000 * 10);
-        planetSimulator = new PlanetSimulator(900, 86400, planetCutCondition, planetIntegrator, planetFileGenerator, planetSystemGenerator.getPlanets());
+        planetCutCondition = new PlanetTimeCutCondition(31536000);
+        planetSimulator = new PlanetSimulator(60, 86400, planetCutCondition, planetIntegrator, planetFileGenerator, planetSystemGenerator.getPlanets());
         planetSimulator.simulate();
 
+        //Integrador GEAR PREDICTOR CORRECTOR
         planetSystemGenerator = new PlanetSystemGenerator();
         planetIntegrator = new PlanetGearIntegrator(planetSystemGenerator.getGravitationalConstant(), planetSystemGenerator.getPlanets());
         planetFileGenerator = new PlanetFileGenerator("planet-gear");
-        planetCutCondition = new PlanetTimeCutCondition(31536000 * 10);
-        planetSimulator = new PlanetSimulator(900, 86400, planetCutCondition, planetIntegrator, planetFileGenerator, planetSystemGenerator.getPlanets());
+        planetCutCondition = new PlanetTimeCutCondition(31536000);
+        planetSimulator = new PlanetSimulator(60, 86400, planetCutCondition, planetIntegrator, planetFileGenerator, planetSystemGenerator.getPlanets());
         planetSimulator.simulate();
     }
 
-    private static void simulateOscillator() {
+    private static void simulateOscillators() {
         //Solucion analitica
         OscillatorParticle oscillatorParticle = new OscillatorParticle(1, 0, 70);
         OscillatorIntegrator oscillatorIntegrator = new OscillatorAnalyticalSolutionIntegrator(Math.pow(10, 4), 100, 1);
@@ -69,7 +82,7 @@ public class Main {
         OscillatorSimulator oscillatorSimulator = new OscillatorSimulator(0.0001, 0.01, oscillatorCutCondition, oscillatorIntegrator, oscillatorFileGenerator, oscillatorParticle);
         oscillatorSimulator.simulate();
 
-        //Solucion EULER MODIFICADO
+        //Integrador EULER MODIFICADO
         oscillatorParticle = new OscillatorParticle(1, 0, 70);
         oscillatorIntegrator = new OscillatorEulerIntegrator(Math.pow(10, 4), 100);
         oscillatorFileGenerator = new OscillatorFileGenerator("oscillator-euler");
@@ -77,7 +90,7 @@ public class Main {
         oscillatorSimulator = new OscillatorSimulator(0.0001, 0.01, oscillatorCutCondition, oscillatorIntegrator, oscillatorFileGenerator, oscillatorParticle);
         oscillatorSimulator.simulate();
 
-        //Solucion BEEMAN
+        //Integrador BEEMAN
         oscillatorParticle = new OscillatorParticle(1, 0, 70);
         oscillatorIntegrator = new OscillatorBeemanIntegrator(Math.pow(10, 4), 100);
         oscillatorFileGenerator = new OscillatorFileGenerator("oscillator-beeman");
@@ -85,7 +98,7 @@ public class Main {
         oscillatorSimulator = new OscillatorSimulator(0.0001, 0.01, oscillatorCutCondition, oscillatorIntegrator, oscillatorFileGenerator, oscillatorParticle);
         oscillatorSimulator.simulate();
 
-        //Solucion GEAR
+        //Integrador GEAR PREDICTOR CORRECTOR
         oscillatorParticle = new OscillatorParticle(1, 0, 70);
         oscillatorIntegrator = new OscillatorGearIntegrator(Math.pow(10, 4), 100);
         oscillatorFileGenerator = new OscillatorFileGenerator("oscillator-gear");

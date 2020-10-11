@@ -20,8 +20,9 @@ public abstract class PlanetIntegrator {
 
         for (Planet p : planets) {
             if (!planet.equals(p)) {
-                double gravitationalForce = gravitationalConstant * planet.getMass() * p.getMass() / Math.pow(position.distance(p.getPosition()), 2);
-                forces = forces.add(p.getPosition().subtract(position).multiply(1 / position.distance(p.getPosition())).multiply(gravitationalForce));
+                double distance = position.distance(p.getPosition());
+                double gravitationalForce = gravitationalConstant * planet.getMass() * p.getMass() / (distance * distance);
+                forces = forces.add(p.getPosition().subtract(position).divide(distance).multiply(gravitationalForce));
             }
         }
 
