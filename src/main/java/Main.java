@@ -11,9 +11,7 @@ import planets.PlanetSystemGenerator;
 import planets.cutCondition.PlanetCutCondition;
 import planets.cutCondition.PlanetTimeCutCondition;
 import planets.integrators.PlanetBeemanIntegrator;
-import planets.integrators.PlanetGearIntegrator;
 import planets.integrators.PlanetIntegrator;
-import planets.integrators.PlanetVerletIntegrator;
 
 public class Main {
     private static int system;
