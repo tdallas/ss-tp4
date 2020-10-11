@@ -13,7 +13,7 @@ public class OscillatorBeemanIntegrator extends OscillatorIntegrator {
     public void applyIntegrator(OscillatorParticle oscillatorParticle, double timeDelta) {
         double forces = getForces(oscillatorParticle.getPosition(), oscillatorParticle.getVelocity());
         if (previousAcceleration == null) {
-            double previousPosition = oscillatorParticle.getPosition() - oscillatorParticle.getVelocity() * timeDelta + (1.0 / 2) * timeDelta * timeDelta * forces;
+            double previousPosition = oscillatorParticle.getPosition() - oscillatorParticle.getVelocity() * timeDelta + ((forces * timeDelta * timeDelta) / (2 * oscillatorParticle.getMass()));
             double previousVelocity = oscillatorParticle.getVelocity() - forces * timeDelta;
             double previousForces = getForces(previousPosition, previousVelocity);
             previousAcceleration = previousForces / oscillatorParticle.getMass();

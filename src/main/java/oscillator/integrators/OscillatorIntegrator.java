@@ -14,7 +14,7 @@ public abstract class OscillatorIntegrator {
     }
 
     double getForces(double position, double velocity) {
-        return -1 * position * springConstant - (viscosity * velocity);
+        return -springConstant * position - viscosity * velocity;
     }
 
     public abstract void applyIntegrator(OscillatorParticle oscillatorParticle, double timeDelta);

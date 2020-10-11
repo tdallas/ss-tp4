@@ -11,6 +11,8 @@ import planets.PlanetSystemGenerator;
 import planets.cutCondition.PlanetCutCondition;
 import planets.cutCondition.PlanetTimeCutCondition;
 import planets.integrators.PlanetBeemanIntegrator;
+import planets.integrators.PlanetEulerIntegrator;
+import planets.integrators.PlanetGearIntegrator;
 import planets.integrators.PlanetIntegrator;
 
 public class Main {
@@ -30,32 +32,32 @@ public class Main {
 //        System.out.println("File name: " + deltaTime);
 //        System.out.println("--------------------------");
 
-        //simulateOscillator();
+        simulateOscillator();
         simulatePlanets();
     }
 
     private static void simulatePlanets() {
 
-//        PlanetSystemGenerator planetSystemGenerator = new PlanetSystemGenerator();
-//        PlanetIntegrator planetIntegrator = new PlanetVerletIntegrator(planetSystemGenerator.getGravitationalConstant());
-//        PlanetFileGenerator planetFileGenerator = new PlanetFileGenerator("planet-verlet");
-//        PlanetCutCondition planetCutCondition = new PlanetTimeCutCondition(31536000*10);
-//        PlanetSimulator planetSimulator = new PlanetSimulator(900, 86400, planetCutCondition, planetIntegrator, planetFileGenerator, planetSystemGenerator.getPlanets());
-//        planetSimulator.simulate();
-
         PlanetSystemGenerator planetSystemGenerator = new PlanetSystemGenerator();
-        PlanetIntegrator planetIntegrator = new PlanetBeemanIntegrator(planetSystemGenerator.getGravitationalConstant());
-        PlanetFileGenerator planetFileGenerator = new PlanetFileGenerator("planet-beeman");
+        PlanetIntegrator planetIntegrator = new PlanetEulerIntegrator(planetSystemGenerator.getGravitationalConstant());
+        PlanetFileGenerator planetFileGenerator = new PlanetFileGenerator("planet-euler");
         PlanetCutCondition planetCutCondition = new PlanetTimeCutCondition(31536000 * 10);
         PlanetSimulator planetSimulator = new PlanetSimulator(900, 86400, planetCutCondition, planetIntegrator, planetFileGenerator, planetSystemGenerator.getPlanets());
         planetSimulator.simulate();
 
-//        PlanetSystemGenerator planetSystemGenerator = new PlanetSystemGenerator();
-//        PlanetIntegrator planetIntegrator = new PlanetGearIntegrator(planetSystemGenerator.getGravitationalConstant(), planetSystemGenerator.getPlanets());
-//        PlanetFileGenerator planetFileGenerator = new PlanetFileGenerator("planet-gear");
-//        PlanetCutCondition planetCutCondition = new PlanetTimeCutCondition(31536000 * 10);
-//        PlanetSimulator planetSimulator = new PlanetSimulator(900, 86400, planetCutCondition, planetIntegrator, planetFileGenerator, planetSystemGenerator.getPlanets());
-//        planetSimulator.simulate();
+        planetSystemGenerator = new PlanetSystemGenerator();
+        planetIntegrator = new PlanetBeemanIntegrator(planetSystemGenerator.getGravitationalConstant());
+        planetFileGenerator = new PlanetFileGenerator("planet-beeman");
+        planetCutCondition = new PlanetTimeCutCondition(31536000 * 10);
+        planetSimulator = new PlanetSimulator(900, 86400, planetCutCondition, planetIntegrator, planetFileGenerator, planetSystemGenerator.getPlanets());
+        planetSimulator.simulate();
+
+        planetSystemGenerator = new PlanetSystemGenerator();
+        planetIntegrator = new PlanetGearIntegrator(planetSystemGenerator.getGravitationalConstant(), planetSystemGenerator.getPlanets());
+        planetFileGenerator = new PlanetFileGenerator("planet-gear");
+        planetCutCondition = new PlanetTimeCutCondition(31536000 * 10);
+        planetSimulator = new PlanetSimulator(900, 86400, planetCutCondition, planetIntegrator, planetFileGenerator, planetSystemGenerator.getPlanets());
+        planetSimulator.simulate();
     }
 
     private static void simulateOscillator() {
@@ -67,10 +69,10 @@ public class Main {
         OscillatorSimulator oscillatorSimulator = new OscillatorSimulator(0.0001, 0.01, oscillatorCutCondition, oscillatorIntegrator, oscillatorFileGenerator, oscillatorParticle);
         oscillatorSimulator.simulate();
 
-        //Solucion VERLET
+        //Solucion EULER MODIFICADO
         oscillatorParticle = new OscillatorParticle(1, 0, 70);
-        oscillatorIntegrator = new OscillatorVerletIntegrator(Math.pow(10, 4), 100);
-        oscillatorFileGenerator = new OscillatorFileGenerator("oscillator-verlet");
+        oscillatorIntegrator = new OscillatorEulerIntegrator(Math.pow(10, 4), 100);
+        oscillatorFileGenerator = new OscillatorFileGenerator("oscillator-euler");
         oscillatorCutCondition = new OscillatorTimeCutCondition(5);
         oscillatorSimulator = new OscillatorSimulator(0.0001, 0.01, oscillatorCutCondition, oscillatorIntegrator, oscillatorFileGenerator, oscillatorParticle);
         oscillatorSimulator.simulate();

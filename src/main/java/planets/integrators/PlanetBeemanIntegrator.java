@@ -20,7 +20,7 @@ public class PlanetBeemanIntegrator extends PlanetIntegrator {
         if (previousAccelerations == null) {
             previousAccelerations = new HashMap<>();
             for (Planet p : planets) {
-                PlanetVector previousPosition = p.getPosition().subtract(p.getVelocity().multiply(timeDelta)).add(forces.multiply(timeDelta * timeDelta * (1.0 / 2)));
+                PlanetVector previousPosition = p.getPosition().subtract(p.getVelocity().multiply(timeDelta)).add(forces.multiply((timeDelta * timeDelta) / (2 * p.getMass())));
                 PlanetVector previousAcceleration = getForces(p, previousPosition, planets).divide(p.getMass());
                 previousAccelerations.put(p, previousAcceleration);
             }

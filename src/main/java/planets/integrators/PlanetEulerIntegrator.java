@@ -5,8 +5,8 @@ import planets.PlanetVector;
 
 import java.util.List;
 
-public class PlanetVerletIntegrator extends PlanetIntegrator {
-    public PlanetVerletIntegrator(double gravitationalConstant) {
+public class PlanetEulerIntegrator extends PlanetIntegrator {
+    public PlanetEulerIntegrator(double gravitationalConstant) {
         super(gravitationalConstant);
     }
 

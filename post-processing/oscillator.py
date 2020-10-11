@@ -4,8 +4,8 @@ import matplotlib.pyplot as plt
 analytic = pd.read_csv('out/oscillator-analytic.csv')
 plt.plot(analytic['time'], analytic['position'], label='Analítica')
 
-verlet = pd.read_csv('out/oscillator-verlet.csv')
-plt.plot(verlet['time'], verlet['position'], label='Verlet')
+euler = pd.read_csv('out/oscillator-euler.csv')
+plt.plot(euler['time'], euler['position'], label='Euler Modificado')
 
 beeman = pd.read_csv('out/oscillator-beeman.csv')
 plt.plot(beeman['time'], beeman['position'], label='Beeman')
