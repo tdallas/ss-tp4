@@ -1,4 +1,7 @@
-package planets;
+package systems.planets;
+
+import engine.Particle;
+import engine.Vector;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,32 +30,35 @@ public class PlanetSystemGenerator {
     private static final double MARS_X_VELOCITY = -3.717406842095575 * Math.pow(10, 3);  // m/s
     private static final double MARS_Y_VELOCITY = 2.584914078301731 * Math.pow(10, 4);   // m/s
 
-    private final List<Planet> planets;
+    private final List<Particle> particles;
 
     public PlanetSystemGenerator() {
-        this.planets = new ArrayList<>();
-        planets.add(new Planet(0,
-                new PlanetVector(SUN_X_POSITION, SUN_Y_POSITION),
-                new PlanetVector(SUN_X_VELOCITY, SUN_Y_VELOCITY),
+        this.particles = new ArrayList<>();
+        particles.add(new Particle(0,
+                new Vector(SUN_X_POSITION, SUN_Y_POSITION),
+                new Vector(SUN_X_VELOCITY, SUN_Y_VELOCITY),
                 SUN_MASS, SUN_RADIUS,
                 1, 1, 0,
-                SUN_RADIUS * 50));
-        planets.add(new Planet(1,
-                new PlanetVector(EARTH_X_POSITION, EARTH_Y_POSITION),
-                new PlanetVector(EARTH_X_VELOCITY, EARTH_Y_VELOCITY),
+                SUN_RADIUS * 50,
+                false));
+        particles.add(new Particle(1,
+                new Vector(EARTH_X_POSITION, EARTH_Y_POSITION),
+                new Vector(EARTH_X_VELOCITY, EARTH_Y_VELOCITY),
                 EARTH_MASS, EARTH_RADIUS,
                 0, 1, 0,
-                EARTH_RADIUS * 2000));
-        planets.add(new Planet(2,
-                new PlanetVector(MARS_X_POSITION, MARS_Y_POSITION),
-                new PlanetVector(MARS_X_VELOCITY, MARS_Y_VELOCITY),
+                EARTH_RADIUS * 2000,
+                true));
+        particles.add(new Particle(2,
+                new Vector(MARS_X_POSITION, MARS_Y_POSITION),
+                new Vector(MARS_X_VELOCITY, MARS_Y_VELOCITY),
                 MARS_MASS, MARS_RADIUS,
                 1, 0, 0,
-                MARS_RADIUS * 2000));
+                MARS_RADIUS * 2000,
+                true));
     }
 
-    public List<Planet> getPlanets() {
-        return planets;
+    public List<Particle> getParticles() {
+        return particles;
     }
 
     public double getGravitationalConstant() {

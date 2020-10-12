@@ -1,4 +1,4 @@
-package planets;
+package engine;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,23 +9,24 @@ import java.util.Objects;
 @AllArgsConstructor
 @Getter
 @Setter
-public class Planet {
+public class Particle {
     private final int id;
-    private PlanetVector position;
-    private PlanetVector velocity;
+    private Vector position;
+    private Vector velocity;
     private final double mass;
     private final double radius;
     private final double redColor;
     private final double greenColor;
     private final double blueColor;
     private final double animationRadius;
+    private final boolean movableParticle;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Planet planet = (Planet) o;
-        return Objects.equals(id, planet.id);
+        Particle particle = (Particle) o;
+        return id == particle.id;
     }
 
     @Override
