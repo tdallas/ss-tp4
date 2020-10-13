@@ -1,5 +1,6 @@
 package engine.integrators;
 
+import engine.ForcesCalculator;
 import engine.Particle;
 import engine.Vector;
 import org.apache.commons.math3.util.CombinatoricsUtils;
@@ -13,8 +14,8 @@ public class GearIntegrator extends Integrator {
 
     private static final double[] corrector = {3.0 / 16, 251.0 / 360, 1.0, 11.0 / 18, 1.0 / 6, 1.0 / 60};
 
-    public GearIntegrator(Forces forces, List<Particle> particles) {
-        super(forces);
+    public GearIntegrator(ForcesCalculator forcesCalculator, List<Particle> particles) {
+        super(forcesCalculator);
         previousPredictions = new HashMap<>();
         for (Particle particle : particles) {
             Vector[] previousPrediction = new Vector[6];

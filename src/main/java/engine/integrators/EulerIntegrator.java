@@ -1,13 +1,14 @@
 package engine.integrators;
 
+import engine.ForcesCalculator;
 import engine.Particle;
 import engine.Vector;
 
 import java.util.List;
 
 public class EulerIntegrator extends Integrator {
-    public EulerIntegrator(Forces forces) {
-        super(forces);
+    public EulerIntegrator(ForcesCalculator forcesCalculator) {
+        super(forcesCalculator);
     }
 
     @Override

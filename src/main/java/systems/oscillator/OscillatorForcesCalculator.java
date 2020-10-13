@@ -1,16 +1,16 @@
 package systems.oscillator;
 
+import engine.ForcesCalculator;
 import engine.Particle;
 import engine.Vector;
-import engine.integrators.Forces;
 
 import java.util.List;
 
-public class OscillatorForces implements Forces {
+public class OscillatorForcesCalculator implements ForcesCalculator {
     private final double springConstant;
     private final double viscosity;
 
-    public OscillatorForces(double springConstant, double viscosity) {
+    public OscillatorForcesCalculator(double springConstant, double viscosity) {
         this.springConstant = springConstant;
         this.viscosity = viscosity;
     }

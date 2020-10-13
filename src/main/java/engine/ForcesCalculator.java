@@ -1,10 +1,7 @@
-package engine.integrators;
-
-import engine.Particle;
-import engine.Vector;
+package engine;
 
 import java.util.List;
 
-public interface Forces {
+public interface ForcesCalculator {
     Vector getForces(Particle particle, Vector position, Vector velocity, List<Particle> particles);
 }

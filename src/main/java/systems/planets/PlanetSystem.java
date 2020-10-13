@@ -1,22 +1,25 @@
 package systems.planets;
 
-import engine.FileGenerator;
-import engine.Particle;
-import engine.TimeStepSimulator;
-import engine.Vector;
+import engine.*;
 import engine.cutCondition.CutCondition;
 import engine.cutCondition.TimeCutCondition;
-import engine.integrators.*;
+import engine.integrators.BeemanIntegrator;
+import engine.integrators.EulerIntegrator;
+import engine.integrators.GearIntegrator;
+import engine.integrators.Integrator;
 
 import java.util.List;
 
 public class PlanetSystem {
     private static final double SPACESHIP_MASS = 5 * Math.pow(10, 5);                    // kg
     private static final double SPACESHIP_RADIUS = 50;                                   // m
-    private static final double SPACESHIP_HEIGHT = 1500 * Math.pow(10, 3);               // m
+    private static final double SPACESHIP_HEIGHT_FROM_EARTH = 1500 * Math.pow(10, 3);    // m
     private static final double SPACESHIP_ORBITAL_VELOCITY = 7.12 * Math.pow(10, 3);     // m/s
     private static final double SPACESHIP_LAUNCH_VELOCITY_0 = 8 * Math.pow(10, 3);       // m/s
-    private static final double SPACESHIP_LAUNCH_VELOCITY_1 = 8 * Math.pow(10, 3);     // m/s
+    private static final double SPACESHIP_LAUNCH_VELOCITY_1 = 8 * Math.pow(10, 3);       // m/s
+
+    private static final double TIME_DELTA = 60;                                         // 1 minuto en segundos
+    private static final double SAVE_TIME_DELTA = 86400;                                 // 1 dia en segundos
 
     public static void runPlanets() {
 
@@ -33,7 +36,7 @@ public class PlanetSystem {
 
         //EJ2.3
         //Tomamos V0 = 8 km/s pero cambiando el angulo de despegue en 77 grados
-//        simulateSpaceShipToMarsWithDays(365, SPACESHIP_LAUNCH_VELOCITY_1, "1-spaceship-to-mars", 77);
+//        simulateSpaceShipToMarsWithDays(365, SPACESHIP_LAUNCH_VELOCITY_1, "1-spaceship-to-mars", 70);
 
     }
 
@@ -60,19 +63,19 @@ public class PlanetSystem {
         List<Particle> particles = planetSystemGenerator.getParticles();
         //uso la misma lista
 
-        Forces planetForces = new PlanetForces(planetSystemGenerator.getGravitationalConstant());
-        Integrator planetIntegrator = new GearIntegrator(planetForces, particles);
+        ForcesCalculator planetForcesCalculator = new PlanetForcesCalculator(planetSystemGenerator.getGravitationalConstant());
+        Integrator planetIntegrator = new GearIntegrator(planetForcesCalculator, particles);
         FileGenerator planetFileGenerator = new PlanetFileGenerator(filename);
         //dias hasta lanzar nave espacial
         CutCondition planetCutCondition = new TimeCutCondition(86400 * daysToSendSpaceship);
-        TimeStepSimulator planetSimulator = new TimeStepSimulator(60, 86400, planetCutCondition, planetIntegrator, planetFileGenerator, particles);
+        TimeStepSimulator planetSimulator = new TimeStepSimulator(TIME_DELTA, SAVE_TIME_DELTA, planetCutCondition, planetIntegrator, planetFileGenerator, particles);
         planetSimulator.simulate(false);
 
         //agrego nave y simulamos hasta condicion de nave espacial
         planetCutCondition = new SpaceshipCutCondition();
         addSpaceship(particles, launch_velocity, angleVariationInDegrees);
-        planetIntegrator = new GearIntegrator(planetForces, planetSystemGenerator.getParticles());
-        planetSimulator = new TimeStepSimulator(60, 86400, planetCutCondition, planetIntegrator, planetFileGenerator, particles);
+        planetIntegrator = new GearIntegrator(planetForcesCalculator, planetSystemGenerator.getParticles());
+        planetSimulator = new TimeStepSimulator(TIME_DELTA, SAVE_TIME_DELTA, planetCutCondition, planetIntegrator, planetFileGenerator, particles);
         planetSimulator.simulate(true);
         return particles;
     }
@@ -81,25 +84,23 @@ public class PlanetSystem {
         PlanetSystemGenerator planetSystemGenerator = new PlanetSystemGenerator();
         List<Particle> particles = planetSystemGenerator.getParticles();
         addSpaceship(particles, launch_velocity, angleVariationInDegrees);
-        Forces planetForces = new PlanetForces(planetSystemGenerator.getGravitationalConstant());
-        Integrator planetIntegrator = new GearIntegrator(planetForces, particles);
+        ForcesCalculator planetForcesCalculator = new PlanetForcesCalculator(planetSystemGenerator.getGravitationalConstant());
+        Integrator planetIntegrator = new GearIntegrator(planetForcesCalculator, particles);
         FileGenerator planetFileGenerator = new PlanetFileGenerator(filename);
         CutCondition planetCutCondition = new TimeCutCondition(86400 * days);
-        TimeStepSimulator planetSimulator = new TimeStepSimulator(60, 86400, planetCutCondition, planetIntegrator, planetFileGenerator, particles);
+        TimeStepSimulator planetSimulator = new TimeStepSimulator(TIME_DELTA, SAVE_TIME_DELTA, planetCutCondition, planetIntegrator, planetFileGenerator, particles);
         planetSimulator.simulate(true);
         return particles;
     }
 
-    private static void addSpaceship(List<Particle> particles, double launch_velocity, double angleVariationInDegrees) {
-        Particle sun = particles.get(0);
+    private static void addSpaceship(List<Particle> particles, double launchVelocity, double angleVariationInDegrees) {
         Particle earth = particles.get(1);
-        double angle = Math.atan2(earth.getPosition().getX() - sun.getPosition().getX(), earth.getPosition().getY() - sun.getPosition().getY());
-        angle = Math.toRadians(Math.toDegrees(angle) - angleVariationInDegrees);
-        double distanceToEarthCenter = SPACESHIP_HEIGHT + earth.getRadius();
-        double xPosition = earth.getPosition().getX() + Math.cos(angle) * distanceToEarthCenter;
-        double yPosition = earth.getPosition().getY() + Math.sin(angle) * distanceToEarthCenter;
-        double xVelocity = earth.getVelocity().getX() + Math.cos(angle) * (launch_velocity + SPACESHIP_ORBITAL_VELOCITY);
-        double yVelocity = earth.getVelocity().getY() + Math.sin(angle) * (launch_velocity + SPACESHIP_ORBITAL_VELOCITY);
+        double tangentialAngle = Math.atan2(earth.getPosition().getX(), earth.getPosition().getY());
+        double launchAngle = Math.toRadians(Math.toDegrees(tangentialAngle) - angleVariationInDegrees);
+        double xPosition = earth.getPosition().getX() + Math.cos(tangentialAngle) * (SPACESHIP_HEIGHT_FROM_EARTH + earth.getRadius());
+        double yPosition = earth.getPosition().getY() + Math.sin(tangentialAngle) * (SPACESHIP_HEIGHT_FROM_EARTH + earth.getRadius());
+        double xVelocity = earth.getVelocity().getX() + Math.cos(tangentialAngle) * SPACESHIP_ORBITAL_VELOCITY + Math.cos(launchAngle) * launchVelocity;
+        double yVelocity = earth.getVelocity().getY() + Math.sin(tangentialAngle) * SPACESHIP_ORBITAL_VELOCITY + Math.sin(launchAngle) * launchVelocity;
         double radius = SPACESHIP_RADIUS;
         double mass = SPACESHIP_MASS;
         particles.add(new Particle(3,
@@ -115,29 +116,29 @@ public class PlanetSystem {
 
         //Integrador EULER MODIFICADO
         PlanetSystemGenerator planetSystemGenerator = new PlanetSystemGenerator();
-        Forces planetForces = new PlanetForces(planetSystemGenerator.getGravitationalConstant());
-        Integrator planetIntegrator = new EulerIntegrator(planetForces);
+        ForcesCalculator planetForcesCalculator = new PlanetForcesCalculator(planetSystemGenerator.getGravitationalConstant());
+        Integrator planetIntegrator = new EulerIntegrator(planetForcesCalculator);
         FileGenerator planetFileGenerator = new PlanetFileGenerator("planet-euler");
         CutCondition planetCutCondition = new TimeCutCondition(31536000);
-        TimeStepSimulator planetSimulator = new TimeStepSimulator(60, 86400, planetCutCondition, planetIntegrator, planetFileGenerator, planetSystemGenerator.getParticles());
+        TimeStepSimulator planetSimulator = new TimeStepSimulator(TIME_DELTA, SAVE_TIME_DELTA, planetCutCondition, planetIntegrator, planetFileGenerator, planetSystemGenerator.getParticles());
         planetSimulator.simulate(true);
 
         //Integrador BEEMAN
         planetSystemGenerator = new PlanetSystemGenerator();
-        planetForces = new PlanetForces(planetSystemGenerator.getGravitationalConstant());
-        planetIntegrator = new BeemanIntegrator(planetForces);
+        planetForcesCalculator = new PlanetForcesCalculator(planetSystemGenerator.getGravitationalConstant());
+        planetIntegrator = new BeemanIntegrator(planetForcesCalculator, 60, planetSystemGenerator.getParticles());
         planetFileGenerator = new PlanetFileGenerator("planet-beeman");
         planetCutCondition = new TimeCutCondition(31536000);
-        planetSimulator = new TimeStepSimulator(60, 86400, planetCutCondition, planetIntegrator, planetFileGenerator, planetSystemGenerator.getParticles());
+        planetSimulator = new TimeStepSimulator(TIME_DELTA, SAVE_TIME_DELTA, planetCutCondition, planetIntegrator, planetFileGenerator, planetSystemGenerator.getParticles());
         planetSimulator.simulate(true);
 
         //Integrador GEAR PREDICTOR CORRECTOR
         planetSystemGenerator = new PlanetSystemGenerator();
-        planetForces = new PlanetForces(planetSystemGenerator.getGravitationalConstant());
-        planetIntegrator = new GearIntegrator(planetForces, planetSystemGenerator.getParticles());
+        planetForcesCalculator = new PlanetForcesCalculator(planetSystemGenerator.getGravitationalConstant());
+        planetIntegrator = new GearIntegrator(planetForcesCalculator, planetSystemGenerator.getParticles());
         planetFileGenerator = new PlanetFileGenerator("planet-gear");
         planetCutCondition = new TimeCutCondition(31536000);
-        planetSimulator = new TimeStepSimulator(60, 86400, planetCutCondition, planetIntegrator, planetFileGenerator, planetSystemGenerator.getParticles());
+        planetSimulator = new TimeStepSimulator(TIME_DELTA, SAVE_TIME_DELTA, planetCutCondition, planetIntegrator, planetFileGenerator, planetSystemGenerator.getParticles());
         planetSimulator.simulate(true);
     }
 }

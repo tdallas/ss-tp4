@@ -1,8 +1,8 @@
 package systems.oscillator;
 
+import engine.ForcesCalculator;
 import engine.Particle;
 import engine.Vector;
-import engine.integrators.Forces;
 import engine.integrators.Integrator;
 
 import java.util.List;
@@ -13,8 +13,8 @@ public class OscillatorAnalyticalSolutionIntegrator extends Integrator {
     private final double viscosity;
     private final double amplitude;
 
-    public OscillatorAnalyticalSolutionIntegrator(Forces forces, double springConstant, double viscosity, double amplitude) {
-        super(forces);
+    public OscillatorAnalyticalSolutionIntegrator(ForcesCalculator forcesCalculator, double springConstant, double viscosity, double amplitude) {
+        super(forcesCalculator);
         this.time = 0;
         this.springConstant = springConstant;
         this.viscosity = viscosity;

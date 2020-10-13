@@ -1,15 +1,15 @@
 package systems.planets;
 
+import engine.ForcesCalculator;
 import engine.Particle;
 import engine.Vector;
-import engine.integrators.Forces;
 
 import java.util.List;
 
-public class PlanetForces implements Forces {
+public class PlanetForcesCalculator implements ForcesCalculator {
     private final double gravitationalConstant;
 
-    public PlanetForces(double gravitationalConstant) {
+    public PlanetForcesCalculator(double gravitationalConstant) {
         this.gravitationalConstant = gravitationalConstant;
     }
 
