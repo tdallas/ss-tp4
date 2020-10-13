@@ -40,6 +40,7 @@ public class TimeStepSimulator {
                 timeToSave += saveTimeDelta;
             }
         }
+        fileGenerator.addToFile(particles, time);
         if (closeFile) {
             fileGenerator.closeFile();
         }

@@ -23,6 +23,7 @@ public class SpaceshipCutCondition implements CutCondition {
         }
 
         if (lastDistance < distance) {
+            System.out.println("Best distance: " + lastDistance);
             return true;
         }
         lastDistance = distance;
