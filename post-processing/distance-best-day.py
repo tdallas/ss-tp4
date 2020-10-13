@@ -6,6 +6,6 @@ plt.plot(best_day['time'], best_day['distance'])
 
 plt.xlabel('Tiempo [S]', fontsize=16)
 plt.ylabel('Distancia [M]', fontsize=16)
-plt.title('Distancia a de la nave a marte')
+plt.title('Distancia a de la nave a Marte')
 plt.tight_layout()
 plt.show()

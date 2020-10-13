@@ -31,7 +31,7 @@ public class PlanetSystem {
 //        int bestDayToSendSpaceshipV0 = searchBestDayToSendSpaceship(750, SPACESHIP_LAUNCH_VELOCITY_0, "v0", 0);
 //        System.out.println("Best day: " + bestDayToSendSpaceshipV0);
 
-        //Mejor dia es 723 21/09/2022
+        //Mejor dia es 742 10/10/2022
         simulateSpaceShipToMars(742, SPACESHIP_LAUNCH_VELOCITY_0, "0-spaceship-to-mars", 0);
 
         //EJ2.3
@@ -45,7 +45,7 @@ public class PlanetSystem {
         double bestDistance = Double.MAX_VALUE;
         int bestDay = 0;
         for (day = 1; day < days; day++) {
-            System.out.println("Day " + day);
+//            System.out.println("Day " + day);
             List<Particle> particles = simulateSpaceShipToMars(day, launchVelocity, "spaceship-" + day + "-day-" + velocityString, angleVariationInDegrees);
             Particle mars = particles.get(2);
             Particle spaceship = particles.get(3);
@@ -96,7 +96,7 @@ public class PlanetSystem {
     private static void addSpaceship(List<Particle> particles, double launchVelocity, double angleVariationInDegrees) {
         Particle earth = particles.get(1);
         double alpha = Math.atan2(earth.getPosition().getY(), earth.getPosition().getX());
-        double beta = Math.atan2(earth.getPosition().getX(), earth.getPosition().getY());
+        double beta = (Math.PI / 2) - alpha;
         double launchAngle = Math.toRadians(Math.toDegrees(beta) - angleVariationInDegrees);
         double xPosition = earth.getPosition().getX() + Math.cos(alpha) * (SPACESHIP_HEIGHT_FROM_EARTH + earth.getRadius());
         double yPosition = earth.getPosition().getY() + Math.sin(alpha) * (SPACESHIP_HEIGHT_FROM_EARTH + earth.getRadius());
