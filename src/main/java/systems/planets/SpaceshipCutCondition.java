@@ -1,5 +1,6 @@
 package systems.planets;
 
+import engine.FileGenerator;
 import engine.Particle;
 import engine.cutCondition.CutCondition;
 
@@ -7,9 +8,11 @@ import java.util.List;
 
 public class SpaceshipCutCondition implements CutCondition {
     private Double lastDistance;
+    private FileGenerator planetFileGenerator;
 
-    public SpaceshipCutCondition() {
+    public SpaceshipCutCondition(FileGenerator planetFileGenerator) {
         this.lastDistance = null;
+        this.planetFileGenerator = planetFileGenerator;
     }
 
     @Override
@@ -24,6 +27,7 @@ public class SpaceshipCutCondition implements CutCondition {
 
         if (lastDistance < distance) {
             System.out.println("Best distance: " + lastDistance);
+            planetFileGenerator.addToFile(particles, time);
             return true;
         }
         lastDistance = distance;

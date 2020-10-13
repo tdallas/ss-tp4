@@ -18,7 +18,7 @@ public class PlanetSystem {
     private static final double SPACESHIP_LAUNCH_VELOCITY_0 = 8 * Math.pow(10, 3);       // m/s
     private static final double SPACESHIP_LAUNCH_VELOCITY_1 = 8 * Math.pow(10, 3);       // m/s
 
-    private static final double TIME_DELTA = 60;                                         // 1 minuto en segundos
+    private static final double TIME_DELTA = 110;                                         // 1 minuto en segundos
     private static final double SAVE_TIME_DELTA = 86400;                                 // 1 dia en segundos
 
     public static void runPlanets() {
@@ -31,15 +31,8 @@ public class PlanetSystem {
 //        int bestDayToSendSpaceshipV0 = searchBestDayToSendSpaceship(750, SPACESHIP_LAUNCH_VELOCITY_0, "v0", 0);
 //        System.out.println("Best day: " + bestDayToSendSpaceshipV0);
 
-//        int bestHourToSendSpaceshipV0 = searchBestHourOfDayToSendSpaceship(723, SPACESHIP_LAUNCH_VELOCITY_0, "v0", 0);
-//        System.out.println("Best hour: " + bestHourToSendSpaceshipV0);
-
-//        int bestMinuteToSendSpaceshipV0 = searchBestMinuteOfHourOfDayToSendSpaceship(723, 11, SPACESHIP_LAUNCH_VELOCITY_0, "v0", 0);
-//        System.out.println("Best minute: " + bestMinuteToSendSpaceshipV0);
-
         //Mejor dia es 723 21/09/2022
         simulateSpaceShipToMars(742, SPACESHIP_LAUNCH_VELOCITY_0, "0-spaceship-to-mars", 0);
-        //simulateSpaceShipToMarsWithDays(730, SPACESHIP_LAUNCH_VELOCITY_0, "0-spaceship-to-mars", 0);
 
         //EJ2.3
         //Tomamos V0 = 8 km/s pero cambiando el angulo de despegue en 77 grados
@@ -47,49 +40,13 @@ public class PlanetSystem {
 
     }
 
-    private static int searchBestHourOfDayToSendSpaceship(int day, double launch_velocity, String velocityString, double angleVariationInDegrees) {
-        double bestDistance = Double.MAX_VALUE;
-
-        int hour, bestHour = 0;
-        for (hour = 0; hour < 24; hour++) {
-            System.out.println("Hour " + hour);
-            List<Particle> particles = simulateSpaceShipToMars(day, hour, launch_velocity, "spaceship-" + day + "-day-" + hour + "-hour-"  + velocityString, angleVariationInDegrees);
-            Particle mars = particles.get(2);
-            Particle spaceship = particles.get(3);
-            double distance = mars.getPosition().distance(spaceship.getPosition());
-            if (bestDistance > distance) {
-                bestDistance = distance;
-                bestHour = hour;
-            }
-        }
-        return bestHour;
-    }
-
-    private static int searchBestMinuteOfHourOfDayToSendSpaceship(int day, int hour, double launch_velocity, String velocityString, double angleVariationInDegrees) {
-        double bestDistance = Double.MAX_VALUE;
-
-        int minute, bestMinute = 0;
-        for (minute = 0; minute < 60; minute++) {
-            System.out.println("Minute " + minute);
-            List<Particle> particles = simulateSpaceShipToMars(day, hour, minute, launch_velocity, "spaceship-" + day + "-day-" + hour + "-hour-" + minute + "-minute-" + velocityString, angleVariationInDegrees);
-            Particle mars = particles.get(2);
-            Particle spaceship = particles.get(3);
-            double distance = mars.getPosition().distance(spaceship.getPosition());
-            if (bestDistance > distance) {
-                bestDistance = distance;
-                bestMinute = minute;
-            }
-        }
-        return bestMinute;
-    }
-
-    private static int searchBestDayAndHourToSendSpaceship(int days, double launch_velocity, String velocityString, double angleVariationInDegrees) {
+    private static int searchBestDayToSendSpaceship(int days, double launchVelocity, String velocityString, double angleVariationInDegrees) {
         int day;
         double bestDistance = Double.MAX_VALUE;
         int bestDay = 0;
         for (day = 1; day < days; day++) {
             System.out.println("Day " + day);
-            List<Particle> particles = simulateSpaceShipToMars(day, launch_velocity, "spaceship-" + day + "-day-" + velocityString, angleVariationInDegrees);
+            List<Particle> particles = simulateSpaceShipToMars(day, launchVelocity, "spaceship-" + day + "-day-" + velocityString, angleVariationInDegrees);
             Particle mars = particles.get(2);
             Particle spaceship = particles.get(3);
             double distance = mars.getPosition().distance(spaceship.getPosition());
@@ -101,69 +58,7 @@ public class PlanetSystem {
         return bestDay;
     }
 
-    private static int searchBestDayToSendSpaceship(int days, double launch_velocity, String velocityString, double angleVariationInDegrees) {
-        int day;
-        double bestDistance = Double.MAX_VALUE;
-        int bestDay = 0;
-        for (day = 1; day < days; day++) {
-            System.out.println("Day " + day);
-            List<Particle> particles = simulateSpaceShipToMars(day, launch_velocity, "spaceship-" + day + "-day-" + velocityString, angleVariationInDegrees);
-            Particle mars = particles.get(2);
-            Particle spaceship = particles.get(3);
-            double distance = mars.getPosition().distance(spaceship.getPosition());
-            if (bestDistance > distance) {
-                bestDistance = distance;
-                bestDay = day;
-            }
-        }
-        return bestDay;
-    }
-
-    private static List<Particle> simulateSpaceShipToMars(int daysToSendSpaceship, int hoursToSendSpaceship, int minutesToSendSpaceship, double launch_velocity, String filename, double angleVariationInDegrees) {
-        PlanetSystemGenerator planetSystemGenerator = new PlanetSystemGenerator();
-        List<Particle> particles = planetSystemGenerator.getParticles();
-        //uso la misma lista
-
-        ForcesCalculator planetForcesCalculator = new PlanetForcesCalculator(planetSystemGenerator.getGravitationalConstant());
-        Integrator planetIntegrator = new GearIntegrator(planetForcesCalculator, particles);
-        FileGenerator planetFileGenerator = new PlanetFileGenerator(filename);
-        //dias hasta lanzar nave espacial
-        CutCondition planetCutCondition = new TimeCutCondition(86400 * daysToSendSpaceship + 3600 * hoursToSendSpaceship + 60 * minutesToSendSpaceship);
-        TimeStepSimulator planetSimulator = new TimeStepSimulator(TIME_DELTA, SAVE_TIME_DELTA, planetCutCondition, planetIntegrator, planetFileGenerator, particles);
-        planetSimulator.simulate(false);
-
-        //agrego nave y simulamos hasta condicion de nave espacial
-        planetCutCondition = new SpaceshipCutCondition();
-        addSpaceship(particles, launch_velocity, angleVariationInDegrees);
-        planetIntegrator = new GearIntegrator(planetForcesCalculator, planetSystemGenerator.getParticles());
-        planetSimulator = new TimeStepSimulator(TIME_DELTA, SAVE_TIME_DELTA, planetCutCondition, planetIntegrator, planetFileGenerator, particles);
-        planetSimulator.simulate(true);
-        return particles;
-    }
-
-    private static List<Particle> simulateSpaceShipToMars(int daysToSendSpaceship, int hoursToSendSpaceship, double launch_velocity, String filename, double angleVariationInDegrees) {
-        PlanetSystemGenerator planetSystemGenerator = new PlanetSystemGenerator();
-        List<Particle> particles = planetSystemGenerator.getParticles();
-        //uso la misma lista
-
-        ForcesCalculator planetForcesCalculator = new PlanetForcesCalculator(planetSystemGenerator.getGravitationalConstant());
-        Integrator planetIntegrator = new GearIntegrator(planetForcesCalculator, particles);
-        FileGenerator planetFileGenerator = new PlanetFileGenerator(filename);
-        //dias hasta lanzar nave espacial
-        CutCondition planetCutCondition = new TimeCutCondition(86400 * daysToSendSpaceship + 3600 * hoursToSendSpaceship);
-        TimeStepSimulator planetSimulator = new TimeStepSimulator(TIME_DELTA, SAVE_TIME_DELTA, planetCutCondition, planetIntegrator, planetFileGenerator, particles);
-        planetSimulator.simulate(false);
-
-        //agrego nave y simulamos hasta condicion de nave espacial
-        planetCutCondition = new SpaceshipCutCondition();
-        addSpaceship(particles, launch_velocity, angleVariationInDegrees);
-        planetIntegrator = new GearIntegrator(planetForcesCalculator, planetSystemGenerator.getParticles());
-        planetSimulator = new TimeStepSimulator(TIME_DELTA, SAVE_TIME_DELTA, planetCutCondition, planetIntegrator, planetFileGenerator, particles);
-        planetSimulator.simulate(true);
-        return particles;
-    }
-
-    private static List<Particle> simulateSpaceShipToMars(int daysToSendSpaceship, double launch_velocity, String filename, double angleVariationInDegrees) {
+    private static List<Particle> simulateSpaceShipToMars(int daysToSendSpaceship, double launchVelocity, String filename, double angleVariationInDegrees) {
         PlanetSystemGenerator planetSystemGenerator = new PlanetSystemGenerator();
         List<Particle> particles = planetSystemGenerator.getParticles();
         //uso la misma lista
@@ -177,18 +72,18 @@ public class PlanetSystem {
         planetSimulator.simulate(false);
 
         //agrego nave y simulamos hasta condicion de nave espacial
-        planetCutCondition = new SpaceshipCutCondition();
-        addSpaceship(particles, launch_velocity, angleVariationInDegrees);
+        planetCutCondition = new SpaceshipCutCondition(planetFileGenerator);
+        addSpaceship(particles, launchVelocity, angleVariationInDegrees);
         planetIntegrator = new GearIntegrator(planetForcesCalculator, planetSystemGenerator.getParticles());
         planetSimulator = new TimeStepSimulator(TIME_DELTA, SAVE_TIME_DELTA, planetCutCondition, planetIntegrator, planetFileGenerator, particles);
         planetSimulator.simulate(true);
         return particles;
     }
 
-    private static List<Particle> simulateSpaceShipToMarsWithDays(int days, double launch_velocity, String filename, double angleVariationInDegrees) {
+    private static List<Particle> simulateSpaceShipToMarsWithDays(int days, double launchVelocity, String filename, double launchAngleVariationInDegrees) {
         PlanetSystemGenerator planetSystemGenerator = new PlanetSystemGenerator();
         List<Particle> particles = planetSystemGenerator.getParticles();
-        addSpaceship(particles, launch_velocity, angleVariationInDegrees);
+        addSpaceship(particles, launchVelocity, launchAngleVariationInDegrees);
         ForcesCalculator planetForcesCalculator = new PlanetForcesCalculator(planetSystemGenerator.getGravitationalConstant());
         Integrator planetIntegrator = new GearIntegrator(planetForcesCalculator, particles);
         FileGenerator planetFileGenerator = new PlanetFileGenerator(filename);
