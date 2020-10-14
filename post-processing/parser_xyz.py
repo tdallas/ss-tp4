@@ -3,6 +3,8 @@ from particle import Particle
 
 class XYZParser:
     def __init__(self, output_path):
+        self.t_count = 0
+        self.f_count = 0
         self.output = self.parse_output(output_path)
 
     def get_output(self):
@@ -17,12 +19,14 @@ class XYZParser:
                 if self.is_header(line):
                     pass
                 elif self.iteration_finished(line):
-                    if len(iteration) > 1: 
-                        output.append(iteration)
+                    if len(iteration) <= 1:
+                        pass
+                    output.append(iteration)
                     iteration = []
                 else:
                     particle = self.create_particle(line.replace('\n', '').split(' '))
                     iteration.append(particle)
+            output.append(iteration)
         return output
 
     def get_particle_with_id(self, particle_id):
@@ -47,6 +51,8 @@ class XYZParser:
                 distance = particle_1.get_distance(particle_2)
                 if min_distance > distance:
                     min_distance = distance
+        last = self.output[-1]
+        print('DISTANCIA',last[-1].get_distance(last[-2]))
         return min_distance
 
     def get_particle_in_iteration(self, particle_id, iteration):
@@ -59,8 +65,12 @@ class XYZParser:
     def is_header(line):
         return line == 'id xPosition yPosition xVelocity yVelocity radius mass animationRadius redColor greenColor blueColor timePassed\n'
 
-    @staticmethod
-    def iteration_finished(line):
+    def iteration_finished(self, line):
+        if len(line.split(' ')) == 1:
+            if line[0] == '3':
+                self.t_count+=1
+            else:
+                self.f_count+=1
         return len(line.split(' ')) == 1
 
     @staticmethod
