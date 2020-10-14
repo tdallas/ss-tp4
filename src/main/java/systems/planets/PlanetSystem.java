@@ -97,6 +97,11 @@ public class PlanetSystem {
         Particle earth = particles.get(1);
         double alpha = Math.atan2(earth.getPosition().getY(), earth.getPosition().getX());
         double beta = (Math.PI / 2) - alpha;
+        if (earth.getPosition().getY() < 0) {
+            double aux = alpha;
+            alpha = beta;
+            beta = aux;
+        }
         double launchAngle = Math.toRadians(Math.toDegrees(beta) - angleVariationInDegrees);
         double xPosition = earth.getPosition().getX() + Math.cos(alpha) * (SPACESHIP_HEIGHT_FROM_EARTH + earth.getRadius());
         double yPosition = earth.getPosition().getY() + Math.sin(alpha) * (SPACESHIP_HEIGHT_FROM_EARTH + earth.getRadius());
