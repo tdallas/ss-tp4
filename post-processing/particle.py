@@ -3,14 +3,14 @@ from math import sqrt
 
 class Particle:
     def __init__(self, id, x_position, y_position, x_velocity, y_velocity, radius, mass, time_passed):
-        self.id = id
-        self.x_position = x_position
-        self.y_position = y_position
-        self.x_velocity = x_velocity
-        self.y_velocity = y_velocity
-        self.radius = radius
-        self.mass = mass
-        self.time_passed = time_passed
+        self.id = int(id)
+        self.x_position = float(x_position)
+        self.y_position = float(y_position)
+        self.x_velocity = float(x_velocity)
+        self.y_velocity = float(y_velocity)
+        self.radius = float(radius)
+        self.mass = float(mass)
+        self.time_passed = float(time_passed)
 
     def get_x_position(self):
         return self.x_position
