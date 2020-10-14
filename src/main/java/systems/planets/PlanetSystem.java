@@ -36,7 +36,7 @@ public class PlanetSystem {
 //        System.out.println("Best hour: " + bestHourToSendSpaceshipV0);
 
         //Mejor dia es 711 a las 14 horas 9/9/2022
-        simulateSpaceShipToMars(711,14, SPACESHIP_LAUNCH_VELOCITY_0, "0-spaceship-to-mars", 0, 50);
+        simulateSpaceShipToMars(711,14, SPACESHIP_LAUNCH_VELOCITY_0, "0-spaceship-to-mars", 0, 0);
 
         //EJ2.3
         //Tomamos V0 = 8 km/s pero cambiando el angulo de despegue en 77 grados
