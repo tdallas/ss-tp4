@@ -1,40 +1,30 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+from sklearn.metrics import mean_squared_error
 
-oscilator = pd.read_csv('/home/tomas/itba/ss-tp4/out/oscillator-analytic.csv')
-plt.plot(oscilator['time'], oscilator['position'])
+dts = ['0.0001', '0.0002', '0.0003', '0.0004', '0.0005', '0.0006', '0.0007', '0.0008',
+       '0.0009', '0.0010']
 
-plt.xlabel('Tiempo', fontsize=16)
-plt.ylabel('Posición [m]', fontsize=16)
-plt.title('Posición en función del tiempo para solución analítica')
-plt.tight_layout()
-plt.show()
+oscilators = ['beeman', 'gear', 'euler']
 
-oscilator_beeman = pd.read_csv('/home/tomas/itba/ss-tp4/out/oscillator-beeman.csv')
-plt.plot(oscilator_beeman['time'], oscilator_beeman['position'])
+errors_for_oscilators = {'beeman': [],
+                         'gear': [],
+                         'euler': []}
+for oscilator_type in oscilators:
+    errors = []
+    for dt in dts:
+        oscilator = pd.read_csv(
+            f'/home/tomas/itba/ss-tp4/out/oscillator-analytic-{dt}.csv')
+        oscilator_analytics_position = oscilator['position']
 
-plt.xlabel('Tiempo', fontsize=16)
-plt.ylabel('Posición [m]', fontsize=16)
-plt.title('Posición en función del tiempo para solución beeman')
-plt.tight_layout()
-plt.show()
+        oscilator_to_cmp = pd.read_csv(
+            f'/home/tomas/itba/ss-tp4/out/oscillator-{oscilator_type}-{dt}.csv')
+        oscilator_to_cmp_position = oscilator_to_cmp['position']
 
+        errors.append(mean_squared_error(
+            oscilator_analytics_position, oscilator_to_cmp_position))
+    errors_for_oscilators[oscilator_type] = errors
 
-oscilator_euler = pd.read_csv('/home/tomas/itba/ss-tp4/out/oscillator-euler.csv')
-plt.plot(oscilator_euler['time'], oscilator_euler['position'])
-
-plt.xlabel('Tiempo', fontsize=16)
-plt.ylabel('Posición [m]', fontsize=16)
-plt.title('Posición en función del tiempo para solución euler')
-plt.tight_layout()
-plt.show()
-
-
-oscilator_gear = pd.read_csv('/home/tomas/itba/ss-tp4/out/oscillator-gear.csv')
-plt.plot(oscilator_gear['time'], oscilator_gear['position'])
-
-plt.xlabel('Tiempo', fontsize=16)
-plt.ylabel('Posición [m]', fontsize=16)
-plt.title('Posición en función del tiempo para solución gear')
-plt.tight_layout()
-plt.show()
+print('errors beeman', errors_for_oscilators['beeman'])
+print('errors gear', errors_for_oscilators['gear'])
+print('errors euler', errors_for_oscilators['euler'])

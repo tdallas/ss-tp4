@@ -10,6 +10,7 @@ import engine.integrators.Integrator;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 public class OscillatorSystem {
     private static final double OSCILLATOR_POSITION = 1;
@@ -68,7 +69,7 @@ public class OscillatorSystem {
         Particle oscillatorParticle = new Particle(0, new Vector(OSCILLATOR_POSITION, 0), new Vector(OSCILLATOR_VELOCITY, 0), OSCILLATOR_MASS, 0, 0, 0, 0, 0, true);
         ForcesCalculator oscillatorForcesCalculator = new OscillatorForcesCalculator(OSCILLATOR_SPRING_CONSTANT, OSCILLATOR_VISCOSITY);
         Integrator oscillatorIntegrator = new OscillatorAnalyticalSolutionIntegrator(oscillatorForcesCalculator, OSCILLATOR_SPRING_CONSTANT, OSCILLATOR_VISCOSITY, OSCILLATOR_AMPLITUDE);
-        FileGenerator oscillatorFileGenerator = new OscillatorFileGenerator("oscillator-analytic");
+        FileGenerator oscillatorFileGenerator = new OscillatorFileGenerator("oscillator-analytic-" + String.format(Locale.US, "%.4f", timeDelta));
         CutCondition oscillatorCutCondition = new TimeCutCondition(OSCILLATOR_CUTOFF_TIME);
         TimeStepSimulator oscillatorSimulator = new TimeStepSimulator(timeDelta, SAVE_TIME_DELTA, oscillatorCutCondition, oscillatorIntegrator, oscillatorFileGenerator, Collections.singletonList(oscillatorParticle));
         oscillatorSimulator.simulate(true);
@@ -77,7 +78,7 @@ public class OscillatorSystem {
         oscillatorParticle = new Particle(0, new Vector(OSCILLATOR_POSITION, 0), new Vector(OSCILLATOR_VELOCITY, 0), OSCILLATOR_MASS, 0, 0, 0, 0, 0, true);
         oscillatorForcesCalculator = new OscillatorForcesCalculator(OSCILLATOR_SPRING_CONSTANT, OSCILLATOR_VISCOSITY);
         oscillatorIntegrator = new EulerIntegrator(oscillatorForcesCalculator);
-        oscillatorFileGenerator = new OscillatorFileGenerator("oscillator-euler");
+        oscillatorFileGenerator = new OscillatorFileGenerator("oscillator-euler-" + String.format(Locale.US,"%.4f", timeDelta));
         oscillatorCutCondition = new TimeCutCondition(OSCILLATOR_CUTOFF_TIME);
         oscillatorSimulator = new TimeStepSimulator(timeDelta, SAVE_TIME_DELTA, oscillatorCutCondition, oscillatorIntegrator, oscillatorFileGenerator, Collections.singletonList(oscillatorParticle));
         oscillatorSimulator.simulate(true);
@@ -87,7 +88,7 @@ public class OscillatorSystem {
         oscillatorForcesCalculator = new OscillatorForcesCalculator(OSCILLATOR_SPRING_CONSTANT, OSCILLATOR_VISCOSITY);
         List<Particle> particles = Collections.singletonList(oscillatorParticle);
         oscillatorIntegrator = new BeemanIntegrator(oscillatorForcesCalculator, timeDelta, particles);
-        oscillatorFileGenerator = new OscillatorFileGenerator("oscillator-beeman");
+        oscillatorFileGenerator = new OscillatorFileGenerator("oscillator-beeman-" + String.format(Locale.US, "%.4f", timeDelta));
         oscillatorCutCondition = new TimeCutCondition(OSCILLATOR_CUTOFF_TIME);
         oscillatorSimulator = new TimeStepSimulator(timeDelta, SAVE_TIME_DELTA, oscillatorCutCondition, oscillatorIntegrator, oscillatorFileGenerator, particles);
         oscillatorSimulator.simulate(true);
@@ -97,7 +98,7 @@ public class OscillatorSystem {
         oscillatorForcesCalculator = new OscillatorForcesCalculator(OSCILLATOR_SPRING_CONSTANT, OSCILLATOR_VISCOSITY);
         particles = Collections.singletonList(oscillatorParticle);
         oscillatorIntegrator = new GearIntegrator(oscillatorForcesCalculator, particles);
-        oscillatorFileGenerator = new OscillatorFileGenerator("oscillator-gear");
+        oscillatorFileGenerator = new OscillatorFileGenerator("oscillator-gear-" + String.format(Locale.US, "%.4f", timeDelta));
         oscillatorCutCondition = new TimeCutCondition(OSCILLATOR_CUTOFF_TIME);
         oscillatorSimulator = new TimeStepSimulator(timeDelta, SAVE_TIME_DELTA, oscillatorCutCondition, oscillatorIntegrator, oscillatorFileGenerator, particles);
         oscillatorSimulator.simulate(true);
