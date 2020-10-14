@@ -1,4 +1,3 @@
-import pandas as pd
 from particle import Particle
 
 class Parser():
