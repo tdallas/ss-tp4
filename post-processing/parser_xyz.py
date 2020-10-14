@@ -38,7 +38,7 @@ class XYZParser:
                     particle_with_id.append(self.output[i][j])
         return index_appears_particle_with_id, particle_with_id
 
-    def min_distance_between_particles(self, particle_id_1, particle_id_2):
+    def get_min_distance_between_particles(self, particle_id_1, particle_id_2):
         min_distance = 1.7976931348623158E+308
         for i in range(len(self.output)):
             particle_1 = self.get_particle_in_iteration(particle_id_1, i)
