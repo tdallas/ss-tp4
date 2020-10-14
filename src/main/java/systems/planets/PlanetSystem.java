@@ -36,7 +36,7 @@ public class PlanetSystem {
 //        System.out.println("Best hour: " + bestHourToSendSpaceshipV0);
 
         //Mejor dia es 711 a las 14 horas 9/9/2022
-        simulateSpaceShipToMars(711,14, SPACESHIP_LAUNCH_VELOCITY_0, "0-spaceship-to-mars", 0);
+        simulateSpaceShipToMars(711,14, SPACESHIP_LAUNCH_VELOCITY_0, "0-spaceship-to-mars", 0, 0);
 
         //EJ2.3
         //Tomamos V0 = 8 km/s pero cambiando el angulo de despegue en 77 grados
@@ -50,7 +50,7 @@ public class PlanetSystem {
         int bestDay = 0;
         for (day = 0; day < days + 1; day++) {
             System.out.println("Day " + day);
-            List<Particle> particles = simulateSpaceShipToMars(day,0, launchVelocity, "spaceship-" + day + "-day-" + velocityString, angleVariationInDegrees);
+            List<Particle> particles = simulateSpaceShipToMars(day,0, launchVelocity, "spaceship-" + day + "-day-" + velocityString, angleVariationInDegrees, 0);
             Particle mars = particles.get(2);
             Particle spaceship = particles.get(3);
             double distance = mars.getPosition().distance(spaceship.getPosition());
@@ -68,7 +68,7 @@ public class PlanetSystem {
         int bestHour = 0;
         for (hour = 0; hour < 24; hour++) {
             System.out.println("Hour " + hour);
-            List<Particle> particles = simulateSpaceShipToMars(day, hour, launchVelocity, "spaceship-" + day + "-day-" + hour + "-hour-" + velocityString, angleVariationInDegrees);
+            List<Particle> particles = simulateSpaceShipToMars(day, hour, launchVelocity, "spaceship-" + day + "-day-" + hour + "-hour-" + velocityString, angleVariationInDegrees, 0);
             Particle mars = particles.get(2);
             Particle spaceship = particles.get(3);
             double distance = mars.getPosition().distance(spaceship.getPosition());
@@ -80,7 +80,7 @@ public class PlanetSystem {
         return bestHour;
     }
 
-    private static List<Particle> simulateSpaceShipToMars(int day, int hour, double launchVelocity, String filename, double angleVariationInDegrees) {
+    private static List<Particle> simulateSpaceShipToMars(int day, int hour, double launchVelocity, String filename, double angleVariationInDegrees, int daysAfterMarsOrbit) {
         PlanetSystemGenerator planetSystemGenerator = new PlanetSystemGenerator();
         List<Particle> particles = planetSystemGenerator.getParticles();
         //uso la misma lista
@@ -92,13 +92,26 @@ public class PlanetSystem {
         CutCondition planetCutCondition = new TimeCutCondition(86400 * day + 3600 * hour);
         TimeStepSimulator planetSimulator = new TimeStepSimulator(TIME_DELTA, SAVE_TIME_DELTA, planetCutCondition, planetIntegrator, planetFileGenerator, particles);
         planetSimulator.simulate(false);
+        double time = planetSimulator.getTime();
 
         //agrego nave y simulamos hasta condicion de nave espacial
         planetCutCondition = new SpaceshipCutCondition(planetFileGenerator);
         addSpaceship(particles, launchVelocity, angleVariationInDegrees);
         planetIntegrator = new GearIntegrator(planetForcesCalculator, planetSystemGenerator.getParticles());
         planetSimulator = new TimeStepSimulator(TIME_DELTA, SAVE_TIME_DELTA, planetCutCondition, planetIntegrator, planetFileGenerator, particles);
-        planetSimulator.simulate(true);
+        planetSimulator.setTime(time);
+        if(daysAfterMarsOrbit < 1) {
+            planetSimulator.simulate(true);
+        }
+        else{
+            planetSimulator.simulate(false);
+            time = planetSimulator.getTime();
+            planetCutCondition = new TimeCutCondition(86400 * daysAfterMarsOrbit + time);
+            planetIntegrator = new GearIntegrator(planetForcesCalculator, planetSystemGenerator.getParticles());
+            planetSimulator = new TimeStepSimulator(TIME_DELTA, SAVE_TIME_DELTA, planetCutCondition, planetIntegrator, planetFileGenerator, particles);
+            planetSimulator.setTime(time);
+            planetSimulator.simulate(true);
+        }
         return particles;
     }
 
