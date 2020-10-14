@@ -1,6 +1,7 @@
 from particle import Particle
 
-class Parser():
+
+class XYZParser:
     def __init__(self, output_path):
         self.output = self.parse_output(output_path)
 
@@ -10,7 +11,7 @@ class Parser():
     def parse_output(self, output_path):
         output = []
         with open(output_path) as f:
-            lines = f.readlines() # list containing lines of file
+            lines = f.readlines()
             iteration = []
             for line in lines:
                 if self.is_header(line):
@@ -23,12 +24,23 @@ class Parser():
                     particle = self.create_particle(line.replace('\n', '').split(' '))
                     iteration.append(particle)
         return output
+
+    def get_particle_with_id(self, id):
+        particle_with_id = []
+        for i in range(len(self.output)):
+            for j in range(len(self.output[i])):
+                if self.output[i][j].get_id() == id:
+                    particle_with_id.append(self.output[i][j])
+        return particle_with_id
     
-    def is_header(self, line):
+    @staticmethod
+    def is_header(line):
         return line == 'id xPosition yPosition xVelocity yVelocity radius mass animationRadius redColor greenColor blueColor timePassed\n'
 
-    def iteration_finished(self, line):
+    @staticmethod
+    def iteration_finished(line):
         return len(line.split(' ')) == 1
 
-    def create_particle(self, line):
-        return Particle(line[0], line[1], line[2], line[3], line[4], line[5], line[6], line[7], line[8], line[9], line[10], line[11])
+    @staticmethod
+    def create_particle(line):
+        return Particle(line[0], line[1], line[2], line[3], line[4], line[5], line[6], line[11])
