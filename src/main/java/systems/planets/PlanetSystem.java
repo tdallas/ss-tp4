@@ -29,14 +29,14 @@ public class PlanetSystem {
 
         //EJ 2.2
         //TARDA MUCHO PERO ENCUENTRA EL MEJOR DIA QUE SERIA 723 dias despues del 28/09/2020
-        int bestDayToSendSpaceshipV0 = searchBestDayToSendSpaceship(750, SPACESHIP_LAUNCH_VELOCITY_0, "v0", 0);
+//        int bestDayToSendSpaceshipV0 = searchBestDayToSendSpaceship(750, SPACESHIP_LAUNCH_VELOCITY_0, "v0", 0);
 //        System.out.println("Best day: " + bestDayToSendSpaceshipV0);
 
 //        int bestHourToSendSpaceshipV0 = searchBestHourToSendSpaceship(711, SPACESHIP_LAUNCH_VELOCITY_0, "v0", 0);
 //        System.out.println("Best hour: " + bestHourToSendSpaceshipV0);
 
         //Mejor dia es 711 a las 14 horas 9/9/2022
-//        simulateSpaceShipToMars(710,0, 0,  SPACESHIP_LAUNCH_VELOCITY_0, "0-spaceship-to-mars", 0);
+        simulateSpaceShipToMars(711,14, SPACESHIP_LAUNCH_VELOCITY_0, "0-spaceship-to-mars", 0);
 
         //EJ2.3
         //Tomamos V0 = 8 km/s pero cambiando el angulo de despegue en 77 grados
