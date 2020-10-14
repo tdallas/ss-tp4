@@ -1,18 +1,19 @@
-import pandas as pd
-import numpy as np
 import matplotlib.pyplot as plt
+from parser_xyz import XYZParser
 
-best_day = pd.read_csv('data/velocity-best-day.csv')
+print('Parsing data')
+parsed_data = XYZParser('out/0-spaceship-to-mars.xyz')
+print('Finished parsing')
 
 velocity = []
-xVelocity = best_day['xVelocity'].values
-yVelocity = best_day['yVelocity'].values
+time = []
 
-for i in range(xVelocity.size):
-    velocity.append(np.sqrt(xVelocity[i]**2 + yVelocity[i]**2))
+spaceship = parsed_data.get_particle_with_id(3)
+for i in range(len(spaceship)):
+    velocity.append(spaceship[i].get_velocity())
+    time.append(spaceship[i].get_time_passed())
 
-plt.plot(best_day['time'], velocity)
-
+plt.plot(time, velocity)
 plt.xlabel('Tiempo [S]', fontsize=16)
 plt.ylabel('Velocidad [M/S]', fontsize=16)
 plt.title('Velocidad de la nave hasta distancia mínima a Marte')
