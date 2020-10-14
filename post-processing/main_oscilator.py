@@ -23,6 +23,14 @@ for oscilator_type in oscilators:
 
         errors.append(mean_squared_error(
             oscilator_analytics_position, oscilator_to_cmp_position))
+    plt.scatter(list(map(lambda dt: float(dt), dts)), errors, label='Error cuadrático para ' + oscilator_type)
+    plt.xlabel('Dt [S]', fontsize=16)
+    plt.ylabel('Error cuadrático', fontsize=16)
+    plt.xlim(-0, 0.001)
+    plt.ylim(0.0002, 0.0003)
+    plt.ticklabel_format(axis="x", style="sci", scilimits=(-4,-4), useMathText=True)
+    plt.tight_layout()
+    plt.show()
     errors_for_oscilators[oscilator_type] = errors
 
 print('errors beeman', errors_for_oscilators['beeman'])
