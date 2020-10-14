@@ -1,15 +1,13 @@
 import matplotlib.pyplot as plt
 from parser_xyz import XYZParser
 
-print('Parsing data')
 parsed_data = XYZParser('out/0-spaceship-to-mars.xyz')
-print('Finished parsing')
 
 velocity = []
 time = []
 
 spaceship = parsed_data.get_particle_with_id(3)
-for i in range(len(spaceship)):
+for i in range(1, len(spaceship)):
     velocity.append(spaceship[i].get_velocity())
     time.append(spaceship[i].get_time_passed())
 

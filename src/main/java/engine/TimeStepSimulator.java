@@ -44,4 +44,13 @@ public class TimeStepSimulator {
             fileGenerator.closeFile();
         }
     }
+
+    public double getTime(){
+        return time;
+    }
+
+    public void setTime(double time){
+        this.time = time;
+        this.timeToSave = time + saveTimeDelta;
+    }
 }
