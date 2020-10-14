@@ -8,7 +8,7 @@ time = []
 
 index_spaceship_launch, spaceship = parsed_data.get_particle_with_id(3)
 time_before_spaceship_launch = parsed_data.get_output()[index_spaceship_launch][0].get_time_passed()
-for i in range(1, len(spaceship)):
+for i in range(1, len(spaceship) - 1):
     velocity.append(spaceship[i].get_velocity())
     time.append(spaceship[i].get_time_passed() - parsed_data.get_output()[index_spaceship_launch][0].get_time_passed())
 
