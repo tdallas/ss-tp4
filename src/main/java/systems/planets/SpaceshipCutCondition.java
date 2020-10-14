@@ -8,7 +8,7 @@ import java.util.List;
 
 public class SpaceshipCutCondition implements CutCondition {
     private Double lastDistance;
-    private FileGenerator planetFileGenerator;
+    private final FileGenerator planetFileGenerator;
 
     public SpaceshipCutCondition(FileGenerator planetFileGenerator) {
         this.lastDistance = null;

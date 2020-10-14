@@ -15,6 +15,7 @@ public class PlanetSystemGenerator {
     private static final double SUN_Y_POSITION = 0;                                      // m
     private static final double SUN_X_VELOCITY = 0;                                      // m/s
     private static final double SUN_Y_VELOCITY = 0;                                      // m/s
+    private static final double SUN_ANIMATION_RADIUS = SUN_RADIUS * 50;
 
     private static final double EARTH_MASS = 5.97219 * Math.pow(10, 24);                 // kg
     private static final double EARTH_RADIUS = 6378.137 * Math.pow(10, 3);               // m
@@ -22,6 +23,7 @@ public class PlanetSystemGenerator {
     private static final double EARTH_Y_POSITION = 1.318936357931255 * Math.pow(10, 10); // m
     private static final double EARTH_X_VELOCITY = -3.113279917782445 * Math.pow(10, 3); // m/s
     private static final double EARTH_Y_VELOCITY = 2.955205189256462 * Math.pow(10, 4);  // m/s
+    private static final double EARTH_ANIMATION_RADIUS = EARTH_RADIUS * 2000;
 
     private static final double MARS_MASS = 6.4171 * Math.pow(10, 23);                   // kg
     private static final double MARS_RADIUS = 3389.92 * Math.pow(10, 3);                 // m
@@ -29,6 +31,7 @@ public class PlanetSystemGenerator {
     private static final double MARS_Y_POSITION = 4.023977946528339 * Math.pow(10, 10);  // m
     private static final double MARS_X_VELOCITY = -3.717406842095575 * Math.pow(10, 3);  // m/s
     private static final double MARS_Y_VELOCITY = 2.584914078301731 * Math.pow(10, 4);   // m/s
+    private static final double MARS_ANIMATION_RADIUS = MARS_RADIUS * 2000;
 
     private final List<Particle> particles;
 
@@ -39,21 +42,21 @@ public class PlanetSystemGenerator {
                 new Vector(SUN_X_VELOCITY, SUN_Y_VELOCITY),
                 SUN_MASS, SUN_RADIUS,
                 1, 1, 0,
-                SUN_RADIUS * 50,
+                SUN_ANIMATION_RADIUS,
                 false));
         particles.add(new Particle(1,
                 new Vector(EARTH_X_POSITION, EARTH_Y_POSITION),
                 new Vector(EARTH_X_VELOCITY, EARTH_Y_VELOCITY),
                 EARTH_MASS, EARTH_RADIUS,
                 0, 1, 0,
-                EARTH_RADIUS * 2000,
+                EARTH_ANIMATION_RADIUS,
                 true));
         particles.add(new Particle(2,
                 new Vector(MARS_X_POSITION, MARS_Y_POSITION),
                 new Vector(MARS_X_VELOCITY, MARS_Y_VELOCITY),
                 MARS_MASS, MARS_RADIUS,
                 1, 0, 0,
-                MARS_RADIUS * 2000,
+                MARS_ANIMATION_RADIUS,
                 true));
     }
 
