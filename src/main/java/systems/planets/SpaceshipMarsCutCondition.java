@@ -6,11 +6,11 @@ import engine.cutCondition.CutCondition;
 
 import java.util.List;
 
-public class SpaceshipCutCondition implements CutCondition {
+public class SpaceshipMarsCutCondition implements CutCondition {
     private Double lastDistance;
     private final FileGenerator planetFileGenerator;
 
-    public SpaceshipCutCondition(FileGenerator planetFileGenerator) {
+    public SpaceshipMarsCutCondition(FileGenerator planetFileGenerator) {
         this.lastDistance = null;
         this.planetFileGenerator = planetFileGenerator;
     }
@@ -26,7 +26,7 @@ public class SpaceshipCutCondition implements CutCondition {
         }
 
         if (lastDistance < distance) {
-            System.out.println("Best distance: " + lastDistance);
+            System.out.println("Best distance: " + (lastDistance - mars.getRadius() - spaceship.getRadius()));
             planetFileGenerator.addToFile(particles, time);
             return true;
         }

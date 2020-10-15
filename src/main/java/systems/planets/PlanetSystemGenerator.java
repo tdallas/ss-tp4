@@ -33,9 +33,17 @@ public class PlanetSystemGenerator {
     private static final double MARS_Y_VELOCITY = 2.584914078301731 * Math.pow(10, 4);   // m/s
     private static final double MARS_ANIMATION_RADIUS = MARS_RADIUS * 2000;
 
+    private static final double JUPITER_MASS = 1898.13 * Math.pow(10, 23);                   // kg
+    private static final double JUPITER_RADIUS = 71492 * Math.pow(10, 3);                 // m
+    private static final double JUPITER_X_POSITION = 3.658822741863045 * Math.pow(10, 11);  // m
+    private static final double JUPITER_Y_POSITION = -6.743682483255942 * Math.pow(10, 11);  // m
+    private static final double JUPITER_X_VELOCITY = 1.133947439887606 * Math.pow(10, 4);  // m/s
+    private static final double JUPITER_Y_VELOCITY = 6.854346745596702 * Math.pow(10, 3);   // m/s
+    private static final double JUPITER_ANIMATION_RADIUS = JUPITER_RADIUS * 200;
+
     private final List<Particle> particles;
 
-    public PlanetSystemGenerator() {
+    public PlanetSystemGenerator(boolean withJupiter) {
         this.particles = new ArrayList<>();
         particles.add(new Particle(0,
                 new Vector(SUN_X_POSITION, SUN_Y_POSITION),
@@ -58,6 +66,15 @@ public class PlanetSystemGenerator {
                 1, 0, 0,
                 MARS_ANIMATION_RADIUS,
                 true));
+        if(withJupiter){
+            particles.add(new Particle(3,
+                    new Vector(JUPITER_X_POSITION, JUPITER_Y_POSITION),
+                    new Vector(JUPITER_X_VELOCITY, JUPITER_Y_VELOCITY),
+                    JUPITER_MASS, JUPITER_RADIUS,
+                    1, 0, 1,
+                    JUPITER_ANIMATION_RADIUS,
+                    true));
+        }
     }
 
     public List<Particle> getParticles() {

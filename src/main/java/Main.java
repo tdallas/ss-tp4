@@ -1,6 +1,7 @@
 import org.apache.commons.cli.*;
 import systems.oscillator.OscillatorSystem;
-import systems.planets.PlanetSystem;
+import systems.planets.JupiterSystem;
+import systems.planets.MarsSystem;
 
 public class Main {
     private static int system;
@@ -8,28 +9,40 @@ public class Main {
     public static void main(String[] args) {
         //parseArguments(args);
 
+//        //EJ 1.1
 //        OscillatorSystem.runOscillators();
-//        PlanetSystem.runPlanets();
+//
+//        //EJ 1.2 y 1.3
+//
+//        //EJ 2.1
+//        MarsSystem.simulatePlanets(10);
+//        MarsSystem.simulatePlanets(20);
+//        MarsSystem.simulatePlanets(30);
+//        MarsSystem.simulatePlanets(40);
+//        MarsSystem.simulatePlanets(50);
+//        MarsSystem.simulatePlanets(60);
+//        MarsSystem.simulatePlanets(70);
+//        MarsSystem.simulatePlanets(80);
+//        MarsSystem.simulatePlanets(90);
+//        MarsSystem.simulatePlanets(100);
+//        MarsSystem.simulatePlanets(200);
+//        MarsSystem.simulatePlanets(300);
+//        MarsSystem.simulatePlanets(400);
+//        MarsSystem.simulatePlanets(500);
+//        MarsSystem.simulatePlanets(600);
+//        MarsSystem.simulatePlanets(700);
+//        MarsSystem.simulatePlanets(800);
+//        MarsSystem.simulatePlanets(900);
+//        MarsSystem.simulatePlanets(1000);
+//
+//        //EJ 2.2
+//        MarsSystem.runSimulationBestDaySearch();
+//        MarsSystem.runSimulation();
 
-        PlanetSystem.simulatePlanets(10);
-        PlanetSystem.simulatePlanets(20);
-        PlanetSystem.simulatePlanets(30);
-        PlanetSystem.simulatePlanets(40);
-        PlanetSystem.simulatePlanets(50);
-        PlanetSystem.simulatePlanets(60);
-        PlanetSystem.simulatePlanets(70);
-        PlanetSystem.simulatePlanets(80);
-        PlanetSystem.simulatePlanets(90);
-        PlanetSystem.simulatePlanets(100);
-        PlanetSystem.simulatePlanets(200);
-        PlanetSystem.simulatePlanets(300);
-        PlanetSystem.simulatePlanets(400);
-        PlanetSystem.simulatePlanets(500);
-        PlanetSystem.simulatePlanets(600);
-        PlanetSystem.simulatePlanets(700);
-        PlanetSystem.simulatePlanets(800);
-        PlanetSystem.simulatePlanets(900);
-        PlanetSystem.simulatePlanets(1000);
+        //EJ 2.3
+//        JupiterSystem.runSimulationBestDaySearch();
+        JupiterSystem.runSimulation();
+
     }
 
     private static void parseArguments(String[] args) {
