@@ -33,6 +33,7 @@ public class MarsSystem {
     public static void runSimulation() {
         //Mejor dia es 709 a las 12 horas y 47 minutos 6/9/2022
         simulateSpaceShipToMars(709, 12, 47, SPACESHIP_LAUNCH_VELOCITY_0, "0-spaceship-to-mars", 0);
+        simulateSpaceShipToMars(709, 12, 47, SPACESHIP_LAUNCH_VELOCITY_0, "0-spaceship-to-mars-after-days-50", 50);
     }
 
     private static int searchBestDayToSendSpaceship(int days, double launchVelocity, String velocityString) {
