@@ -18,7 +18,7 @@ public class OrbitSystem {
     private static final double TIME_DELTA = 1;                                         // 1 minuto en segundos
     private static final double SAVE_TIME_DELTA = 1;                                 // 1 hora en segundos
 
-    public static void runSimulation(){
+    public static void runSimulation() {
         PlanetSystemGenerator planetSystemGenerator = new PlanetSystemGenerator(false);
         List<Particle> particles = planetSystemGenerator.getParticles();
         addSpaceship(particles, 0);
@@ -45,7 +45,7 @@ public class OrbitSystem {
         double xVelocity = Math.abs(SPACESHIP_ORBITAL_VELOCITY * Math.cos(velocityAngle))
                 + Math.abs(launchVelocity * Math.cos(velocityAngle));
         double yVelocity = Math.abs(SPACESHIP_ORBITAL_VELOCITY * Math.sin(velocityAngle))
-                + Math.abs(launchVelocity * Math.sin(velocityAngle));;
+                + Math.abs(launchVelocity * Math.sin(velocityAngle));
 
         xPosition = earth.getPosition().getX() + Math.signum(earth.getPosition().getX()) * xPosition;
         yPosition = earth.getPosition().getY() + Math.signum(earth.getPosition().getY()) * yPosition;

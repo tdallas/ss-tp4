@@ -23,20 +23,20 @@ public class Particle {
     private final double animationRadius;
     private final boolean movableParticle;
 
-    public static List<Particle> copyParticles(List<Particle> particles){
+    public static List<Particle> copyParticles(List<Particle> particles) {
         List<Particle> result = new ArrayList<>();
-        for(Particle p : particles){
+        for (Particle p : particles) {
             result.add(copy(p));
         }
         return result;
     }
 
-    public static boolean removeParticleWithId(List<Particle> particles, int id){
+    public static boolean removeParticleWithId(List<Particle> particles, int id) {
         Particle p = new Particle(id, null, null, 0, 0, 0, 0, 0, 0, false);
         return particles.remove(p);
     }
 
-    public static Particle copy(Particle particle){
+    public static Particle copy(Particle particle) {
         return new Particle(particle.id, Vector.copy(particle.position), Vector.copy(particle.velocity), particle.mass, particle.radius, particle.redColor, particle.greenColor, particle.blueColor, particle.animationRadius, particle.movableParticle);
     }
 

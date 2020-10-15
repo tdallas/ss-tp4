@@ -5,7 +5,6 @@ import engine.Particle;
 import engine.Vector;
 import org.apache.commons.math3.util.CombinatoricsUtils;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -67,12 +66,11 @@ public class GearIntegrator extends Integrator {
         Vector deltaR2 = deltaA.multiply(timeDelta * timeDelta).divide(2);
 
         // correct
-        if(forcesDependOnVelocity) {
+        if (forcesDependOnVelocity) {
             for (int i = 0; i < 6; i++) {
                 previousPrediction[i] = prediction[i].add(deltaR2.multiply(correctorVelocityDependant[i] * CombinatoricsUtils.factorial(i) / Math.pow(timeDelta, i)));
             }
-        }
-        else{
+        } else {
             for (int i = 0; i < 6; i++) {
                 previousPrediction[i] = prediction[i].add(deltaR2.multiply(correctorNotVelocityDependant[i] * CombinatoricsUtils.factorial(i) / Math.pow(timeDelta, i)));
             }

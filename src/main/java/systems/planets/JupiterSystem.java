@@ -20,7 +20,7 @@ public class JupiterSystem {
     private static final double TIME_DELTA = 60;                                         // 1 minuto en segundos
     private static final double SAVE_TIME_DELTA = 86400;                                 // 1 dia en segundos
 
-    public static void runSimulationBestDaySearch(){
+    public static void runSimulationBestDaySearch() {
         //Busqueda de mejor dia y hora
         int bestDayToSendSpaceshipV0 = searchBestDayToSendSpaceship(250, SPACESHIP_LAUNCH_VELOCITY_0, "v0");
         System.out.println("Best day around: " + bestDayToSendSpaceshipV0);
@@ -30,9 +30,9 @@ public class JupiterSystem {
         System.out.println("Best minute around: " + bestMinuteToSendSpaceshipV0);
     }
 
-    public static void runSimulation(){
+    public static void runSimulation() {
         //Mejor dia es 204 a las 12 horas y 24 minutos 20/04/2021
-        simulateSpaceShipToJupiter(204,12, 24, SPACESHIP_LAUNCH_VELOCITY_0, "0-spaceship-to-jupiter", 0);
+        simulateSpaceShipToJupiter(204, 12, 24, SPACESHIP_LAUNCH_VELOCITY_0, "0-spaceship-to-jupiter", 0);
     }
 
     private static int searchBestDayToSendSpaceship(int days, double launchVelocity, String velocityString) {
@@ -41,7 +41,7 @@ public class JupiterSystem {
         int bestDay = 0;
         for (day = 0; day < days + 1; day++) {
             System.out.println("Day " + day);
-            List<Particle> particles = simulateSpaceShipToJupiter(day,0, 0, launchVelocity, "spaceship-jupiter-" + day + "-day-" + velocityString, 0);
+            List<Particle> particles = simulateSpaceShipToJupiter(day, 0, 0, launchVelocity, "spaceship-jupiter-" + day + "-day-" + velocityString, 0);
             Particle jupiter = particles.get(3);
             Particle spaceship = particles.get(4);
             double distance = jupiter.getPosition().distance(spaceship.getPosition());
@@ -109,10 +109,9 @@ public class JupiterSystem {
         planetIntegrator = new BeemanIntegrator(planetForcesCalculator, TIME_DELTA, particles, false);
         planetSimulator = new TimeStepSimulator(TIME_DELTA, SAVE_TIME_DELTA, planetCutCondition, planetIntegrator, planetFileGenerator, particles);
         planetSimulator.setTime(time);
-        if(daysAfterJupiterOrbit < 1) {
+        if (daysAfterJupiterOrbit < 1) {
             planetSimulator.simulate(true);
-        }
-        else{
+        } else {
             planetSimulator.simulate(false);
             time = planetSimulator.getTime();
             planetCutCondition = new TimeCutCondition(86400 * daysAfterJupiterOrbit + time);
@@ -135,7 +134,7 @@ public class JupiterSystem {
         double xVelocity = Math.abs(SPACESHIP_ORBITAL_VELOCITY * Math.cos(velocityAngle))
                 + Math.abs(launchVelocity * Math.cos(velocityAngle));
         double yVelocity = Math.abs(SPACESHIP_ORBITAL_VELOCITY * Math.sin(velocityAngle))
-                + Math.abs(launchVelocity * Math.sin(velocityAngle));;
+                + Math.abs(launchVelocity * Math.sin(velocityAngle));
 
         xPosition = earth.getPosition().getX() + Math.signum(earth.getPosition().getX()) * xPosition;
         yPosition = earth.getPosition().getY() + Math.signum(earth.getPosition().getY()) * yPosition;

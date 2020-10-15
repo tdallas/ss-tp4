@@ -66,7 +66,7 @@ public class PlanetSystemGenerator {
                 1, 0, 0,
                 MARS_ANIMATION_RADIUS,
                 true));
-        if(withJupiter){
+        if (withJupiter) {
             particles.add(new Particle(3,
                     new Vector(JUPITER_X_POSITION, JUPITER_Y_POSITION),
                     new Vector(JUPITER_X_VELOCITY, JUPITER_Y_VELOCITY),

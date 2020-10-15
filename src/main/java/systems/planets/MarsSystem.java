@@ -20,7 +20,7 @@ public class MarsSystem {
     private static final double TIME_DELTA = 60;                                         // 1 minuto en segundos
     private static final double SAVE_TIME_DELTA = 86400;                                 // 1 dia en segundos
 
-    public static void runSimulationBestDaySearch(){
+    public static void runSimulationBestDaySearch() {
         //Busqueda de mejor dia y hora
         int bestDayToSendSpaceshipV0 = searchBestDayToSendSpaceship(750, SPACESHIP_LAUNCH_VELOCITY_0, "v0");
         System.out.println("Best day around: " + bestDayToSendSpaceshipV0);
@@ -30,9 +30,9 @@ public class MarsSystem {
         System.out.println("Best minute around: " + bestMinuteToSendSpaceshipV0);
     }
 
-    public static void runSimulation(){
+    public static void runSimulation() {
         //Mejor dia es 709 a las 12 horas y 47 minutos 6/9/2022
-        simulateSpaceShipToMars(709,12, 47, SPACESHIP_LAUNCH_VELOCITY_0, "0-spaceship-to-mars", 0);
+        simulateSpaceShipToMars(709, 12, 47, SPACESHIP_LAUNCH_VELOCITY_0, "0-spaceship-to-mars", 0);
     }
 
     private static int searchBestDayToSendSpaceship(int days, double launchVelocity, String velocityString) {
@@ -41,7 +41,7 @@ public class MarsSystem {
         int bestDay = 0;
         for (day = 0; day < days + 1; day++) {
             System.out.println("Day " + day);
-            List<Particle> particles = simulateSpaceShipToMars(day,0, 0, launchVelocity, "spaceship-" + day + "-day-" + velocityString, 0);
+            List<Particle> particles = simulateSpaceShipToMars(day, 0, 0, launchVelocity, "spaceship-" + day + "-day-" + velocityString, 0);
             Particle mars = particles.get(2);
             Particle spaceship = particles.get(3);
             double distance = mars.getPosition().distance(spaceship.getPosition());
@@ -77,7 +77,7 @@ public class MarsSystem {
         int bestMinute = 0;
         for (minute = 0; minute < 60; minute++) {
             System.out.println("Minute " + minute);
-            List<Particle> particles = simulateSpaceShipToMars(day, hour, minute, launchVelocity, "spaceship-" + day + "-day-" + hour + "-hour-" + minute + "-minute-"  + velocityString, 0);
+            List<Particle> particles = simulateSpaceShipToMars(day, hour, minute, launchVelocity, "spaceship-" + day + "-day-" + hour + "-hour-" + minute + "-minute-" + velocityString, 0);
             Particle mars = particles.get(2);
             Particle spaceship = particles.get(3);
             double distance = mars.getPosition().distance(spaceship.getPosition());
@@ -109,10 +109,9 @@ public class MarsSystem {
         planetIntegrator = new BeemanIntegrator(planetForcesCalculator, TIME_DELTA, particles, false);
         planetSimulator = new TimeStepSimulator(TIME_DELTA, SAVE_TIME_DELTA, planetCutCondition, planetIntegrator, planetFileGenerator, particles);
         planetSimulator.setTime(time);
-        if(daysAfterMarsOrbit < 1) {
+        if (daysAfterMarsOrbit < 1) {
             planetSimulator.simulate(true);
-        }
-        else{
+        } else {
             planetSimulator.simulate(false);
             time = planetSimulator.getTime();
             planetCutCondition = new TimeCutCondition(86400 * daysAfterMarsOrbit + time);
@@ -135,7 +134,7 @@ public class MarsSystem {
         double xVelocity = Math.abs(SPACESHIP_ORBITAL_VELOCITY * Math.cos(velocityAngle))
                 + Math.abs(launchVelocity * Math.cos(velocityAngle));
         double yVelocity = Math.abs(SPACESHIP_ORBITAL_VELOCITY * Math.sin(velocityAngle))
-                + Math.abs(launchVelocity * Math.sin(velocityAngle));;
+                + Math.abs(launchVelocity * Math.sin(velocityAngle));
 
         xPosition = earth.getPosition().getX() + Math.signum(earth.getPosition().getX()) * xPosition;
         yPosition = earth.getPosition().getY() + Math.signum(earth.getPosition().getY()) * yPosition;

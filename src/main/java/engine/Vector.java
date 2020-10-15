@@ -37,7 +37,7 @@ public class Vector {
         return new Vector(-x, -y);
     }
 
-    public static Vector copy(Vector vector){
+    public static Vector copy(Vector vector) {
         return new Vector(vector.x, vector.y);
     }
 }

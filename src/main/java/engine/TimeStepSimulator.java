@@ -45,11 +45,11 @@ public class TimeStepSimulator {
         }
     }
 
-    public double getTime(){
+    public double getTime() {
         return time;
     }
 
-    public void setTime(double time){
+    public void setTime(double time) {
         this.time = time;
         this.timeToSave = time + saveTimeDelta;
     }
