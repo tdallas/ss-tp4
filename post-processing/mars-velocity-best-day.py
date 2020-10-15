@@ -15,6 +15,7 @@ for i in range(1, len(spaceship) - 1):
 print('Tiempo de viaje total: ' + str(time[len(time) - 1]) + ' segundos')
 
 plt.plot(time, velocity)
+plt.scatter(time, velocity)
 plt.xlabel('Tiempo [S]', fontsize=16)
 plt.ylabel('Velocidad [M/S]', fontsize=16)
 plt.ticklabel_format(axis="x", style="sci", useMathText=True)
