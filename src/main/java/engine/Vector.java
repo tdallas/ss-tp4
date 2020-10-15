@@ -33,6 +33,10 @@ public class Vector {
         return Math.hypot(this.x - vector.x, this.y - vector.y);
     }
 
+    public Vector changeSign() {
+        return new Vector(-x, -y);
+    }
+
     public static Vector copy(Vector vector){
         return new Vector(vector.x, vector.y);
     }

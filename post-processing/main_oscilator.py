@@ -1,12 +1,12 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.metrics import mean_squared_error
-
+from matplotlib.ticker import ScalarFormatter
 "LITTLE DTS"
-dts = ['0.000100000', '0.000200000', '0.000300000', '0.000400000']
+dts = ['0.0001', '0.0002', '0.0003', '0.0004', '0.0005']
 
-y_lims = {'beeman': [0.0002491712821944489, 0.0002496572314244125], 'gear': [
-    0.0002491922367250463, 0.00024943732110377983], 'euler': [0.0002246100069899247, 0.0002406905542996367]}
+y_lims = {'beeman': [0.0002491712821944489, 0.0002526572314244125], 'gear': [
+    0.0002611022367250463, 0.00036243732110377983], 'euler': [0.0002216100069899247, 0.0002406905542996367]}
 
 oscilators = ['beeman', 'gear', 'euler']
 
@@ -26,16 +26,30 @@ for oscilator_type in oscilators:
 
         errors.append(mean_squared_error(
             oscilator_analytics_position, oscilator_to_cmp_position))
+
     plt.scatter(list(map(lambda dt: float(dt), dts)), errors,
+                label='Error cuadrático para ' + oscilator_type)
+    plt.plot(list(map(lambda dt: float(dt), dts)), errors,
                 label='Error cuadrático para ' + oscilator_type)
     plt.xlabel('Dt [S]', fontsize=16)
     plt.ylabel('Error cuadrático', fontsize=16)
-    plt.xlim(-0, 0.0005)
-    plt.ylim(y_lims[oscilator_type][0], y_lims[oscilator_type][1])
+    # plt.ylim(y_lims[oscilator_type][0], y_lims[oscilator_type][1])
+
+    plt.yscale('log')
+    plt.xscale('log')
+
+    ax = plt.gca()
+    ax.set_xticks(list(map(lambda dt: float(dt), dts))[1:]) # note that with a log axis, you can't have x = 0 so that value isn't plotted.
+    # ax.set_yticks(errors[1:]) # note that with a log axis, you can't have x = 0 so that value isn't plotted.
+    
+    ax.xaxis.set_major_formatter(ScalarFormatter())    # plt.ticklabel_format(axis="x", style="sci",
+    ax.yaxis.set_major_formatter(ScalarFormatter())    
+    
     plt.ticklabel_format(axis="x", style="sci",
                          scilimits=(-4, -4), useMathText=True)
-    plt.ticklabel_format(axis="y", style="sci",
-                         scilimits=(-4, -4), useMathText=True)
+    # plt.ticklabel_format(axis="y", style="sci",
+    #                      scilimits=(-4, -4), useMathText=True)
+    
     plt.title('Error cuadrático para: ' + oscilator_type)
     plt.tight_layout()
     plt.show()

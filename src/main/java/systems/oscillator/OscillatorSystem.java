@@ -109,10 +109,10 @@ public class OscillatorSystem {
         previousPrediction[0] = oscillatorParticle.getPosition();
         previousPrediction[1] = oscillatorParticle.getVelocity();
         Vector km = forces.getForces(oscillatorParticle, oscillatorParticle.getPosition(), oscillatorParticle.getVelocity(), Collections.singletonList(oscillatorParticle)).divide(oscillatorParticle.getMass());
-        previousPrediction[2] = km.multiply(previousPrediction[0]);
-        previousPrediction[3] = km.multiply(previousPrediction[0]);
+        previousPrediction[2] = km.changeSign().multiply(previousPrediction[0]);
+        previousPrediction[3] = km.changeSign().multiply(previousPrediction[1]);
         previousPrediction[4] = km.multiply(km).multiply(previousPrediction[0]);
-        previousPrediction[5] = km.multiply(km).multiply(previousPrediction[0]);
+        previousPrediction[5] = km.multiply(km).multiply(previousPrediction[1]);
         previousPredictions.put(oscillatorParticle, previousPrediction);
         return previousPredictions;
     }

@@ -11,7 +11,18 @@ public class Main {
         //parseArguments(args);
 
 //        //EJ 1.1
-//        OscillatorSystem.runOscillators();
+        OscillatorSystem.runOscillators();
+
+        OscillatorSystem.runOscillators(0.0001);
+        OscillatorSystem.runOscillators(0.0002);
+        OscillatorSystem.runOscillators(0.0003);
+        OscillatorSystem.runOscillators(0.0004);
+        OscillatorSystem.runOscillators(0.0005);
+        OscillatorSystem.runOscillators(0.0006);
+        OscillatorSystem.runOscillators(0.0007);
+        OscillatorSystem.runOscillators(0.0008);
+        OscillatorSystem.runOscillators(0.0009);
+        OscillatorSystem.runOscillators(0.0010);
 //
 //        //EJ 1.2 y 1.3
 //
