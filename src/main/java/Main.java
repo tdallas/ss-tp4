@@ -37,7 +37,7 @@ public class Main {
 //
 //        //EJ 2.2
 //        MarsSystem.runSimulationBestDaySearch();
-        MarsSystem.runSimulation();
+//        MarsSystem.runSimulation();
 
         //EJ 2.3
 //        JupiterSystem.runSimulationBestDaySearch();

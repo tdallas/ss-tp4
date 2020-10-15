@@ -6,7 +6,7 @@ days = []
 
 for i in range(24):
     parsed_data = XYZParser("out/spaceship-jupiter-206-day-{}-hour-v0.xyz".format(i))
-    min_distances.append(parsed_data.get_min_distance_between_particles(2, 3))
+    min_distances.append(parsed_data.get_min_distance_between_particles(3, 4))
     days.append(i)
 
 plt.plot(days, min_distances)

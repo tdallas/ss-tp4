@@ -39,7 +39,7 @@ public class PlanetSystemGenerator {
     private static final double JUPITER_Y_POSITION = -6.743682483255942 * Math.pow(10, 11);  // m
     private static final double JUPITER_X_VELOCITY = 1.133947439887606 * Math.pow(10, 4);  // m/s
     private static final double JUPITER_Y_VELOCITY = 6.854346745596702 * Math.pow(10, 3);   // m/s
-    private static final double JUPITER_ANIMATION_RADIUS = JUPITER_RADIUS * 200;
+    private static final double JUPITER_ANIMATION_RADIUS = JUPITER_RADIUS * 300;
 
     private final List<Particle> particles;
 

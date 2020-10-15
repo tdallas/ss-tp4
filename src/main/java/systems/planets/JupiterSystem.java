@@ -23,8 +23,8 @@ public class JupiterSystem {
 
     public static void runSimulationBestDaySearch(){
         //Busqueda de mejor dia y hora
-        int bestDayToSendSpaceshipV0 = searchBestDayToSendSpaceship(250, SPACESHIP_LAUNCH_VELOCITY_0, "v0");
-        System.out.println("Best day around: " + bestDayToSendSpaceshipV0);
+//        int bestDayToSendSpaceshipV0 = searchBestDayToSendSpaceship(250, SPACESHIP_LAUNCH_VELOCITY_0, "v0");
+//        System.out.println("Best day around: " + bestDayToSendSpaceshipV0);
         int bestHourToSendSpaceshipV0 = searchBestHourToSendSpaceship(206, SPACESHIP_LAUNCH_VELOCITY_0, "v0");
         System.out.println("Best hour: " + bestHourToSendSpaceshipV0);
     }

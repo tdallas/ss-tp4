@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @AllArgsConstructor
@@ -20,6 +22,18 @@ public class Particle {
     private final double blueColor;
     private final double animationRadius;
     private final boolean movableParticle;
+
+    public static List<Particle> copyParticles(List<Particle> particles){
+        List<Particle> result = new ArrayList<>();
+        for(Particle p : particles){
+            result.add(copy(p));
+        }
+        return result;
+    }
+
+    public static Particle copy(Particle particle){
+        return new Particle(particle.id, Vector.copy(particle.position), Vector.copy(particle.velocity), particle.mass, particle.radius, particle.redColor, particle.greenColor, particle.blueColor, particle.animationRadius, particle.movableParticle);
+    }
 
     @Override
     public boolean equals(Object o) {
