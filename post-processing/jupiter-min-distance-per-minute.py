@@ -9,6 +9,8 @@ for i in range(60):
     min_distances.append(parsed_data.get_min_distance_between_particles(3, 4))
     days.append(i)
 
+print('Mejor distancia alcanzada a Jupiter en 204 dias, 12 horas y 24 minutos: ' + str(min_distances[24]) + ' metros')
+
 plt.plot(days, min_distances)
 plt.scatter(days, min_distances)
 plt.xlabel('Minuto', fontsize=16)

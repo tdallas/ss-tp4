@@ -9,6 +9,8 @@ for i in range(60):
     min_distances.append(parsed_data.get_min_distance_between_particles(2, 3))
     days.append(i)
 
+print('Mejor distancia alcanzada a Marte en 709 dias, 12 horas y 47 minutos: ' + str(min_distances[47]) + ' metros')
+
 plt.plot(days, min_distances)
 plt.scatter(days, min_distances)
 plt.xlabel('Minuto', fontsize=16)
