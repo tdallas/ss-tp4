@@ -10,7 +10,6 @@ for i in range(750):
     days.append(i)
 
 plt.plot(days, min_distances)
-plt.scatter(days, min_distances)
 plt.xlabel('Día', fontsize=16)
 plt.ylabel('Distancia [M]', fontsize=16)
 plt.ticklabel_format(axis="x", style="sci", useMathText=True)
