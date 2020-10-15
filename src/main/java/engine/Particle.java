@@ -31,6 +31,11 @@ public class Particle {
         return result;
     }
 
+    public static boolean removeParticleWithId(List<Particle> particles, int id){
+        Particle p = new Particle(id, null, null, 0, 0, 0, 0, 0, 0, false);
+        return particles.remove(p);
+    }
+
     public static Particle copy(Particle particle){
         return new Particle(particle.id, Vector.copy(particle.position), Vector.copy(particle.velocity), particle.mass, particle.radius, particle.redColor, particle.greenColor, particle.blueColor, particle.animationRadius, particle.movableParticle);
     }

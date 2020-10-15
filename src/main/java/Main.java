@@ -2,6 +2,7 @@ import org.apache.commons.cli.*;
 import systems.oscillator.OscillatorSystem;
 import systems.planets.JupiterSystem;
 import systems.planets.MarsSystem;
+import systems.planets.OrbitSystem;
 
 public class Main {
     private static int system;
@@ -41,7 +42,10 @@ public class Main {
 
         //EJ 2.3
 //        JupiterSystem.runSimulationBestDaySearch();
-        JupiterSystem.runSimulation();
+//        JupiterSystem.runSimulation();
+
+        //More animations
+        OrbitSystem.runSimulation();
 
     }
 
