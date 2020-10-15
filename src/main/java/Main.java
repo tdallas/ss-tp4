@@ -8,8 +8,28 @@ public class Main {
     public static void main(String[] args) {
         //parseArguments(args);
 
-        OscillatorSystem.runOscillators();
-        PlanetSystem.runPlanets();
+//        OscillatorSystem.runOscillators();
+//        PlanetSystem.runPlanets();
+
+        PlanetSystem.simulatePlanets(10);
+        PlanetSystem.simulatePlanets(20);
+        PlanetSystem.simulatePlanets(30);
+        PlanetSystem.simulatePlanets(40);
+        PlanetSystem.simulatePlanets(50);
+        PlanetSystem.simulatePlanets(60);
+        PlanetSystem.simulatePlanets(70);
+        PlanetSystem.simulatePlanets(80);
+        PlanetSystem.simulatePlanets(90);
+        PlanetSystem.simulatePlanets(100);
+        PlanetSystem.simulatePlanets(200);
+        PlanetSystem.simulatePlanets(300);
+        PlanetSystem.simulatePlanets(400);
+        PlanetSystem.simulatePlanets(500);
+        PlanetSystem.simulatePlanets(600);
+        PlanetSystem.simulatePlanets(700);
+        PlanetSystem.simulatePlanets(800);
+        PlanetSystem.simulatePlanets(900);
+        PlanetSystem.simulatePlanets(1000);
     }
 
     private static void parseArguments(String[] args) {

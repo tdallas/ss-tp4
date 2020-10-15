@@ -24,9 +24,6 @@ public class PlanetSystem {
 
     public static void runPlanets() {
 
-        //EJ 2.1
-//        simulatePlanets();
-
         //EJ 2.2
         //TARDA MUCHO PERO ENCUENTRA EL MEJOR DIA QUE SERIA 723 dias despues del 28/09/2020
 //        int bestDayToSendSpaceshipV0 = searchBestDayToSendSpaceship(750, SPACESHIP_LAUNCH_VELOCITY_0, "v0", 0);
@@ -156,33 +153,32 @@ public class PlanetSystem {
                 true));
     }
 
-    private static void simulatePlanets() {
-
+    public static void simulatePlanets(double timeDelta) {
         //Integrador EULER MODIFICADO
         PlanetSystemGenerator planetSystemGenerator = new PlanetSystemGenerator();
         ForcesCalculator planetForcesCalculator = new PlanetForcesCalculator(planetSystemGenerator.getGravitationalConstant());
         Integrator planetIntegrator = new EulerIntegrator(planetForcesCalculator);
-        FileGenerator planetFileGenerator = new PlanetFileGenerator("planet-euler");
+        FileGenerator planetFileGenerator = new PlanetFileGenerator("planet-euler-" + timeDelta);
         CutCondition planetCutCondition = new TimeCutCondition(86400 * 365);
-        TimeStepSimulator planetSimulator = new TimeStepSimulator(TIME_DELTA, SAVE_TIME_DELTA, planetCutCondition, planetIntegrator, planetFileGenerator, planetSystemGenerator.getParticles());
+        TimeStepSimulator planetSimulator = new TimeStepSimulator(timeDelta, SAVE_TIME_DELTA, planetCutCondition, planetIntegrator, planetFileGenerator, planetSystemGenerator.getParticles());
         planetSimulator.simulate(true);
 
         //Integrador BEEMAN
         planetSystemGenerator = new PlanetSystemGenerator();
         planetForcesCalculator = new PlanetForcesCalculator(planetSystemGenerator.getGravitationalConstant());
-        planetIntegrator = new BeemanIntegrator(planetForcesCalculator, TIME_DELTA, planetSystemGenerator.getParticles());
-        planetFileGenerator = new PlanetFileGenerator("planet-beeman");
+        planetIntegrator = new BeemanIntegrator(planetForcesCalculator, timeDelta, planetSystemGenerator.getParticles());
+        planetFileGenerator = new PlanetFileGenerator("planet-beeman-" + timeDelta);
         planetCutCondition = new TimeCutCondition(86400 * 365);
-        planetSimulator = new TimeStepSimulator(TIME_DELTA, SAVE_TIME_DELTA, planetCutCondition, planetIntegrator, planetFileGenerator, planetSystemGenerator.getParticles());
+        planetSimulator = new TimeStepSimulator(timeDelta, SAVE_TIME_DELTA, planetCutCondition, planetIntegrator, planetFileGenerator, planetSystemGenerator.getParticles());
         planetSimulator.simulate(true);
 
         //Integrador GEAR PREDICTOR CORRECTOR
         planetSystemGenerator = new PlanetSystemGenerator();
         planetForcesCalculator = new PlanetForcesCalculator(planetSystemGenerator.getGravitationalConstant());
         planetIntegrator = new GearIntegrator(planetForcesCalculator, planetSystemGenerator.getParticles());
-        planetFileGenerator = new PlanetFileGenerator("planet-gear");
+        planetFileGenerator = new PlanetFileGenerator("planet-gear-" + timeDelta);
         planetCutCondition = new TimeCutCondition(86400 * 365);
-        planetSimulator = new TimeStepSimulator(TIME_DELTA, SAVE_TIME_DELTA, planetCutCondition, planetIntegrator, planetFileGenerator, planetSystemGenerator.getParticles());
+        planetSimulator = new TimeStepSimulator(timeDelta, SAVE_TIME_DELTA, planetCutCondition, planetIntegrator, planetFileGenerator, planetSystemGenerator.getParticles());
         planetSimulator.simulate(true);
     }
 }
