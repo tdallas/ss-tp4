@@ -28,4 +28,8 @@ public class Vector {
     public double distance(Vector vector) {
         return Math.hypot(this.x - vector.x, this.y - vector.y);
     }
+
+    public static Vector copy(Vector vector){
+        return new Vector(vector.x, vector.y);
+    }
 }

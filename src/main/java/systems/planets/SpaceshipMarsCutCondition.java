@@ -2,6 +2,7 @@ package systems.planets;
 
 import engine.FileGenerator;
 import engine.Particle;
+import engine.Vector;
 import engine.cutCondition.CutCondition;
 
 import java.util.List;

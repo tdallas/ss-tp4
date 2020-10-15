@@ -11,11 +11,14 @@ import java.util.Map;
 
 public class GearIntegrator extends Integrator {
     private final Map<Particle, Vector[]> previousPredictions;
+    private boolean withVelocities;
 
-    private static final double[] corrector = {3.0 / 16, 251.0 / 360, 1.0, 11.0 / 18, 1.0 / 6, 1.0 / 60};
+    private static final double[] correctorWithVelocities = {3.0 / 16, 251.0 / 360, 1.0, 11.0 / 18, 1.0 / 6, 1.0 / 60};
+    private static final double[] correctorWithoutVelocities = {3.0 / 20, 251.0 / 360, 1.0, 11.0 / 18, 1.0 / 6, 1.0 / 60};
 
-    public GearIntegrator(ForcesCalculator forcesCalculator, List<Particle> particles) {
+    public GearIntegrator(ForcesCalculator forcesCalculator, List<Particle> particles, boolean withVelocities) {
         super(forcesCalculator);
+        this.withVelocities = withVelocities;
         previousPredictions = new HashMap<>();
         for (Particle particle : particles) {
             Vector[] previousPrediction = new Vector[6];
@@ -74,8 +77,15 @@ public class GearIntegrator extends Integrator {
         Vector deltaR2 = deltaA.multiply(timeDelta * timeDelta).divide(2);
 
         // correct
-        for (int i = 0; i < 6; i++) {
-            previousPrediction[i] = prediction[i].add(deltaR2.multiply(corrector[i] * CombinatoricsUtils.factorial(i) / Math.pow(timeDelta, i)));
+        if(withVelocities) {
+            for (int i = 0; i < 6; i++) {
+                previousPrediction[i] = prediction[i].add(deltaR2.multiply(correctorWithVelocities[i] * CombinatoricsUtils.factorial(i) / Math.pow(timeDelta, i)));
+            }
+        }
+        else{
+            for (int i = 0; i < 6; i++) {
+                previousPrediction[i] = prediction[i].add(deltaR2.multiply(correctorWithoutVelocities[i] * CombinatoricsUtils.factorial(i) / Math.pow(timeDelta, i)));
+            }
         }
 
         particle.setPosition(previousPrediction[0]);

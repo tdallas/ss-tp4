@@ -57,7 +57,7 @@ public class OscillatorSystem {
         oscillatorParticle = new Particle(0, new Vector(OSCILLATOR_POSITION, 0), new Vector(OSCILLATOR_VELOCITY, 0), OSCILLATOR_MASS, 0, 0, 0, 0, 0, true);
         oscillatorForcesCalculator = new OscillatorForcesCalculator(OSCILLATOR_SPRING_CONSTANT, OSCILLATOR_VISCOSITY);
         particles = Collections.singletonList(oscillatorParticle);
-        oscillatorIntegrator = new GearIntegrator(oscillatorForcesCalculator, particles);
+        oscillatorIntegrator = new GearIntegrator(oscillatorForcesCalculator, particles, true);
         oscillatorFileGenerator = new OscillatorFileGenerator("oscillator-gear");
         oscillatorCutCondition = new TimeCutCondition(OSCILLATOR_CUTOFF_TIME);
         oscillatorSimulator = new TimeStepSimulator(TIME_DELTA, SAVE_TIME_DELTA, oscillatorCutCondition, oscillatorIntegrator, oscillatorFileGenerator, particles);
@@ -97,7 +97,7 @@ public class OscillatorSystem {
         oscillatorParticle = new Particle(0, new Vector(OSCILLATOR_POSITION, 0), new Vector(OSCILLATOR_VELOCITY, 0), OSCILLATOR_MASS, 0, 0, 0, 0, 0, true);
         oscillatorForcesCalculator = new OscillatorForcesCalculator(OSCILLATOR_SPRING_CONSTANT, OSCILLATOR_VISCOSITY);
         particles = Collections.singletonList(oscillatorParticle);
-        oscillatorIntegrator = new GearIntegrator(oscillatorForcesCalculator, particles);
+        oscillatorIntegrator = new GearIntegrator(oscillatorForcesCalculator, particles, true);
         oscillatorFileGenerator = new OscillatorFileGenerator("oscillator-gear-" + String.format(Locale.US, "%.4f", timeDelta));
         oscillatorCutCondition = new TimeCutCondition(OSCILLATOR_CUTOFF_TIME);
         oscillatorSimulator = new TimeStepSimulator(timeDelta, SAVE_TIME_DELTA, oscillatorCutCondition, oscillatorIntegrator, oscillatorFileGenerator, particles);

@@ -76,7 +76,7 @@ public class JupiterSystem {
         //uso la misma lista
 
         ForcesCalculator planetForcesCalculator = new PlanetForcesCalculator(planetSystemGenerator.getGravitationalConstant());
-        Integrator planetIntegrator = new GearIntegrator(planetForcesCalculator, particles);
+        Integrator planetIntegrator = new GearIntegrator(planetForcesCalculator, particles, false);
         FileGenerator planetFileGenerator = new PlanetFileGenerator(filename);
         //dias hasta lanzar nave espacial
         CutCondition planetCutCondition = new TimeCutCondition(86400 * day + 3600 * hour);
@@ -87,7 +87,7 @@ public class JupiterSystem {
         //agrego nave y simulamos hasta condicion de nave espacial
         planetCutCondition = new SpaceshipJupiterCutCondition(planetFileGenerator);
         addSpaceship(particles, launchVelocity);
-        planetIntegrator = new GearIntegrator(planetForcesCalculator, planetSystemGenerator.getParticles());
+        planetIntegrator = new GearIntegrator(planetForcesCalculator, planetSystemGenerator.getParticles(), false);
         planetSimulator = new TimeStepSimulator(TIME_DELTA, SAVE_TIME_DELTA, planetCutCondition, planetIntegrator, planetFileGenerator, particles);
         planetSimulator.setTime(time);
         if(daysAfterJupiterOrbit < 1) {
@@ -97,7 +97,7 @@ public class JupiterSystem {
             planetSimulator.simulate(false);
             time = planetSimulator.getTime();
             planetCutCondition = new TimeCutCondition(86400 * daysAfterJupiterOrbit + time);
-            planetIntegrator = new GearIntegrator(planetForcesCalculator, planetSystemGenerator.getParticles());
+            planetIntegrator = new GearIntegrator(planetForcesCalculator, planetSystemGenerator.getParticles(), false);
             planetSimulator = new TimeStepSimulator(TIME_DELTA, SAVE_TIME_DELTA, planetCutCondition, planetIntegrator, planetFileGenerator, particles);
             planetSimulator.setTime(time);
             planetSimulator.simulate(true);
@@ -154,7 +154,7 @@ public class JupiterSystem {
         //Integrador GEAR PREDICTOR CORRECTOR
         planetSystemGenerator = new PlanetSystemGenerator(true);
         planetForcesCalculator = new PlanetForcesCalculator(planetSystemGenerator.getGravitationalConstant());
-        planetIntegrator = new GearIntegrator(planetForcesCalculator, planetSystemGenerator.getParticles());
+        planetIntegrator = new GearIntegrator(planetForcesCalculator, planetSystemGenerator.getParticles(), false);
         planetFileGenerator = new PlanetFileGenerator("jupiter-gear-" + timeDelta);
         planetCutCondition = new TimeCutCondition(86400 * 365);
         planetSimulator = new TimeStepSimulator(timeDelta, SAVE_TIME_DELTA, planetCutCondition, planetIntegrator, planetFileGenerator, planetSystemGenerator.getParticles());
