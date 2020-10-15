@@ -31,8 +31,8 @@ public class JupiterSystem {
     }
 
     public static void runSimulation(){
-        //Mejor dia es 204 a las 5 horas y 24 minutos 20/04/2021
-        simulateSpaceShipToJupiter(205,5, 24, SPACESHIP_LAUNCH_VELOCITY_0, "0-spaceship-to-jupiter", 0);
+        //Mejor dia es 204 a las 12 horas y 24 minutos 20/04/2021
+        simulateSpaceShipToJupiter(204,12, 24, SPACESHIP_LAUNCH_VELOCITY_0, "0-spaceship-to-jupiter", 0);
     }
 
     private static int searchBestDayToSendSpaceship(int days, double launchVelocity, String velocityString) {

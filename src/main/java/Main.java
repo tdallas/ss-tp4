@@ -11,7 +11,7 @@ public class Main {
         //parseArguments(args);
 
 //        //EJ 1.1
-        OscillatorSystem.runOscillators();
+//        OscillatorSystem.runOscillators();
 //
 //        //EJ 1.2 y 1.3
 //

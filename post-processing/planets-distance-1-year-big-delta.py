@@ -11,13 +11,11 @@ earth_y_position = 1.252824102724684E10
 
 earth_distances_euler = []
 earth_distances_beeman = []
-earth_distances_gear = []
 time_deltas = []
 
 i = 100
 while(i < 1001):
     time_deltas.append(i)
-    parsed_data_gear = XYZParser("out/planet-gear-{}.0.xyz".format(i))
     parsed_data_beeman = XYZParser('out/planet-beeman-{}.0.xyz'.format(i))
     parsed_data_euler = XYZParser('out/planet-euler-{}.0.xyz'.format(i))
 
@@ -25,24 +23,19 @@ while(i < 1001):
 
     earth_euler = parsed_data_euler.get_particle_in_iteration(1, iteration)
     earth_beeman = parsed_data_beeman.get_particle_in_iteration(1, iteration)
-    earth_gear = parsed_data_gear.get_particle_in_iteration(1, iteration)
 
     earth_distance_euler = point_distance(earth_x_position, earth_y_position, earth_euler.get_x_position(), earth_euler.get_y_position())
     earth_distance_beeman = point_distance(earth_x_position, earth_y_position, earth_beeman.get_x_position(), earth_beeman.get_y_position())
-    earth_distance_gear = point_distance(earth_x_position, earth_y_position, earth_gear.get_x_position(), earth_gear.get_y_position())
 
     earth_distances_euler.append(earth_distance_euler)
     earth_distances_beeman.append(earth_distance_beeman)
-    earth_distances_gear.append(earth_distance_gear)
 
     i += 100
 
 plt.plot(time_deltas, earth_distances_euler, label='Euler')
 plt.plot(time_deltas, earth_distances_beeman, label='Beeman')
-plt.plot(time_deltas, earth_distances_gear, label='Gear')
 plt.scatter(time_deltas, earth_distances_euler)
 plt.scatter(time_deltas, earth_distances_beeman)
-plt.scatter(time_deltas, earth_distances_gear)
 plt.xlabel('dT [S]', fontsize=16)
 plt.ylabel('Distancia [M]', fontsize=16)
 plt.ticklabel_format(axis="x", style="sci", useMathText=True)
