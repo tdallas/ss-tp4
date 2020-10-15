@@ -15,6 +15,9 @@ plt.plot(gear['time'], gear['position'], label='GearPC')
 
 plt.xlabel('Tiempo [S]', fontsize=16)
 plt.ylabel('Posición [M]', fontsize=16)
+
+plt.ticklabel_format(axis="x", style="sci",
+                        scilimits=(-1, -1), useMathText=True)
 plt.xlim(-0.25, 5.25)
 plt.ylim(-1.1, 1.1)
 plt.legend(title='Tipo de Integrador')
