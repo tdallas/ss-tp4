@@ -11,7 +11,7 @@ public class Main {
         //parseArguments(args);
 
 //        //EJ 1.1
-//        OscillatorSystem.runOscillators();
+        OscillatorSystem.runOscillators();
 //
 //        //EJ 1.2 y 1.3
 //
@@ -38,14 +38,14 @@ public class Main {
 //
 //        //EJ 2.2
 //        MarsSystem.runSimulationBestDaySearch();
-//        MarsSystem.runSimulation();
+        MarsSystem.runSimulation();
 
         //EJ 2.3
 //        JupiterSystem.runSimulationBestDaySearch();
-//        JupiterSystem.runSimulation();
+        JupiterSystem.runSimulation();
 
         //More animations
-        OrbitSystem.runSimulation();
+//        OrbitSystem.runSimulation();
 
     }
 

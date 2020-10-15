@@ -11,25 +11,15 @@ import java.util.Map;
 
 public class GearIntegrator extends Integrator {
     private final Map<Particle, Vector[]> previousPredictions;
-    private boolean withVelocities;
+    private final boolean forcesDependOnVelocity;
 
-    private static final double[] correctorWithVelocities = {3.0 / 16, 251.0 / 360, 1.0, 11.0 / 18, 1.0 / 6, 1.0 / 60};
-    private static final double[] correctorWithoutVelocities = {3.0 / 20, 251.0 / 360, 1.0, 11.0 / 18, 1.0 / 6, 1.0 / 60};
+    private static final double[] correctorVelocityDependant = {3.0 / 16, 251.0 / 360, 1.0, 11.0 / 18, 1.0 / 6, 1.0 / 60};
+    private static final double[] correctorNotVelocityDependant = {3.0 / 20, 251.0 / 360, 1.0, 11.0 / 18, 1.0 / 6, 1.0 / 60};
 
-    public GearIntegrator(ForcesCalculator forcesCalculator, List<Particle> particles, boolean withVelocities) {
+    public GearIntegrator(Map<Particle, Vector[]> previousPredictions, ForcesCalculator forcesCalculator, List<Particle> particles, boolean forcesDependOnVelocity) {
         super(forcesCalculator);
-        this.withVelocities = withVelocities;
-        previousPredictions = new HashMap<>();
-        for (Particle particle : particles) {
-            Vector[] previousPrediction = new Vector[6];
-            previousPrediction[0] = particle.getPosition();
-            previousPrediction[1] = particle.getVelocity();
-            previousPrediction[2] = getForces(particle, particle.getPosition(), particle.getVelocity(), particles).divide(particle.getMass());
-            previousPrediction[3] = new Vector(0, 0);
-            previousPrediction[4] = new Vector(0, 0);
-            previousPrediction[5] = new Vector(0, 0);
-            previousPredictions.put(particle, previousPrediction);
-        }
+        this.forcesDependOnVelocity = forcesDependOnVelocity;
+        this.previousPredictions = previousPredictions;
     }
 
     @Override
@@ -77,14 +67,14 @@ public class GearIntegrator extends Integrator {
         Vector deltaR2 = deltaA.multiply(timeDelta * timeDelta).divide(2);
 
         // correct
-        if(withVelocities) {
+        if(forcesDependOnVelocity) {
             for (int i = 0; i < 6; i++) {
-                previousPrediction[i] = prediction[i].add(deltaR2.multiply(correctorWithVelocities[i] * CombinatoricsUtils.factorial(i) / Math.pow(timeDelta, i)));
+                previousPrediction[i] = prediction[i].add(deltaR2.multiply(correctorVelocityDependant[i] * CombinatoricsUtils.factorial(i) / Math.pow(timeDelta, i)));
             }
         }
         else{
             for (int i = 0; i < 6; i++) {
-                previousPrediction[i] = prediction[i].add(deltaR2.multiply(correctorWithoutVelocities[i] * CombinatoricsUtils.factorial(i) / Math.pow(timeDelta, i)));
+                previousPrediction[i] = prediction[i].add(deltaR2.multiply(correctorNotVelocityDependant[i] * CombinatoricsUtils.factorial(i) / Math.pow(timeDelta, i)));
             }
         }
 

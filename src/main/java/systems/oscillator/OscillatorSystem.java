@@ -1,6 +1,7 @@
 package systems.oscillator;
 
 import engine.*;
+import engine.Vector;
 import engine.cutCondition.CutCondition;
 import engine.cutCondition.TimeCutCondition;
 import engine.integrators.BeemanIntegrator;
@@ -8,9 +9,7 @@ import engine.integrators.EulerIntegrator;
 import engine.integrators.GearIntegrator;
 import engine.integrators.Integrator;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 public class OscillatorSystem {
     private static final double OSCILLATOR_POSITION = 1;
@@ -47,7 +46,7 @@ public class OscillatorSystem {
         oscillatorParticle = new Particle(0, new Vector(OSCILLATOR_POSITION, 0), new Vector(OSCILLATOR_VELOCITY, 0), OSCILLATOR_MASS, 0, 0, 0, 0, 0, true);
         oscillatorForcesCalculator = new OscillatorForcesCalculator(OSCILLATOR_SPRING_CONSTANT, OSCILLATOR_VISCOSITY);
         List<Particle> particles = Collections.singletonList(oscillatorParticle);
-        oscillatorIntegrator = new BeemanIntegrator(oscillatorForcesCalculator, TIME_DELTA, particles);
+        oscillatorIntegrator = new BeemanIntegrator(oscillatorForcesCalculator, TIME_DELTA, particles, true);
         oscillatorFileGenerator = new OscillatorFileGenerator("oscillator-beeman");
         oscillatorCutCondition = new TimeCutCondition(OSCILLATOR_CUTOFF_TIME);
         oscillatorSimulator = new TimeStepSimulator(TIME_DELTA, SAVE_TIME_DELTA, oscillatorCutCondition, oscillatorIntegrator, oscillatorFileGenerator, particles);
@@ -57,7 +56,7 @@ public class OscillatorSystem {
         oscillatorParticle = new Particle(0, new Vector(OSCILLATOR_POSITION, 0), new Vector(OSCILLATOR_VELOCITY, 0), OSCILLATOR_MASS, 0, 0, 0, 0, 0, true);
         oscillatorForcesCalculator = new OscillatorForcesCalculator(OSCILLATOR_SPRING_CONSTANT, OSCILLATOR_VISCOSITY);
         particles = Collections.singletonList(oscillatorParticle);
-        oscillatorIntegrator = new GearIntegrator(oscillatorForcesCalculator, particles, true);
+        oscillatorIntegrator = new GearIntegrator(calculatePreviousPredictions(oscillatorParticle, oscillatorForcesCalculator), oscillatorForcesCalculator, particles, true);
         oscillatorFileGenerator = new OscillatorFileGenerator("oscillator-gear");
         oscillatorCutCondition = new TimeCutCondition(OSCILLATOR_CUTOFF_TIME);
         oscillatorSimulator = new TimeStepSimulator(TIME_DELTA, SAVE_TIME_DELTA, oscillatorCutCondition, oscillatorIntegrator, oscillatorFileGenerator, particles);
@@ -87,7 +86,7 @@ public class OscillatorSystem {
         oscillatorParticle = new Particle(0, new Vector(OSCILLATOR_POSITION, 0), new Vector(OSCILLATOR_VELOCITY, 0), OSCILLATOR_MASS, 0, 0, 0, 0, 0, true);
         oscillatorForcesCalculator = new OscillatorForcesCalculator(OSCILLATOR_SPRING_CONSTANT, OSCILLATOR_VISCOSITY);
         List<Particle> particles = Collections.singletonList(oscillatorParticle);
-        oscillatorIntegrator = new BeemanIntegrator(oscillatorForcesCalculator, timeDelta, particles);
+        oscillatorIntegrator = new BeemanIntegrator(oscillatorForcesCalculator, timeDelta, particles, true);
         oscillatorFileGenerator = new OscillatorFileGenerator("oscillator-beeman-" + String.format(Locale.US, "%.4f", timeDelta));
         oscillatorCutCondition = new TimeCutCondition(OSCILLATOR_CUTOFF_TIME);
         oscillatorSimulator = new TimeStepSimulator(timeDelta, SAVE_TIME_DELTA, oscillatorCutCondition, oscillatorIntegrator, oscillatorFileGenerator, particles);
@@ -97,10 +96,24 @@ public class OscillatorSystem {
         oscillatorParticle = new Particle(0, new Vector(OSCILLATOR_POSITION, 0), new Vector(OSCILLATOR_VELOCITY, 0), OSCILLATOR_MASS, 0, 0, 0, 0, 0, true);
         oscillatorForcesCalculator = new OscillatorForcesCalculator(OSCILLATOR_SPRING_CONSTANT, OSCILLATOR_VISCOSITY);
         particles = Collections.singletonList(oscillatorParticle);
-        oscillatorIntegrator = new GearIntegrator(oscillatorForcesCalculator, particles, true);
+        oscillatorIntegrator = new GearIntegrator(calculatePreviousPredictions(oscillatorParticle, oscillatorForcesCalculator), oscillatorForcesCalculator, particles, true);
         oscillatorFileGenerator = new OscillatorFileGenerator("oscillator-gear-" + String.format(Locale.US, "%.4f", timeDelta));
         oscillatorCutCondition = new TimeCutCondition(OSCILLATOR_CUTOFF_TIME);
         oscillatorSimulator = new TimeStepSimulator(timeDelta, SAVE_TIME_DELTA, oscillatorCutCondition, oscillatorIntegrator, oscillatorFileGenerator, particles);
         oscillatorSimulator.simulate(true);
+    }
+
+    private static Map<Particle, Vector[]> calculatePreviousPredictions(Particle oscillatorParticle, ForcesCalculator forces){
+        Map<Particle, Vector[]> previousPredictions = new HashMap<>();
+        Vector[] previousPrediction = new Vector[6];
+        previousPrediction[0] = oscillatorParticle.getPosition();
+        previousPrediction[1] = oscillatorParticle.getVelocity();
+        Vector km = forces.getForces(oscillatorParticle, oscillatorParticle.getPosition(), oscillatorParticle.getVelocity(), Collections.singletonList(oscillatorParticle)).divide(oscillatorParticle.getMass());
+        previousPrediction[2] = km.multiply(previousPrediction[0]);
+        previousPrediction[3] = km.multiply(previousPrediction[0]);
+        previousPrediction[4] = km.multiply(km).multiply(previousPrediction[0]);
+        previousPrediction[5] = km.multiply(km).multiply(previousPrediction[0]);
+        previousPredictions.put(oscillatorParticle, previousPrediction);
+        return previousPredictions;
     }
 }

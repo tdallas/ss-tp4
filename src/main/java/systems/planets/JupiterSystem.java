@@ -5,7 +5,6 @@ import engine.cutCondition.CutCondition;
 import engine.cutCondition.TimeCutCondition;
 import engine.integrators.BeemanIntegrator;
 import engine.integrators.EulerIntegrator;
-import engine.integrators.GearIntegrator;
 import engine.integrators.Integrator;
 
 import java.util.List;
@@ -23,15 +22,17 @@ public class JupiterSystem {
 
     public static void runSimulationBestDaySearch(){
         //Busqueda de mejor dia y hora
-//        int bestDayToSendSpaceshipV0 = searchBestDayToSendSpaceship(250, SPACESHIP_LAUNCH_VELOCITY_0, "v0");
-//        System.out.println("Best day around: " + bestDayToSendSpaceshipV0);
-        int bestHourToSendSpaceshipV0 = searchBestHourToSendSpaceship(206, SPACESHIP_LAUNCH_VELOCITY_0, "v0");
-        System.out.println("Best hour: " + bestHourToSendSpaceshipV0);
+        int bestDayToSendSpaceshipV0 = searchBestDayToSendSpaceship(250, SPACESHIP_LAUNCH_VELOCITY_0, "v0");
+        System.out.println("Best day around: " + bestDayToSendSpaceshipV0);
+        int bestHourToSendSpaceshipV0 = searchBestHourToSendSpaceship(204, SPACESHIP_LAUNCH_VELOCITY_0, "v0");
+        System.out.println("Best hour around: " + bestHourToSendSpaceshipV0);
+        int bestMinuteToSendSpaceshipV0 = searchBestMinuteToSendSpaceship(204, 12, SPACESHIP_LAUNCH_VELOCITY_0, "v0");
+        System.out.println("Best minute around: " + bestMinuteToSendSpaceshipV0);
     }
 
     public static void runSimulation(){
-        //Mejor dia es 206 a las 5 horas 22/04/2021
-        simulateSpaceShipToJupiter(206,5, SPACESHIP_LAUNCH_VELOCITY_0, "0-spaceship-to-jupiter", 0);
+        //Mejor dia es 204 a las 5 horas y 24 minutos 20/04/2021
+        simulateSpaceShipToJupiter(205,5, 24, SPACESHIP_LAUNCH_VELOCITY_0, "0-spaceship-to-jupiter", 0);
     }
 
     private static int searchBestDayToSendSpaceship(int days, double launchVelocity, String velocityString) {
@@ -40,7 +41,7 @@ public class JupiterSystem {
         int bestDay = 0;
         for (day = 0; day < days + 1; day++) {
             System.out.println("Day " + day);
-            List<Particle> particles = simulateSpaceShipToJupiter(day,0, launchVelocity, "spaceship-jupiter-" + day + "-day-" + velocityString, 0);
+            List<Particle> particles = simulateSpaceShipToJupiter(day,0, 0, launchVelocity, "spaceship-jupiter-" + day + "-day-" + velocityString, 0);
             Particle jupiter = particles.get(3);
             Particle spaceship = particles.get(4);
             double distance = jupiter.getPosition().distance(spaceship.getPosition());
@@ -58,7 +59,7 @@ public class JupiterSystem {
         int bestHour = 0;
         for (hour = 0; hour < 24; hour++) {
             System.out.println("Hour " + hour);
-            List<Particle> particles = simulateSpaceShipToJupiter(day, hour, launchVelocity, "spaceship-jupiter-" + day + "-day-" + hour + "-hour-" + velocityString, 0);
+            List<Particle> particles = simulateSpaceShipToJupiter(day, hour, 0, launchVelocity, "spaceship-jupiter-" + day + "-day-" + hour + "-hour-" + velocityString, 0);
             Particle jupiter = particles.get(3);
             Particle spaceship = particles.get(4);
             double distance = jupiter.getPosition().distance(spaceship.getPosition());
@@ -70,16 +71,34 @@ public class JupiterSystem {
         return bestHour;
     }
 
-    private static List<Particle> simulateSpaceShipToJupiter(int day, int hour, double launchVelocity, String filename, int daysAfterJupiterOrbit) {
+    private static int searchBestMinuteToSendSpaceship(int day, int hour, double launchVelocity, String velocityString) {
+        int minute;
+        double bestDistance = Double.MAX_VALUE;
+        int bestMinute = 0;
+        for (minute = 0; minute < 60; minute++) {
+            System.out.println("Minute " + minute);
+            List<Particle> particles = simulateSpaceShipToJupiter(day, hour, minute, launchVelocity, "spaceship-jupiter-" + day + "-day-" + hour + "-hour-" + minute + "-minute-" + velocityString, 0);
+            Particle jupiter = particles.get(3);
+            Particle spaceship = particles.get(4);
+            double distance = jupiter.getPosition().distance(spaceship.getPosition());
+            if (bestDistance > distance) {
+                bestDistance = distance;
+                bestMinute = minute;
+            }
+        }
+        return bestMinute;
+    }
+
+    private static List<Particle> simulateSpaceShipToJupiter(int day, int hour, int minute, double launchVelocity, String filename, int daysAfterJupiterOrbit) {
         PlanetSystemGenerator planetSystemGenerator = new PlanetSystemGenerator(true);
         List<Particle> particles = planetSystemGenerator.getParticles();
         //uso la misma lista
 
         ForcesCalculator planetForcesCalculator = new PlanetForcesCalculator(planetSystemGenerator.getGravitationalConstant());
-        Integrator planetIntegrator = new GearIntegrator(planetForcesCalculator, particles, false);
+        Integrator planetIntegrator = new BeemanIntegrator(planetForcesCalculator, TIME_DELTA, particles, false);
         FileGenerator planetFileGenerator = new PlanetFileGenerator(filename);
         //dias hasta lanzar nave espacial
-        CutCondition planetCutCondition = new TimeCutCondition(86400 * day + 3600 * hour);
+        CutCondition planetCutCondition = new TimeCutCondition(86400 * day + 3600 * hour + 60 * minute);
         TimeStepSimulator planetSimulator = new TimeStepSimulator(TIME_DELTA, SAVE_TIME_DELTA, planetCutCondition, planetIntegrator, planetFileGenerator, particles);
         planetSimulator.simulate(false);
         double time = planetSimulator.getTime();
@@ -87,7 +106,7 @@ public class JupiterSystem {
         //agrego nave y simulamos hasta condicion de nave espacial
         planetCutCondition = new SpaceshipJupiterCutCondition(planetFileGenerator);
         addSpaceship(particles, launchVelocity);
-        planetIntegrator = new GearIntegrator(planetForcesCalculator, planetSystemGenerator.getParticles(), false);
+        planetIntegrator = new BeemanIntegrator(planetForcesCalculator, TIME_DELTA, particles, false);
         planetSimulator = new TimeStepSimulator(TIME_DELTA, SAVE_TIME_DELTA, planetCutCondition, planetIntegrator, planetFileGenerator, particles);
         planetSimulator.setTime(time);
         if(daysAfterJupiterOrbit < 1) {
@@ -97,7 +116,7 @@ public class JupiterSystem {
             planetSimulator.simulate(false);
             time = planetSimulator.getTime();
             planetCutCondition = new TimeCutCondition(86400 * daysAfterJupiterOrbit + time);
-            planetIntegrator = new GearIntegrator(planetForcesCalculator, planetSystemGenerator.getParticles(), false);
+            planetIntegrator = new BeemanIntegrator(planetForcesCalculator, TIME_DELTA, particles, false);
             planetSimulator = new TimeStepSimulator(TIME_DELTA, SAVE_TIME_DELTA, planetCutCondition, planetIntegrator, planetFileGenerator, particles);
             planetSimulator.setTime(time);
             planetSimulator.simulate(true);
@@ -145,17 +164,8 @@ public class JupiterSystem {
         //Integrador BEEMAN
         planetSystemGenerator = new PlanetSystemGenerator(true);
         planetForcesCalculator = new PlanetForcesCalculator(planetSystemGenerator.getGravitationalConstant());
-        planetIntegrator = new BeemanIntegrator(planetForcesCalculator, timeDelta, planetSystemGenerator.getParticles());
+        planetIntegrator = new BeemanIntegrator(planetForcesCalculator, timeDelta, planetSystemGenerator.getParticles(), false);
         planetFileGenerator = new PlanetFileGenerator("jupiter-beeman-" + timeDelta);
-        planetCutCondition = new TimeCutCondition(86400 * 365);
-        planetSimulator = new TimeStepSimulator(timeDelta, SAVE_TIME_DELTA, planetCutCondition, planetIntegrator, planetFileGenerator, planetSystemGenerator.getParticles());
-        planetSimulator.simulate(true);
-
-        //Integrador GEAR PREDICTOR CORRECTOR
-        planetSystemGenerator = new PlanetSystemGenerator(true);
-        planetForcesCalculator = new PlanetForcesCalculator(planetSystemGenerator.getGravitationalConstant());
-        planetIntegrator = new GearIntegrator(planetForcesCalculator, planetSystemGenerator.getParticles(), false);
-        planetFileGenerator = new PlanetFileGenerator("jupiter-gear-" + timeDelta);
         planetCutCondition = new TimeCutCondition(86400 * 365);
         planetSimulator = new TimeStepSimulator(timeDelta, SAVE_TIME_DELTA, planetCutCondition, planetIntegrator, planetFileGenerator, planetSystemGenerator.getParticles());
         planetSimulator.simulate(true);

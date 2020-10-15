@@ -11,7 +11,7 @@ import java.util.Map;
 public class BeemanIntegrator extends Integrator {
     private final Map<Particle, Vector> previousAccelerations;
 
-    public BeemanIntegrator(ForcesCalculator forcesCalculator, double timeDelta, List<Particle> particles) {
+    public BeemanIntegrator(ForcesCalculator forcesCalculator, double timeDelta, List<Particle> particles, boolean forcesDependOnVelocity) {
         super(forcesCalculator);
         previousAccelerations = new HashMap<>();
         for (Particle p : particles) {

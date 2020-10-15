@@ -21,6 +21,10 @@ public class Vector {
         return new Vector(this.x * number, this.y * number);
     }
 
+    public Vector multiply(Vector vector) {
+        return new Vector(this.x * vector.x, this.y * vector.y);
+    }
+
     public Vector divide(double number) {
         return new Vector(this.x / number, this.y / number);
     }

@@ -3,7 +3,7 @@ package systems.planets;
 import engine.*;
 import engine.cutCondition.CutCondition;
 import engine.cutCondition.TimeCutCondition;
-import engine.integrators.GearIntegrator;
+import engine.integrators.BeemanIntegrator;
 import engine.integrators.Integrator;
 
 import java.util.List;
@@ -26,7 +26,7 @@ public class OrbitSystem {
         Particle.removeParticleWithId(particles, 1);
         particles.add(new Particle(earth.getId(), earth.getPosition(), earth.getVelocity(), earth.getMass(), earth.getRadius(), earth.getRedColor(), earth.getGreenColor(), earth.getBlueColor(), earth.getRadius(), true));
         ForcesCalculator planetForcesCalculator = new PlanetForcesCalculator(planetSystemGenerator.getGravitationalConstant());
-        Integrator planetIntegrator = new GearIntegrator(planetForcesCalculator, particles, false);
+        Integrator planetIntegrator = new BeemanIntegrator(planetForcesCalculator, TIME_DELTA, particles, false);
         FileGenerator planetFileGenerator = new PlanetFileGenerator("earth-orbit");
         CutCondition planetCutCondition = new TimeCutCondition(86400 * 1);
         TimeStepSimulator planetSimulator = new TimeStepSimulator(TIME_DELTA, SAVE_TIME_DELTA, planetCutCondition, planetIntegrator, planetFileGenerator, particles);
