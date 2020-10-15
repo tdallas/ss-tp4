@@ -12,6 +12,8 @@ for i in range(750):
 plt.plot(days, min_distances)
 plt.xlabel('Día', fontsize=16)
 plt.ylabel('Distancia [M]', fontsize=16)
+plt.ticklabel_format(axis="x", style="sci", useMathText=True)
+plt.ticklabel_format(axis="y", style="sci", useMathText=True)
 plt.title('Mínima distancia de la nave a Marte')
 plt.tight_layout()
 plt.show()

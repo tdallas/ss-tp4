@@ -1,5 +1,4 @@
 from math import sqrt
-from scipy.spatial import distance
 
 
 class Particle:
@@ -41,7 +40,6 @@ class Particle:
         return self.radius
 
     def get_distance(self, particle):
-        # return distance.euclidean([self.x_position, self.y_position], [particle.get_x_position(), particle.get_y_position()])
         return sqrt((self.x_position - particle.x_position)**2 + (self.y_position - particle.y_position)**2) - self.radius - particle.radius
 
     def get_time_passed(self):
