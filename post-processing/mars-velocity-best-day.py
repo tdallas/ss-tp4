@@ -13,6 +13,7 @@ for i in range(1, len(spaceship) - 1):
     time.append(spaceship[i].get_time_passed() - parsed_data.get_output()[index_spaceship_launch][0].get_time_passed())
 
 print('Tiempo de viaje total a Marte: ' + str(time[len(time) - 1]) + ' segundos')
+print('Velocidad con la que lleua la nave a Marte: ' + str(velocity[len(velocity) - 1]) + ' metros/segundos')
 
 plt.plot(time, velocity)
 plt.xlabel('Tiempo [S]', fontsize=16)
