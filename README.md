@@ -38,7 +38,7 @@ and \
 and \
 `python3 post-processing/mars-min-distance-per-hour.py` \
 and \
-`python3 post-processing/mars-min-distance-per-day.py` \
+`python3 post-processing/mars-min-distance-per-day.py` 
 
 ## Jupiter
 To show Jupiter graphics, run: \
@@ -48,4 +48,4 @@ and \
 and \
 `python3 post-processing/jupiter-min-distance-per-hour.py` \
 and \
-`python3 post-processing/jupiter-min-distance-per-day.py` \
+`python3 post-processing/jupiter-min-distance-per-day.py` 
