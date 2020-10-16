@@ -13,7 +13,7 @@ earth_distances_euler = []
 earth_distances_beeman = []
 time_deltas = []
 
-i = 100
+i = 200
 while(i < 1001):
     time_deltas.append(i)
     parsed_data_beeman = XYZParser('out/planet-beeman-{}.0.xyz'.format(i))
@@ -30,7 +30,7 @@ while(i < 1001):
     earth_distances_euler.append(earth_distance_euler)
     earth_distances_beeman.append(earth_distance_beeman)
 
-    i += 100
+    i += 200
 
 plt.plot(time_deltas, earth_distances_euler, label='Euler')
 plt.plot(time_deltas, earth_distances_beeman, label='Beeman')
