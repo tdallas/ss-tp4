@@ -20,32 +20,32 @@ The program will generate all the files with similar formats like these:
 
 ## Oscilator
 To show oscilators graphics, run: \
-`python3 post-processing/oscilator.py`
+`python3 post-processing/oscilator.py` \
 and \
 `python3 post-processing/oscilator_errors.py`
 
 ## Planets
 To show planets orbit graphics, run: \
-`python3 post-processing/planets-distance-1-year-big-delta.py`
-and
+`python3 post-processing/planets-distance-1-year-big-delta.py` \
+and \
 `python3 post-processing/planets-distance-1-year-small-delta.py`
 
 ## Mars
 To show Mars graphics, run: \
-`python3 post-processing/mars-velocity-best-day.py`
+`python3 post-processing/mars-velocity-best-day.py` \
 and \
-`python3 post-processing/mars-min-distance-per-minute.py`
+`python3 post-processing/mars-min-distance-per-minute.py` \
 and \
-`python3 post-processing/mars-min-distance-per-hour.py`
+`python3 post-processing/mars-min-distance-per-hour.py` \
 and \
-`python3 post-processing/mars-min-distance-per-day.py`
+`python3 post-processing/mars-min-distance-per-day.py` \
 
 ## Jupiter
 To show Jupiter graphics, run: \
-`python3 post-processing/jupiter-velocity-best-day.py`
+`python3 post-processing/jupiter-velocity-best-day.py` \
 and \
-`python3 post-processing/jupiter-min-distance-per-minute.py`
+`python3 post-processing/jupiter-min-distance-per-minute.py` \
 and \
-`python3 post-processing/jupiter-min-distance-per-hour.py`
+`python3 post-processing/jupiter-min-distance-per-hour.py` \
 and \
-`python3 post-processing/jupiter-min-distance-per-day.py`
+`python3 post-processing/jupiter-min-distance-per-day.py` \
